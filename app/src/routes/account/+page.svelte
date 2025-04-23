@@ -23,6 +23,7 @@
 			<label for="file">Choose an MP3 file</label>
 			<input type="text" name="title" placeholder="Title" required />
 			<input type="text" name="artist" placeholder="Artist" required />
+			<input type="text" name="release" placeholder="Release" />
 			<button disabled={uploading} type="submit">
 				{uploading ? 'Uploading...' : 'Upload'}
 			</button>

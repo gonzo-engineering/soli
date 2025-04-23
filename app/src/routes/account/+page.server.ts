@@ -8,6 +8,7 @@ export const actions: Actions = {
 			const uploadedFile = formData?.get('fileToUpload') as File;
 			const uploadedFileTitle = formData?.get('title') as string;
 			const uploadedFileArtist = formData?.get('artist') as string;
+			const uploadedFileRelease = formData?.get('release') as string;
 
 			if (!uploadedFile.name || uploadedFile.size === 0) {
 				return fail(400, {
@@ -20,7 +21,8 @@ export const actions: Actions = {
 				.file(uploadedFile)
 				.name(uploadedFileTitle)
 				.keyvalues({
-					artist: uploadedFileArtist
+					artist: uploadedFileArtist,
+					release: uploadedFileRelease
 				});
 
 			const url = await pinata.gateways.public.convert(upload.cid);

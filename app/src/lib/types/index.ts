@@ -6,7 +6,7 @@ export interface Artist {
 export interface Release {
 	id: string;
 	name: string;
-	artistId: string;
+	artistID: string;
 	releaseDate: string;
 	coverArt: string;
 }
@@ -14,6 +14,7 @@ export interface Release {
 export interface Track {
 	id: string;
 	name: string;
-	releaseId: string;
+	artistID: string;
+	releaseID: string;
 	trackNumber: number;
 }
