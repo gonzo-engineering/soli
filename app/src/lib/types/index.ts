@@ -8,7 +8,7 @@ export interface Release {
 	name: string;
 	artistID: string;
 	releaseDate: string;
-	coverArt: string;
+	coverID: string;
 }
 
 export interface Track {
