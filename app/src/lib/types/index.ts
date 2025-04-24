@@ -1,6 +1,8 @@
 export interface Artist {
 	id: string;
 	name: string;
+	description: string;
+	website: string;
 }
 
 export interface Release {

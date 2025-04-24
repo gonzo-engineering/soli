@@ -3,6 +3,7 @@
 * {
 	font-family: 'Yanone Kaffeesatz', sans-serif;
 	font-weight: 300;
+	font-size: 1.2rem;
 }
 
 p {
@@ -26,6 +27,12 @@ svg {
 
 h2 {
 	font-size: 2.4rem;
-	margin-bottom: 1.6rem;
+	margin-bottom: 8px;
+	font-weight: 700;
+}
+
+h3 {
+	font-size: 2rem;
+	margin-bottom: 8px;
 	font-weight: 700;
 }

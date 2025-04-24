@@ -1,9 +1,9 @@
-import type { Artist } from '$lib/types/index.js';
+import type { Artist, Release } from '$lib/types/index.js';
 
 export const load = async ({ fetch, params }) => {
 	const artists: Artist[] = await fetch('/api/artists').then((res) => res.json());
 
-	const matchingArtist = artists.find((release) => release.id === params.slug);
+	const matchingArtist = artists.find((artist) => artist.id === params.slug);
 
 	if (!matchingArtist) {
 		return {
@@ -11,9 +11,13 @@ export const load = async ({ fetch, params }) => {
 			error: new Error('Not Found')
 		};
 	}
-	if (matchingArtist) {
-		return {
-			artist: matchingArtist
-		};
-	}
+
+	const releases: Release[] = await fetch('/api/releases').then((res) => res.json());
+
+	const releasesByArtist = releases.filter((release) => release.artistID === matchingArtist?.id);
+
+	return {
+		artist: matchingArtist,
+		releases: releasesByArtist
+	};
 };

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Release } from '$lib/types';
+	import type { Artist, Release } from '$lib/types';
 
-	let { data }: { data: { release: Release } } = $props();
+	let { data }: { data: { release: Release; artist: Artist } } = $props();
 
-	const { name, artistID } = data.release;
+	const { name } = data.release;
 </script>
 
 <svelte:head>
@@ -12,4 +12,6 @@
 </svelte:head>
 
 <h2>{name}</h2>
-<a href={`/artists/${artistID}`}><h3>Artist</h3></a>
+<div>
+	By <a href={`/artists/${data.artist.id}`}>{data.artist.name}</a>
+</div>
