@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Artist, ReleaseHydrated, Track } from '$lib/types';
+	import type { ReleaseHydrated } from '$lib/types';
 	import { prettifyDuration } from '$lib/utils';
 	import { user, setActiveSong } from '$lib/stores/userStore.svelte';
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ArtistCard from '$lib/components/ArtistCard.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import type { PageProps } from './$types';
 
@@ -15,12 +16,8 @@
 	<a href="/artists"><h2>Artists</h2></a>
 
 	<div class="artists-container">
-		{#each data.artists as { id, name }}
-			<a href={`/artists/${id}`}>
-				<div class="artist-circle">
-					{name}
-				</div>
-			</a>
+		{#each data.artists as { id, name, imageLink }}
+			<ArtistCard link={`/artists/${id}`} {name} image={imageLink} />
 		{/each}
 	</div>
 </section>
@@ -28,22 +25,6 @@
 <style>
 	section {
 		margin-bottom: 2rem;
-	}
-	.releases-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-	}
-	.artist-circle {
-		width: 100px;
-		height: 100px;
-		border-radius: 50%;
-		background-color: #f0f0f0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		color: black;
 	}
 	.artists-container {
 		display: flex;

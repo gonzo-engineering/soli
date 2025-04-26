@@ -1,14 +1,14 @@
-import type { Artist, Track } from '$lib/types';
+import type { ArtistRaw, Track } from '$lib/types';
 
 export const user: {
 	activeSong: Track | null;
-	activeSongArtist: Artist | null;
+	activeSongArtist: ArtistRaw | null;
 } = $state({
 	activeSong: null,
 	activeSongArtist: null
 });
 
-export const setActiveSong = (song: Track, artist: Artist) => {
+export const setActiveSong = (song: Track, artist: ArtistRaw) => {
 	user.activeSong = song;
 	user.activeSongArtist = artist;
 };

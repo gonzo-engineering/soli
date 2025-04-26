@@ -1,9 +1,8 @@
 <script lang="ts">
-	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { Artist, ReleaseHydrated } from '$lib/types';
+	import type { ArtistHydrated, ReleaseHydrated } from '$lib/types';
 
-	let { data }: { data: { artist: Artist; releases: ReleaseHydrated[] } } = $props();
+	let { data }: { data: { artist: ArtistHydrated; releases: ReleaseHydrated[] } } = $props();
 
 	const { name, description, website } = data.artist;
 
@@ -21,9 +20,13 @@
 
 <h2>{name}</h2>
 
-<a href={website}>{website.replace('https://', '').replaceAll('/', '')}</a>
+{#if data.artist.imageLink}
+	<img src={data.artist.imageLink} alt={`Image of ${name}`} />
+{/if}
 
 <div>{description}</div>
+
+<a href={website}>{website.replace('https://', '').replaceAll('/', '')}</a>
 
 <h3>Music</h3>
 

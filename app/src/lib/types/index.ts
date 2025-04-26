@@ -1,8 +1,17 @@
-export interface Artist {
+export interface ArtistRaw {
 	id: string;
 	name: string;
 	description: string;
 	website: string;
+	imageCID?: string;
+}
+
+export interface ArtistHydrated {
+	id: string;
+	name: string;
+	description: string;
+	website: string;
+	imageLink?: string;
 }
 
 export interface Track {
@@ -26,7 +35,7 @@ export interface ReleaseHydrated {
 	id: string;
 	name: string;
 	type: 'LP' | 'EP' | 'Single';
-	artist: Artist;
+	artist: ArtistRaw;
 	releaseDate: string;
 	coverLink: string;
 	tracks: Track[];

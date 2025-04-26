@@ -1,7 +1,8 @@
 <script lang="ts">
-	import type { Artist } from '$lib/types';
+	import ArtistCard from '$lib/components/ArtistCard.svelte';
+	import type { ArtistHydrated } from '$lib/types';
 
-	let { data }: { data: { artists: Artist[] } } = $props();
+	let { data }: { data: { artists: ArtistHydrated[] } } = $props();
 </script>
 
 <svelte:head>
@@ -11,8 +12,16 @@
 
 <h2>Artists</h2>
 
-{#each data.artists as artist}
-	<div class="artist-circle">
-		<a href={`/artists/${artist.id}`}><h3>{artist.name}</h3></a>
-	</div>
-{/each}
+<div class="artists-container">
+	{#each data.artists as { id, name }}
+		<ArtistCard link={`/artists/${id}`} {name} />
+	{/each}
+</div>
+
+<style>
+	.artists-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+</style>

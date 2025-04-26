@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { pinata, pinataGroups } from '$lib/server/pinata';
-import type { Artist, ReleaseRaw } from '$lib/types';
+import type { ArtistRaw, ReleaseRaw } from '$lib/types';
 
 export async function GET() {
 	const releases = await pinata.files.public.list().group(pinataGroups.releases);
@@ -15,7 +15,7 @@ export async function GET() {
 	const allReleasesWithSongURLs = await Promise.all(
 		allReleases.map(async (release) => {
 			const artist = await pinata.gateways.public.get(release.artistCID);
-			const artistObject = artist.data as unknown as Artist;
+			const artistObject = artist.data as unknown as ArtistRaw;
 			const imageURL = await pinata.gateways.public.convert(release.coverCID);
 			const songsWithURLs = await Promise.all(
 				release?.tracks?.map(async (song) => {

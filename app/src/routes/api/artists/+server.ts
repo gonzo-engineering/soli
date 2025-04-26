@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 
-import type { Artist } from '$lib/types/index.js';
+import type { ArtistHydrated, ArtistRaw } from '$lib/types/index.js';
 import { pinata, pinataGroups } from '$lib/server/pinata';
 
 export async function GET() {
@@ -11,7 +11,27 @@ export async function GET() {
 			const { data } = await pinata.gateways.public.get(release.cid);
 			return data;
 		})
-	)) as unknown as Artist[];
+	)) as unknown as ArtistRaw[];
 
-	return json(allArtists);
+	const allArtistsWithLinks: ArtistHydrated[] = await Promise.all(
+		allArtists.map(async (artist) => {
+			if (!artist.imageCID)
+				return {
+					id: artist.id,
+					name: artist.name,
+					description: artist.description,
+					website: artist.website
+				};
+			const imageLink = await pinata.gateways.public.convert(artist.imageCID);
+			return {
+				id: artist.id,
+				name: artist.name,
+				description: artist.description,
+				website: artist.website,
+				imageLink
+			};
+		})
+	);
+
+	return json(allArtistsWithLinks);
 }
