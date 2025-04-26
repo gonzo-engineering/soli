@@ -1,7 +1,7 @@
-import type { ReleaseRaw } from '$lib/types/index.js';
+import type { ReleaseHydrated } from '$lib/types/index.js';
 
 export const load = async ({ fetch, params }) => {
-	const releases: ReleaseRaw[] = await fetch('/api/releases').then((res) => res.json());
+	const releases: ReleaseHydrated[] = await fetch('/api/releases').then((res) => res.json());
 
 	const matchingRelease = releases.find((release) => release.id === params.slug);
 

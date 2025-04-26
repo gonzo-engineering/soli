@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import type { ReleaseHydrated } from '$lib/types';
 
 	let { data }: { data: { allReleases: ReleaseHydrated[] } } = $props();
@@ -11,8 +12,4 @@
 
 <h2>Releases</h2>
 
-{#each data.allReleases as release}
-	<div class="artist-circle">
-		<a href={`/releases/${release.id}`}><h3>{release.name}</h3></a>
-	</div>
-{/each}
+<ReleaseCardGrid releases={data.allReleases} />

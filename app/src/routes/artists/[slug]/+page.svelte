@@ -1,9 +1,15 @@
 <script lang="ts">
+	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
+	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import type { Artist, ReleaseHydrated } from '$lib/types';
 
 	let { data }: { data: { artist: Artist; releases: ReleaseHydrated[] } } = $props();
 
 	const { name, description, website } = data.artist;
+
+	const lps = data.releases.filter((release) => release.type === 'LP');
+	const eps = data.releases.filter((release) => release.type === 'EP');
+	const singles = data.releases.filter((release) => release.type === 'Single');
 </script>
 
 <svelte:head>
@@ -19,33 +25,21 @@
 
 <div>{description}</div>
 
-<h3>Releases</h3>
+<h3>Music</h3>
 
-<div class="releases-container">
-	{#each data.releases as { id, name, coverLink }}
-		<a href={`/releases/${id}`}>
-			<div class="release-square">
-				<img src={coverLink} alt={`Cover art for '${name}'`} />
-			</div>
-			<h4>{name}</h4>
-		</a>
-	{/each}
-</div>
+<!-- TODO: Sort by type (LP, EP, Single) and release date -->
 
-<style>
-	.releases-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-	}
-	.release-square {
-		width: 100px;
-		height: 100px;
-		border-radius: 10px;
-		color: black;
-		background-color: #f0f0f0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-</style>
+{#if lps.length > 0}
+	<h4>LPs</h4>
+	<ReleaseCardGrid releases={lps} />
+{/if}
+
+{#if eps.length > 0}
+	<h4>EPs</h4>
+	<ReleaseCardGrid releases={eps} />
+{/if}
+
+{#if singles.length > 0}
+	<h4>Singles</h4>
+	<ReleaseCardGrid releases={singles} />
+{/if}

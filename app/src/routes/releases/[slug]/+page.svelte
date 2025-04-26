@@ -20,18 +20,19 @@
 
 <h2>{release.name}</h2>
 
+<div>
+	<a href={`/artists/${release.artist.id}`}>{release.artist.name}</a>
+</div>
+
+<div>
+	{release.type} released {new Date(release.releaseDate).toLocaleDateString()}
+</div>
+
 <img
 	src={release.coverLink}
 	alt={`Cover art for '${release.name}' by ${release.artist.name}'`}
 	class="cover-art"
 />
-
-<div>
-	{release.type}
-</div>
-<div>
-	By <a href={`/artists/${release.artist.id}`}>{release.artist.name}</a>
-</div>
 
 <table>
 	<thead>

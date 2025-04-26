@@ -37,7 +37,7 @@
 		{user.activeSong.name} by
 		<a href={`/artists/${user.activeSongArtist.id}`}>{user.activeSongArtist.name}</a>
 		{#key user.activeSong.url}
-			<audio controls autoplay>
+			<audio controls autoplay controlsList="nodownload noplaybackrate">
 				<source src={user.activeSong.url} type="audio/mpeg" />
 				Your browser does not support the audio element.
 			</audio>
