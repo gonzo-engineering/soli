@@ -10,8 +10,7 @@
 </svelte:head>
 
 <header>
-	<a href="/"><img src="/emblem-white.png" class="icon" alt="Soli emblem" /></a>
-	<a href="/"><h1>oli</h1></a>
+	<a href="/"><img src="/soli-logo-full-white.png" class="icon" alt="Soli emblem" /></a>
 </header>
 
 <main>
@@ -76,7 +75,6 @@
 		font-weight: 500;
 	}
 	.icon {
-		width: 50px;
 		height: 50px;
 	}
 	footer {
