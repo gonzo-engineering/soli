@@ -5,18 +5,29 @@ export interface Artist {
 	website: string;
 }
 
-export interface Release {
-	id: string;
+export interface Track {
+	CID: string;
 	name: string;
-	artistID: string;
-	releaseDate: string;
-	coverID: string;
+	durationInSeconds: number; // Duration in seconds
+	url: string; // URL to the track
 }
 
-export interface Track {
+export interface ReleaseRaw {
 	id: string;
 	name: string;
-	artistID: string;
-	releaseID: string;
-	trackNumber: number;
+	type: 'LP' | 'EP' | 'Single';
+	artistCID: string;
+	releaseDate: string;
+	coverCID: string;
+	tracks: Track[];
+}
+
+export interface ReleaseHydrated {
+	id: string;
+	name: string;
+	type: 'LP' | 'EP' | 'Single';
+	artist: Artist;
+	releaseDate: string;
+	coverLink: string;
+	tracks: Track[];
 }

@@ -11,10 +11,16 @@
 	<a href="/releases"><h2>Releases</h2></a>
 
 	<div class="releases-container">
-		{#each data.releases as { id, name }}
+		{#each data.releases as { id, name, coverLink, artist }}
 			<a href={`/releases/${id}`}>
 				<div class="release-square">
+					<img src={coverLink} alt={`Cover art for '${name}'`} />
+				</div>
+				<div>
 					{name}
+				</div>
+				<div>
+					{artist.name}
 				</div>
 			</a>
 			<!-- {#each data.songs.filter((song) => song.artist === artist) as song}

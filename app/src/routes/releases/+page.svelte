@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { Release } from '$lib/types';
+	import type { ReleaseHydrated } from '$lib/types';
 
-	let { data }: { data: { releases: Release[] } } = $props();
+	let { data }: { data: { allReleases: ReleaseHydrated[] } } = $props();
 </script>
 
 <svelte:head>
@@ -11,7 +11,7 @@
 
 <h2>Releases</h2>
 
-{#each data.releases as release}
+{#each data.allReleases as release}
 	<div class="artist-circle">
 		<a href={`/releases/${release.id}`}><h3>{release.name}</h3></a>
 	</div>

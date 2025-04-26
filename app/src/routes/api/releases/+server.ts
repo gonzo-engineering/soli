@@ -1,24 +1,42 @@
 import { json } from '@sveltejs/kit';
-
-import type { Release } from '$lib/types/index.js';
-
-const artists: Release[] = [
-	{
-		id: '78j3h3j3-4f5g-6h7i-8j9k-0l1m2n3o4p5q',
-		name: 'Better',
-		artistID: '0x1234567890abcdef',
-		releaseDate: '2023-10-01',
-		coverID: '71c2e4f3-8b1a-4d5b-9f0c-6a7e8d1f2e3b'
-	},
-	{
-		id: '9a8b7c6d-5e4f-3g2h-1i0j-k9l8m7n6o5p4',
-		name: 'West to East',
-		artistID: '0x1234567890abcdef',
-		releaseDate: '2023-10-02',
-		coverID: '71c2e4f3-8b1a-4d5b-9f0c-6a7e8d1f2e3b'
-	}
-];
+import { pinata, pinataGroups } from '$lib/server/pinata';
+import type { Artist, ReleaseRaw } from '$lib/types';
 
 export async function GET() {
-	return json(artists);
+	const releases = await pinata.files.public.list().group(pinataGroups.releases);
+
+	const allReleases = (await Promise.all(
+		releases.files.map(async (release) => {
+			const { data } = await pinata.gateways.public.get(release.cid);
+			return data;
+		})
+	)) as unknown as ReleaseRaw[];
+
+	const allReleasesWithSongURLs = await Promise.all(
+		allReleases.map(async (release) => {
+			const artist = await pinata.gateways.public.get(release.artistCID);
+			const artistObject = artist.data as unknown as Artist;
+			const imageURL = await pinata.gateways.public.convert(release.coverCID);
+			const songsWithURLs = await Promise.all(
+				release?.tracks?.map(async (song) => {
+					const songURL = await pinata.gateways.public.convert(song.CID);
+					return {
+						...song,
+						url: songURL
+					};
+				})
+			);
+			return {
+				id: release.id,
+				name: release.name,
+				type: release.type,
+				artist: artistObject,
+				releaseDate: release.releaseDate,
+				coverLink: imageURL,
+				tracks: songsWithURLs
+			};
+		})
+	);
+
+	return json(allReleasesWithSongURLs);
 }

@@ -1,17 +1,17 @@
 import { json } from '@sveltejs/kit';
 
 import type { Artist } from '$lib/types/index.js';
-
-const artists: Artist[] = [
-	{
-		id: '0x1234567890abcdef',
-		name: 'Thomas Ashby',
-		description:
-			'Weaving a rich tapestry of folk, blues, and jazz, Thomas Ashby brings the spirit of the bard to the 21st century.',
-		website: 'https://thomasashby.co.uk'
-	}
-];
+import { pinata, pinataGroups } from '$lib/server/pinata';
 
 export async function GET() {
-	return json(artists);
+	const artists = await pinata.files.public.list().group(pinataGroups.artists);
+
+	const allArtists = (await Promise.all(
+		artists.files.map(async (release) => {
+			const { data } = await pinata.gateways.public.get(release.cid);
+			return data;
+		})
+	)) as unknown as Artist[];
+
+	return json(allArtists);
 }

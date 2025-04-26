@@ -1,17 +1,75 @@
 <script lang="ts">
-	import type { Artist, Release } from '$lib/types';
+	import type { Artist, ReleaseHydrated, Track } from '$lib/types';
+	import { prettifyDuration } from '$lib/utils';
+	import { user, setActiveSong } from '$lib/stores/userStore.svelte';
 
-	let { data }: { data: { release: Release; artist: Artist } } = $props();
+	let { data }: { data: { release: ReleaseHydrated } } = $props();
 
-	const { name } = data.release;
+	const release = data.release;
 </script>
 
 <svelte:head>
-	<title>{name} · Releases · Soli</title>
-	<meta name="description" content={`The artist page for ${name}.`} />
+	<title>{release.name} · Releases · Soli</title>
+	<meta
+		name="description"
+		content={`The release page for ${release.name} by ${release.artist.name}.`}
+	/>
 </svelte:head>
 
-<h2>{name}</h2>
+<small>Releases</small>
+
+<h2>{release.name}</h2>
+
+<img
+	src={release.coverLink}
+	alt={`Cover art for '${release.name}' by ${release.artist.name}'`}
+	class="cover-art"
+/>
+
 <div>
-	By <a href={`/artists/${data.artist.id}`}>{data.artist.name}</a>
+	{release.type}
 </div>
+<div>
+	By <a href={`/artists/${release.artist.id}`}>{release.artist.name}</a>
+</div>
+
+<table>
+	<thead>
+		<tr>
+			<th></th>
+			<th>Track</th>
+			<th>Duration</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{#each release.tracks as track, i}
+			<tr>
+				<td>{i + 1}</td>
+				<td>{track.name}</td>
+				<td>{prettifyDuration(track.durationInSeconds)}</td>
+				<td>
+					<button class="play-button" onclick={() => setActiveSong(track, release.artist)}>
+						{#if track.CID === user.activeSong?.CID}
+							<span>Playing</span>
+						{:else}
+							<span>Play</span>
+						{/if}
+					</button>
+				</td>
+			</tr>
+		{/each}
+	</tbody>
+</table>
+
+<style>
+	.cover-art {
+		aspect-ratio: 1/1;
+		background-color: lightgray;
+	}
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		text-align: left;
+	}
+</style>

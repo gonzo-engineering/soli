@@ -1,7 +1,7 @@
-import type { Artist, Release } from '$lib/types/index.js';
+import type { ReleaseRaw } from '$lib/types/index.js';
 
 export const load = async ({ fetch, params }) => {
-	const releases: Release[] = await fetch('/api/releases').then((res) => res.json());
+	const releases: ReleaseRaw[] = await fetch('/api/releases').then((res) => res.json());
 
 	const matchingRelease = releases.find((release) => release.id === params.slug);
 
@@ -12,11 +12,7 @@ export const load = async ({ fetch, params }) => {
 		};
 	}
 
-	const artists: Artist[] = await fetch('/api/artists').then((res) => res.json());
-	const matchingArtist = artists.find((artist) => artist.id === matchingRelease.artistID);
-
 	return {
-		release: matchingRelease,
-		artist: matchingArtist
+		release: matchingRelease
 	};
 };

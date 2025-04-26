@@ -1,6 +1,8 @@
 <script>
 	import '$lib/styles/reset.css';
 	import '$lib/styles/global.css';
+
+	import { user } from '$lib/stores/userStore.svelte';
 </script>
 
 <svelte:head>
@@ -9,8 +11,7 @@
 
 <header>
 	<a href="/"><img src="/emblem-white.png" class="icon" alt="Soli emblem" /></a>
-
-	<!-- <a href="/"><h1>Soli</h1></a> -->
+	<a href="/"><h1>oli</h1></a>
 </header>
 
 <main>
@@ -30,6 +31,21 @@
 		Powered by <a href="https://gonzo.engineering"><span class="strong">Gonzo Engineering</span></a>
 	</div>
 </footer>
+
+<div class="audio-player">
+	{#if user.activeSong && user.activeSongArtist}
+		{user.activeSong.name} by
+		<a href={`/artists/${user.activeSongArtist.id}`}>{user.activeSongArtist.name}</a>
+		{#key user.activeSong.url}
+			<audio controls autoplay>
+				<source src={user.activeSong.url} type="audio/mpeg" />
+				Your browser does not support the audio element.
+			</audio>
+		{/key}
+	{:else}
+		Silence...
+	{/if}
+</div>
 
 <style>
 	header,
@@ -51,7 +67,9 @@
 		gap: 1rem;
 	}
 	h1 {
-		font-size: 4rem;
+		color: white;
+		font-family: 'Cherry Bomb One', system-ui;
+		font-size: 2.8rem;
 		font-weight: 700;
 	}
 	.strong {
@@ -75,6 +93,19 @@
 	@media (max-width: 600px) {
 		main {
 			margin: 0 1rem;
+		}
+	}
+	.audio-player {
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		color: #333;
+		background-color: #f0f0f0;
+		padding: 1rem;
+		a {
+			color: black;
 		}
 	}
 </style>
