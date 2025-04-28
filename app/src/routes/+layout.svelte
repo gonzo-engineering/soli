@@ -31,8 +31,8 @@
 	</div>
 </footer>
 
-<div class="audio-player">
-	{#if user.activeSong && user.activeSongArtist}
+{#if user.activeSong && user.activeSongArtist}
+	<div class="audio-player">
 		{user.activeSong.name} by
 		<a href={`/artists/${user.activeSongArtist.id}`}>{user.activeSongArtist.name}</a>
 		{#key user.activeSong.url}
@@ -41,10 +41,8 @@
 				Your browser does not support the audio element.
 			</audio>
 		{/key}
-	{:else}
-		Silence...
-	{/if}
-</div>
+	</div>
+{/if}
 
 <style>
 	header,
@@ -64,12 +62,6 @@
 	}
 	footer {
 		gap: 1rem;
-	}
-	h1 {
-		color: white;
-		font-family: 'Cherry Bomb One', system-ui;
-		font-size: 2.8rem;
-		font-weight: 700;
 	}
 	.strong {
 		font-weight: 500;
