@@ -1,35 +1,62 @@
-import { fail, json, type Actions } from '@sveltejs/kit';
-import { pinata } from '$lib/server/pinata';
+import { fail, redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
+	const { session } = await safeGetSession();
+
+	if (!session) {
+		redirect(303, '/');
+	}
+
+	const { data: profile } = await supabase
+		.from('profiles')
+		.select(`username, full_name, website, avatar_url`)
+		.eq('id', session.user.id)
+		.single();
+
+	return { session, profile };
+};
 
 export const actions: Actions = {
-	default: async ({ request }) => {
-		try {
-			const formData = await request.formData();
-			const uploadedFile = formData?.get('fileToUpload') as File;
-			const uploadedFileTitle = formData?.get('title') as string;
-			const uploadedFileArtist = formData?.get('artist') as string;
-			const uploadedFileRelease = formData?.get('release') as string;
+	update: async ({ request, locals: { supabase, safeGetSession } }) => {
+		const formData = await request.formData();
+		const fullName = formData.get('fullName') as string;
+		const username = formData.get('username') as string;
+		const website = formData.get('website') as string;
+		const avatarUrl = formData.get('avatarUrl') as string;
 
-			if (!uploadedFile.name || uploadedFile.size === 0) {
-				return fail(400, {
-					error: true,
-					message: 'You must provide a file to upload'
-				});
-			}
+		const { session } = await safeGetSession();
 
-			const upload = await pinata.upload.public
-				.file(uploadedFile)
-				.name(uploadedFileTitle)
-				.keyvalues({
-					artist: uploadedFileArtist,
-					release: uploadedFileRelease
-				});
+		const { error } = await supabase.from('profiles').upsert({
+			id: session?.user.id,
+			full_name: fullName,
+			username,
+			website,
+			avatar_url: avatarUrl,
+			updated_at: new Date()
+		});
 
-			const url = await pinata.gateways.public.convert(upload.cid);
-			return { url, filename: uploadedFile.name, status: 200 };
-		} catch (error) {
-			console.log(error);
-			return json({ error: 'Internal Server Error' }, { status: 500 });
+		if (error) {
+			return fail(500, {
+				fullName,
+				username,
+				website,
+				avatarUrl
+			});
+		}
+
+		return {
+			fullName,
+			username,
+			website,
+			avatarUrl
+		};
+	},
+	signout: async ({ locals: { supabase, safeGetSession } }) => {
+		const { session } = await safeGetSession();
+		if (session) {
+			await supabase.auth.signOut();
+			redirect(303, '/');
 		}
 	}
 };
