@@ -1,5 +1,16 @@
-import { pinata } from '$lib/server/pinata';
+import { getManifests, pinata } from '$lib/server/pinata';
 import type { ArtistManifest } from '$lib/types/index.js';
+
+// TODO: Explore static generation where possible to
+// improve performance and keep requests to a minimum
+
+export const entries = async () => {
+	const manifests = await getManifests();
+	const slugs = manifests.map((manifest) => {
+		return { slug: manifest.artist.id };
+	});
+	return slugs;
+};
 
 export const load = async ({ fetch, params }) => {
 	const manifests: ArtistManifest[] = await fetch('/api/artists').then((res) => res.json());
