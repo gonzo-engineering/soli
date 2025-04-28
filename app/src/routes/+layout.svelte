@@ -3,6 +3,7 @@
 	import '$lib/styles/global.css';
 
 	import { user } from '$lib/stores/userStore.svelte';
+	import { prettifyBalance } from '$lib/utils';
 </script>
 
 <svelte:head>
@@ -33,8 +34,12 @@
 
 {#if user.activeSong && user.activeSongArtist}
 	<div class="audio-player">
-		{user.activeSong.name} by
-		<a href={`/artists/${user.activeSongArtist.artist.id}`}>{user.activeSongArtist.artist.name}</a>
+		<div>Current balance: {prettifyBalance(user.balance)}</div>
+		<div>
+			{user.activeSong.name} by
+			<a href={`/artists/${user.activeSongArtist.artist.id}`}>{user.activeSongArtist.artist.name}</a
+			>
+		</div>
 		{#key user.activeSong.url}
 			<audio controls autoplay controlsList="nodownload noplaybackrate">
 				<source src={user.activeSong.url} type="audio/mpeg" />
