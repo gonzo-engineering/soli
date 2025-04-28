@@ -1,14 +1,14 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { ArtistHydrated, ReleaseHydrated } from '$lib/types';
+	import type { ArtistHydrated, ArtistManifest, ReleaseHydrated } from '$lib/types';
 
-	let { data }: { data: { artist: ArtistHydrated; releases: ReleaseHydrated[] } } = $props();
+	let { data }: { data: { artistManifest: ArtistManifest } } = $props();
 
-	const { name, description, website } = data.artist;
+	const { name, description, website } = data.artistManifest.artist;
 
-	const lps = data.releases.filter((release) => release.type === 'LP');
-	const eps = data.releases.filter((release) => release.type === 'EP');
-	const singles = data.releases.filter((release) => release.type === 'Single');
+	const lps = data.artistManifest.releases.filter((release) => release.type === 'LP');
+	const eps = data.artistManifest.releases.filter((release) => release.type === 'EP');
+	const singles = data.artistManifest.releases.filter((release) => release.type === 'Single');
 </script>
 
 <svelte:head>
@@ -20,8 +20,8 @@
 
 <h2>{name}</h2>
 
-{#if data.artist.imageLink}
-	<img src={data.artist.imageLink} alt={`Image of ${name}`} />
+{#if data.artistManifest.artist.imageLink}
+	<img src={data.artistManifest.artist.imageLink} alt={`Image of ${name}`} />
 {/if}
 
 <div>{description}</div>
@@ -34,15 +34,39 @@
 
 {#if lps.length > 0}
 	<h4>LPs</h4>
-	<ReleaseCardGrid releases={lps} />
+	<ReleaseCardGrid
+		releases={lps.map((lp) => {
+			return {
+				...lp,
+				artistName: name
+			};
+		})}
+		hideArtistName
+	/>
 {/if}
 
 {#if eps.length > 0}
 	<h4>EPs</h4>
-	<ReleaseCardGrid releases={eps} />
+	<ReleaseCardGrid
+		releases={eps.map((ep) => {
+			return {
+				...ep,
+				artistName: name
+			};
+		})}
+		hideArtistName
+	/>
 {/if}
 
 {#if singles.length > 0}
 	<h4>Singles</h4>
-	<ReleaseCardGrid releases={singles} />
+	<ReleaseCardGrid
+		releases={singles.map((single) => {
+			return {
+				...single,
+				artistName: name
+			};
+		})}
+		hideArtistName
+	/>
 {/if}

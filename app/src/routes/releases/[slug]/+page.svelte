@@ -1,36 +1,37 @@
 <script lang="ts">
-	import type { ReleaseHydrated } from '$lib/types';
+	import type { ArtistManifest, Release } from '$lib/types';
 	import { prettifyDuration } from '$lib/utils';
 	import { user, setActiveSong } from '$lib/stores/userStore.svelte';
 
-	let { data }: { data: { release: ReleaseHydrated } } = $props();
+	let { data }: { data: { release: Release; artistManifest: ArtistManifest } } = $props();
 
 	const release = data.release;
+	const artist = data.artistManifest;
 </script>
 
 <svelte:head>
-	<title>{release.name} · Releases · Soli</title>
+	<title>{release.title} · Releases · Soli</title>
 	<meta
 		name="description"
-		content={`The release page for ${release.name} by ${release.artist.name}.`}
+		content={`The release page for ${release.title} by ${release.artistName}.`}
 	/>
 </svelte:head>
 
 <small>Releases</small>
 
-<h2>{release.name}</h2>
+<h2>{release.title}</h2>
 
 <div>
-	<a href={`/artists/${release.artist.id}`}>{release.artist.name}</a>
+	<a href={`/artists/${artist.artist.id}`}>{release.artistName}</a>
 </div>
 
 <div>
-	{release.type} released {new Date(release.releaseDate).toLocaleDateString()}
+	{release.type} released {new Date(release.release_date).toLocaleDateString()}
 </div>
 
 <img
 	src={release.coverLink}
-	alt={`Cover art for '${release.name}' by ${release.artist.name}'`}
+	alt={`Cover art for '${release.title}' by ${release.artistName}'`}
 	class="cover-art"
 />
 
@@ -48,10 +49,10 @@
 			<tr>
 				<td>{i + 1}</td>
 				<td>{track.name}</td>
-				<td>{prettifyDuration(track.durationInSeconds)}</td>
+				<td>{prettifyDuration(track.duration_in_seconds)}</td>
 				<td>
-					<button class="play-button" onclick={() => setActiveSong(track, release.artist)}>
-						{#if track.CID === user.activeSong?.CID}
+					<button class="play-button" onclick={() => setActiveSong(track, artist)}>
+						{#if track.cid === user.activeSong?.cid}
 							<span>Playing</span>
 						{:else}
 							<span>Play</span>

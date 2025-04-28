@@ -1,37 +1,18 @@
-import { json } from '@sveltejs/kit';
+// Returns all the artist manifests
 
-import type { ArtistHydrated, ArtistRaw } from '$lib/types/index.js';
+import { json } from '@sveltejs/kit';
 import { pinata, pinataGroups } from '$lib/server/pinata';
+import type { ArtistManifest } from '$lib/types';
 
 export async function GET() {
-	const artists = await pinata.files.public.list().group(pinataGroups.artists);
+	const manifests = await pinata.files.public.list().group(pinataGroups.manifests);
 
-	const allArtists = (await Promise.all(
-		artists.files.map(async (release) => {
-			const { data } = await pinata.gateways.public.get(release.cid);
+	const allManifests = (await Promise.all(
+		manifests.files.map(async (manifest) => {
+			const { data } = await pinata.gateways.public.get(manifest.cid);
 			return data;
 		})
-	)) as unknown as ArtistRaw[];
+	)) as unknown as ArtistManifest[];
 
-	const allArtistsWithLinks: ArtistHydrated[] = await Promise.all(
-		allArtists.map(async (artist) => {
-			if (!artist.imageCID)
-				return {
-					id: artist.id,
-					name: artist.name,
-					description: artist.description,
-					website: artist.website
-				};
-			const imageLink = await pinata.gateways.public.convert(artist.imageCID);
-			return {
-				id: artist.id,
-				name: artist.name,
-				description: artist.description,
-				website: artist.website,
-				imageLink
-			};
-		})
-	);
-
-	return json(allArtistsWithLinks);
+	return json(allManifests);
 }

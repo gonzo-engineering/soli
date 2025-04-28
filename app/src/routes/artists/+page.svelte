@@ -1,8 +1,8 @@
 <script lang="ts">
 	import ArtistCard from '$lib/components/ArtistCard.svelte';
-	import type { ArtistHydrated } from '$lib/types';
+	import type { ArtistHydrated, ArtistManifest } from '$lib/types';
 
-	let { data }: { data: { artists: ArtistHydrated[] } } = $props();
+	let { data }: { data: { artistsWithLinks: ArtistManifest[] } } = $props();
 </script>
 
 <svelte:head>
@@ -13,8 +13,8 @@
 <h2>Artists</h2>
 
 <div class="artists-container">
-	{#each data.artists as { id, name }}
-		<ArtistCard link={`/artists/${id}`} {name} />
+	{#each data.artistsWithLinks as { artist }}
+		<ArtistCard link={`/artists/${artist.id}`} name={artist.name} image={artist.imageLink} />
 	{/each}
 </div>
 

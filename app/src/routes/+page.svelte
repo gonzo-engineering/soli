@@ -4,20 +4,31 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
+
+	const releases = data.manifests
+		.map((manifest) => {
+			return manifest.releases.map((release) => {
+				return {
+					...release,
+					artistName: manifest.artist.name
+				};
+			});
+		})
+		.flat();
 </script>
 
 <section>
 	<a href="/releases"><h2>Releases</h2></a>
 
-	<ReleaseCardGrid releases={data.releases} />
+	<ReleaseCardGrid {releases} />
 </section>
 
 <section>
 	<a href="/artists"><h2>Artists</h2></a>
 
 	<div class="artists-container">
-		{#each data.artists as { id, name, imageLink }}
-			<ArtistCard link={`/artists/${id}`} {name} image={imageLink} />
+		{#each data.manifests as { artist }}
+			<ArtistCard link={`/artists/${artist.id}`} name={artist.name} image={artist.imageLink} />
 		{/each}
 	</div>
 </section>

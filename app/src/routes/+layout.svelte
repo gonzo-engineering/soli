@@ -34,7 +34,7 @@
 {#if user.activeSong && user.activeSongArtist}
 	<div class="audio-player">
 		{user.activeSong.name} by
-		<a href={`/artists/${user.activeSongArtist.id}`}>{user.activeSongArtist.name}</a>
+		<a href={`/artists/${user.activeSongArtist.artist.id}`}>{user.activeSongArtist.artist.name}</a>
 		{#key user.activeSong.url}
 			<audio controls autoplay controlsList="nodownload noplaybackrate">
 				<source src={user.activeSong.url} type="audio/mpeg" />

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { ReleaseHydrated } from '$lib/types';
+	import type { Release } from '$lib/types';
 
-	let { data }: { data: { allReleases: ReleaseHydrated[] } } = $props();
+	let { data }: { data: { releases: Release[] } } = $props();
 </script>
 
 <svelte:head>
@@ -12,4 +12,4 @@
 
 <h2>Releases</h2>
 
-<ReleaseCardGrid releases={data.allReleases} />
+<ReleaseCardGrid releases={data.releases} />
