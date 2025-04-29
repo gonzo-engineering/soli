@@ -1,9 +1,19 @@
 <script lang="ts">
-	import type { ArtistManifest, Release } from '$lib/types';
+	import type { ArtistManifest, Release, UserProfile } from '$lib/types';
 	import { prettifyDuration } from '$lib/utils';
-	import { user, setActiveSong } from '$lib/stores/userStore.svelte';
+	import { setActiveSong, userState } from '$lib/global-state/index.svelte';
+	import type { Session } from '@supabase/supabase-js';
 
-	let { data }: { data: { release: Release; artistManifest: ArtistManifest } } = $props();
+	let {
+		data
+	}: {
+		data: {
+			release: Release;
+			artistManifest: ArtistManifest;
+			profileData: UserProfile;
+			session: Session;
+		};
+	} = $props();
 
 	const release = data.release;
 	const artist = data.artistManifest;
@@ -51,13 +61,29 @@
 				<td>{track.name}</td>
 				<td>{prettifyDuration(track.duration_in_seconds)}</td>
 				<td>
-					<button class="play-button" onclick={() => setActiveSong(track, artist)}>
-						{#if track.cid === user.activeSong?.cid}
-							<span>Playing</span>
-						{:else}
+					{#if userState.liveBalance}
+						<button
+							class="play-button"
+							onclick={() =>
+								setActiveSong(
+									track,
+									artist,
+									data.session.user.id,
+									userState.liveBalance ?? data.profileData.tokens_balance,
+									data.profileData.pay_per_stream
+								)}
+						>
+							{#if track.cid === userState.activeSong?.cid}
+								<span>Playing</span>
+							{:else}
+								<span>Play</span>
+							{/if}
+						</button>
+					{:else}
+						<button class="play-button" disabled>
 							<span>Play</span>
-						{/if}
-					</button>
+						</button>
+					{/if}
 				</td>
 			</tr>
 		{/each}

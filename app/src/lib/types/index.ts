@@ -76,3 +76,18 @@ export interface ArtistManifest {
 	};
 	releases: Release[];
 }
+
+export interface UserProfile {
+	username: string;
+	full_name: string;
+	website: string;
+	tokens_balance: number;
+	pay_per_stream: number;
+}
+
+export interface UserState {
+	activeSong: Track | null;
+	activeSongArtist: ArtistManifest | null;
+	liveBalance: number | null;
+	payPerStream: number;
+}

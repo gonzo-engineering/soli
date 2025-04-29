@@ -2,15 +2,15 @@
 	import '$lib/styles/reset.css';
 	import '$lib/styles/global.css';
 
-	import { user } from '$lib/stores/userStore.svelte';
 	import { prettifyBalance } from '$lib/utils';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { userState } from '$lib/global-state/index.svelte.js';
 
 	export let data;
 
-	let { supabase, session } = data;
-	$: ({ supabase, session } = data);
+	let { supabase, session, profileData } = data;
+	$: ({ supabase, session, profileData } = data);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
@@ -27,7 +27,13 @@
 </svelte:head>
 
 <header>
+	<div><img class="search-icon" src="/search.png" alt="" /></div>
 	<a href="/"><img src="/soli-logo-full-white.png" class="icon" alt="Soli emblem" /></a>
+	{#if session}
+		<a href="/account">Account</a>
+	{:else}
+		<a href="/login">Login</a>
+	{/if}
 </header>
 
 <main>
@@ -48,17 +54,18 @@
 	</div>
 </footer>
 
-{#if user.activeSong && user.activeSongArtist}
+{#if userState.activeSong && userState.activeSongArtist && userState.liveBalance}
 	<div class="audio-player">
-		<div>Current balance: {prettifyBalance(user.balance)}</div>
+		<div>Current balance: {prettifyBalance(userState.liveBalance)} tokens</div>
 		<div>
-			{user.activeSong.name} by
-			<a href={`/artists/${user.activeSongArtist.artist.id}`}>{user.activeSongArtist.artist.name}</a
+			{userState.activeSong.name} by
+			<a href={`/artists/${userState.activeSongArtist.artist.id}`}
+				>{userState.activeSongArtist.artist.name}</a
 			>
 		</div>
-		{#key user.activeSong.url}
+		{#key userState.activeSong.url}
 			<audio controls autoplay controlsList="nodownload noplaybackrate">
-				<source src={user.activeSong.url} type="audio/mpeg" />
+				<source src={userState.activeSong.url} type="audio/mpeg" />
 				Your browser does not support the audio element.
 			</audio>
 		{/key}
@@ -80,6 +87,11 @@
 	footer a {
 		text-decoration: none;
 		color: inherit;
+	}
+	header {
+		display: flex;
+		justify-content: space-between;
+		margin: 1rem;
 	}
 	footer {
 		gap: 1rem;
@@ -118,5 +130,9 @@
 		a {
 			color: black;
 		}
+	}
+	.search-icon {
+		width: 30px;
+		height: 30px;
 	}
 </style>

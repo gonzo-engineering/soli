@@ -4,8 +4,6 @@ export const prettifyDuration = (durationInSeconds: number) => {
 	return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
-export const prettifyBalance = (balance: number) => {
-	const pounds = Math.floor(balance / 100);
-	const pence = balance % 100;
-	return `£${pounds}.${pence < 10 ? '0' : ''}${pence}`;
+export const prettifyBalance = (tokensBalance: number) => {
+	return tokensBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };

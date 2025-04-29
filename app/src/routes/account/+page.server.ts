@@ -1,20 +1,15 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { userState } from '$lib/global-state/index.svelte';
 
-export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession } }) => {
+export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { session } = await safeGetSession();
 
 	if (!session) {
 		redirect(303, '/');
 	}
 
-	const { data: profile } = await supabase
-		.from('profiles')
-		.select(`username, full_name, website, avatar_url`)
-		.eq('id', session.user.id)
-		.single();
-
-	return { session, profile };
+	return { session };
 };
 
 export const actions: Actions = {
@@ -23,7 +18,7 @@ export const actions: Actions = {
 		const fullName = formData.get('fullName') as string;
 		const username = formData.get('username') as string;
 		const website = formData.get('website') as string;
-		const avatarUrl = formData.get('avatarUrl') as string;
+		const payPerStream = formData.get('payPerStream') as string;
 
 		const { session } = await safeGetSession();
 
@@ -32,8 +27,8 @@ export const actions: Actions = {
 			full_name: fullName,
 			username,
 			website,
-			avatar_url: avatarUrl,
-			updated_at: new Date()
+			updated_at: new Date(),
+			pay_per_stream: parseInt(payPerStream)
 		});
 
 		if (error) {
@@ -41,7 +36,7 @@ export const actions: Actions = {
 				fullName,
 				username,
 				website,
-				avatarUrl
+				payPerStream
 			});
 		}
 
@@ -49,7 +44,27 @@ export const actions: Actions = {
 			fullName,
 			username,
 			website,
-			avatarUrl
+			payPerStream
+		};
+	},
+	topup: async ({ request, locals: { supabase, safeGetSession } }) => {
+		const formData = await request.formData();
+		const amount = formData.get('amount') as string;
+		const { session } = await safeGetSession();
+		if (!session) {
+			return fail(401, { message: 'Unauthorized' });
+		}
+		const { error } = await supabase
+			.from('profiles')
+			.update({
+				tokens_balance: parseInt(amount) + (userState.liveBalance || 0)
+			})
+			.eq('id', session.user.id);
+		if (error) {
+			return fail(500, { message: 'Error topping up balance' });
+		}
+		return {
+			message: 'Balance topped up successfully'
 		};
 	},
 	signout: async ({ locals: { supabase, safeGetSession } }) => {
