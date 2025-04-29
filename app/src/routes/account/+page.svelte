@@ -12,9 +12,7 @@
 
 	let profileForm: HTMLFormElement;
 	let loading = false;
-	let fullName: string = profileData?.full_name ?? '';
-	let username: string = profileData?.username ?? '';
-	let website: string = profileData?.website ?? '';
+	let firstName: string = profileData?.first_name ?? '';
 	let tokensBalance: number = profileData?.tokens_balance ?? 0;
 	let payPerStream: number = profileData?.pay_per_stream ?? 3;
 
@@ -36,8 +34,9 @@
 	};
 </script>
 
+<h2>Howdy, {data.profileData?.first_name}</h2>
 <div class="form-widget">
-	<h2>Your details</h2>
+	<h3>Details and settings</h3>
 	<form
 		class="form-widget"
 		method="post"
@@ -51,18 +50,8 @@
 		</div>
 
 		<div>
-			<label for="fullName">Full Name</label>
-			<input id="fullName" name="fullName" type="text" value={form?.fullName ?? fullName} />
-		</div>
-
-		<div>
-			<label for="username">Username</label>
-			<input id="username" name="username" type="text" value={form?.username ?? username} />
-		</div>
-
-		<div>
-			<label for="website">Website</label>
-			<input id="website" name="website" type="url" value={form?.website ?? website} />
+			<label for="firstName">First Name</label>
+			<input id="firstName" name="firstName" type="text" value={form?.firstName ?? firstName} />
 		</div>
 
 		<div>
@@ -100,9 +89,9 @@
 		</div>
 	{/key}
 	<div>
-		At your current rate of {payPerStream} tokens per stream, you can stream {Math.floor(
+		At your chosen rate of {payPerStream} tokens per stream you can stream {Math.floor(
 			(userState.liveBalance ? userState.liveBalance : tokensBalance) / payPerStream
-		)} more songs before needing to top up.
+		)} more songs before needing to top up again.
 	</div>
 	<form method="post" action="?/topup" use:enhance={handleSubmit}>
 		<div>

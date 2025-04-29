@@ -78,9 +78,7 @@ export interface ArtistManifest {
 }
 
 export interface UserProfile {
-	username: string;
-	full_name: string;
-	website: string;
+	first_name: string;
 	tokens_balance: number;
 	pay_per_stream: number;
 }

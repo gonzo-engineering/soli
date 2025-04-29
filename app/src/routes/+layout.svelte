@@ -56,7 +56,7 @@
 
 {#if userState.activeSong && userState.activeSongArtist && userState.liveBalance}
 	<div class="audio-player">
-		<div>Current balance: {prettifyBalance(userState.liveBalance)} tokens</div>
+		<!-- <div>Current balance: {prettifyBalance(userState.liveBalance)} tokens</div> -->
 		<div>
 			{userState.activeSong.name} by
 			<a href={`/artists/${userState.activeSongArtist.artist.id}`}

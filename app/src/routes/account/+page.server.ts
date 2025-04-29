@@ -15,35 +15,27 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 export const actions: Actions = {
 	update: async ({ request, locals: { supabase, safeGetSession } }) => {
 		const formData = await request.formData();
-		const fullName = formData.get('fullName') as string;
-		const username = formData.get('username') as string;
-		const website = formData.get('website') as string;
+		const firstName = formData.get('firstName') as string;
 		const payPerStream = formData.get('payPerStream') as string;
 
 		const { session } = await safeGetSession();
 
 		const { error } = await supabase.from('profiles').upsert({
 			id: session?.user.id,
-			full_name: fullName,
-			username,
-			website,
+			first_name: firstName,
 			updated_at: new Date(),
 			pay_per_stream: parseInt(payPerStream)
 		});
 
 		if (error) {
 			return fail(500, {
-				fullName,
-				username,
-				website,
+				firstName,
 				payPerStream
 			});
 		}
 
 		return {
-			fullName,
-			username,
-			website,
+			firstName,
 			payPerStream
 		};
 	},
