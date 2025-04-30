@@ -13,11 +13,26 @@ export const userState: UserState = $state({
 	payPerStream: 3
 });
 
-const payouts = $state<Record<string, number>>({});
+const logStream = async (userId: string, artistId: string, trackId: string, tokensUsed: number) => {
+	console.log(`Logging stream for '${trackId}' by user ${userId}`);
+	const { error } = await supabase
+		.from('streams')
+		.insert({
+			user_id: userId,
+			artist_id: artistId,
+			track_id: trackId,
+			tokens_used: tokensUsed
+		})
+		.select();
+	if (error) {
+		console.error('Error logging stream:', error);
+	} else {
+		console.log('Stream logged successfully');
+	}
+};
 
-const updateSupabaseBalance = async (userId: string, newBalance: number) => {
+const updateUserBalance = async (userId: string, newBalance: number) => {
 	console.log('Updating balance for user:', userId, 'New balance:', newBalance);
-	// TODO: Fix permissions in Supabase, too permissive right now
 	const { error } = await supabase
 		.from('profiles')
 		.update({ tokens_balance: newBalance })
@@ -46,11 +61,7 @@ export const setActiveSong = (
 	// TODO: Improve this to use a more accurate timer
 	// Deduct the pay per stream after 30 of playtime
 	setTimeout(() => {
-		updateSupabaseBalance(userId, userBalance - userPayPerStream);
-		if (payouts[artist.artist.id] === undefined) {
-			payouts[artist.artist.id] = 0;
-		}
-		payouts[artist.artist.id] += userPayPerStream;
-		console.log('Session payouts:', JSON.stringify(payouts));
+		updateUserBalance(userId, userBalance - userPayPerStream);
+		logStream(userId, artist.artist.id, song.name, userPayPerStream);
 	}, 30000);
 };
