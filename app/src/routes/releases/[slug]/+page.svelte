@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ArtistManifest, Release, UserProfile } from '$lib/types';
 	import { prettifyDuration } from '$lib/utils';
-	import { setActiveSong, userState } from '$lib/global-state/index.svelte';
+	import { setActiveSong, userState } from '$lib/global/state.svelte';
 	import type { Session } from '@supabase/supabase-js';
 
 	let {

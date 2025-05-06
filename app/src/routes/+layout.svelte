@@ -2,15 +2,14 @@
 	import '$lib/styles/reset.css';
 	import '$lib/styles/global.css';
 
-	import { prettifyBalance } from '$lib/utils';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { userState } from '$lib/global-state/index.svelte.js';
+	import { userState } from '$lib/global/state.svelte.js';
 
 	export let data;
 
-	let { supabase, session, profileData } = data;
-	$: ({ supabase, session, profileData } = data);
+	let { supabase, session } = data;
+	$: ({ supabase, session } = data);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((event, newSession) => {

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { userState } from '$lib/global-state/index.svelte.js';
-	import { prettifyBalance } from '$lib/utils/index.js';
+	import { userState } from '$lib/global/state.svelte.js';
+	import { REVENUE_SPLIT } from '$lib/global/config.js';
+	import { prettifyBalance, prettifyPennies } from '$lib/utils/index.js';
 	import type { SubmitFunction } from '@sveltejs/kit';
 
 	export let data;
@@ -16,7 +17,7 @@
 	let tokensBalance: number = profileData?.tokens_balance ?? 0;
 	let payPerStream: number = profileData?.pay_per_stream ?? 3;
 
-	let topUpAmount: number = 0;
+	$: topUpAmount = 0;
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
@@ -32,9 +33,22 @@
 			update();
 		};
 	};
+
+	const checkout = async () => {
+		const data = await fetch('/api/checkout', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				userId: session.user.id,
+				balance: tokensBalance,
+				topUpAmount
+			})
+		}).then((data) => data.json());
+		window.location.replace(data.url);
+	};
 </script>
 
-<h2>Howdy, {data.profileData?.first_name}</h2>
+<h2>Hi, {data.profileData?.first_name}</h2>
 <div class="form-widget">
 	<h3>Details and settings</h3>
 	<form
@@ -67,7 +81,6 @@
 				placeholder="1p minimum, default 3p"
 			/>
 		</div>
-
 		<div>
 			<input
 				type="submit"
@@ -93,27 +106,26 @@
 			(userState.liveBalance ? userState.liveBalance : tokensBalance) / payPerStream
 		)} more songs before needing to top up again.
 	</div>
-	<form method="post" action="?/topup" use:enhance={handleSubmit}>
+	<h3>Top up</h3>
+	<div>
 		<div>
 			<input
 				type="number"
 				name="amount"
-				min="1"
+				min="30"
 				max="1000"
 				step="1"
 				placeholder="Top up amount"
-				value={topUpAmount}
+				bind:value={topUpAmount}
 			/>
 		</div>
 		<div>
-			<input
-				type="submit"
-				class="button block primary"
-				value={loading ? 'Loading...' : 'Top Up'}
-				disabled={loading}
-			/>
+			{prettifyPennies(Math.round(topUpAmount * REVENUE_SPLIT.artists))} goes to
+			{Math.round(topUpAmount * REVENUE_SPLIT.artists)} tokens,
+			{prettifyPennies(topUpAmount * REVENUE_SPLIT.platform)} goes to us
 		</div>
-	</form>
+		<button on:click={checkout}>Top up</button>
+	</div>
 </div>
 
 <hr />
