@@ -1,6 +1,6 @@
 import type { ArtistManifest, Track, UserState } from '$lib/types';
 import { createClient } from '@supabase/supabase-js';
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from './config';
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL, TABLES } from './config';
 
 const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
@@ -14,7 +14,7 @@ export const userState: UserState = $state({
 const logStream = async (userId: string, artistId: string, trackId: string, tokensUsed: number) => {
 	console.log(`Logging stream for '${trackId}' by user ${userId}`);
 	const { error } = await supabase
-		.from('streams')
+		.from(TABLES.streams)
 		.insert({
 			user_id: userId,
 			artist_id: artistId,
@@ -32,7 +32,7 @@ const logStream = async (userId: string, artistId: string, trackId: string, toke
 const updateUserBalance = async (userId: string, newBalance: number) => {
 	console.log('Updating balance for user:', userId, 'New balance:', newBalance);
 	const { error } = await supabase
-		.from('profiles')
+		.from(TABLES.listeners)
 		.update({ tokens_balance: newBalance })
 		.eq('id', userId)
 		.select();

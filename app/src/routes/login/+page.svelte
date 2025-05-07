@@ -17,38 +17,61 @@
 </script>
 
 <svelte:head>
-	<title>Log in • Soli</title>
+	<title>Login • Soli</title>
 </svelte:head>
 
-<form class="row flex flex-center" method="POST" use:enhance={handleSubmit}>
-	<div class="col-6 form-widget">
-		<h1 class="header">Log in</h1>
-		<p class="description">Sign in via magic link with your email below</p>
+<form method="POST" use:enhance={handleSubmit}>
+	<div class="wrapper">
+		<h2>Log in</h2>
+		<div class="description">
+			If you're part of the experiment, you can sign in via magic link with your email below.
+		</div>
 		{#if form?.message !== undefined}
 			<div class="success {form?.success ? '' : 'fail'}">
 				{form?.message}
 			</div>
 		{/if}
 		<div>
-			<label for="email">Email address</label>
 			<input
 				id="email"
 				name="email"
-				class="inputField"
 				type="email"
 				placeholder="Your email"
 				value={form?.email ?? ''}
 			/>
 		</div>
 		{#if form?.errors?.email}
-			<span class="flex items-center text-sm error">
+			<span>
 				{form?.errors?.email}
 			</span>
 		{/if}
 		<div>
-			<button class="button primary block">
+			<button>
 				{loading ? 'Loading' : 'Send magic link'}
 			</button>
 		</div>
 	</div>
 </form>
+
+<style>
+	.wrapper {
+		max-width: 400px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+	h2 {
+		margin: 0;
+		line-height: 1;
+	}
+	.description {
+		line-height: 1.3;
+		margin-bottom: 0;
+	}
+	input,
+	button {
+		border-radius: 0.5rem;
+		padding: 0 0.5rem;
+	}
+</style>

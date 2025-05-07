@@ -17,6 +17,11 @@
 		.flat();
 </script>
 
+<svelte:head>
+	<title>Soli</title>
+	<meta name="description" content="Music streaming that doesn't fuck musicians." />
+</svelte:head>
+
 <section>
 	<a href="/releases"><h2>Releases</h2></a>
 

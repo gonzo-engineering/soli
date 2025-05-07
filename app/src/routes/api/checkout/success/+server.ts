@@ -1,4 +1,4 @@
-import { REVENUE_SPLIT } from '$lib/global/config';
+import { REVENUE_SPLIT, TABLES } from '$lib/global/config';
 import { type RequestHandler } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ request, locals: { supabase } }) => {
@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({ request, locals: { supabase } }) =>
 		const topUpTokens = Math.round(topUpAmount * REVENUE_SPLIT.artists);
 
 		const { error } = await supabase
-			.from('profiles')
+			.from(TABLES.listeners)
 			.update({
 				tokens_balance: topUpTokens + userTokensBalance
 			})

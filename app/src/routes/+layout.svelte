@@ -5,6 +5,8 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { userState } from '$lib/global/state.svelte.js';
+	import Header from '$lib/components/layout/Header.svelte';
+	import Footer from '$lib/components/layout/Footer.svelte';
 
 	export let data;
 
@@ -21,37 +23,13 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Soli</title>
-</svelte:head>
-
-<header>
-	<div><img class="search-icon" src="/search.png" alt="" /></div>
-	<a href="/"><img src="/soli-logo-full-white.png" class="icon" alt="Soli emblem" /></a>
-	{#if session}
-		<a href="/account">Account</a>
-	{:else}
-		<a href="/login">Login</a>
-	{/if}
-</header>
+<Header userIsLoggedIn={session} />
 
 <main>
 	<slot />
 </main>
 
-<footer>
-	<ul>
-		<li>
-			<a href="/about">About</a>
-		</li>
-		<li>
-			<a href="/contact">Contact</a>
-		</li>
-	</ul>
-	<div>
-		Powered by <a href="https://gonzo.engineering"><span class="strong">Gonzo Engineering</span></a>
-	</div>
-</footer>
+<Footer />
 
 {#if userState.activeSong && userState.activeSongArtist && userState.liveBalance}
 	<div class="audio-player">
@@ -72,50 +50,8 @@
 {/if}
 
 <style>
-	header,
-	footer {
-		text-align: center;
-		margin: 1rem 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: row;
-		max-height: 100px;
-	}
-	header a,
-	footer a {
-		text-decoration: none;
-		color: inherit;
-	}
-	header {
-		display: flex;
-		justify-content: space-between;
-		margin: 1rem;
-	}
-	footer {
-		gap: 1rem;
-	}
-	.strong {
-		font-weight: 500;
-	}
-	.icon {
-		height: 50px;
-	}
-	footer {
-		flex-direction: column;
-	}
-	footer ul {
-		list-style: none;
-		display: flex;
-		gap: 1rem;
-		padding: 0;
-		margin: 0;
-	}
-
-	@media (max-width: 600px) {
-		main {
-			margin: 0 1rem;
-		}
+	main {
+		margin: 0 1rem;
 	}
 	.audio-player {
 		text-align: center;
@@ -129,9 +65,5 @@
 		a {
 			color: black;
 		}
-	}
-	.search-icon {
-		width: 30px;
-		height: 30px;
 	}
 </style>
