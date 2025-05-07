@@ -14,7 +14,7 @@
 			{#if userIsLoggedIn}
 				<a href="/account">Account</a>
 			{:else}
-				<a href="/login">Login</a>
+				<a href="/login">Log in</a>
 			{/if}
 		</div>
 	</div>

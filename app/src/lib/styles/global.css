@@ -8,11 +8,13 @@
 
 p {
 	font-size: 1.6rem;
-	margin-bottom: 1.6rem;
+	line-height: 1.4;
+	margin-bottom: 1.4rem;
 }
 
 a {
 	color: #e0e0e0;
+	font-size: inherit;
 }
 
 body {
@@ -35,4 +37,9 @@ h3 {
 	font-size: 2rem;
 	margin-bottom: 8px;
 	font-weight: 700;
+}
+
+.strong {
+	font-weight: 500;
+	font-size: inherit;
 }

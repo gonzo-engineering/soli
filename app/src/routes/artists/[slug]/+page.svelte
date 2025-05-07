@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head>
-	<title>{name} · Soli</title>
+	<title>{name} · Artists · Soli</title>
 	<meta name="description" content={`The artist page for ${name}.`} />
 </svelte:head>
 

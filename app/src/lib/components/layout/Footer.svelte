@@ -15,7 +15,7 @@
 <style>
 	footer {
 		text-align: center;
-		margin: 1rem 0;
+		margin: 1rem 0 2rem 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -28,9 +28,6 @@
 	}
 	footer {
 		gap: 1rem;
-	}
-	.strong {
-		font-weight: 500;
 	}
 	footer {
 		flex-direction: column;

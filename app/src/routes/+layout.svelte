@@ -23,10 +23,6 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Soli</title>
-</svelte:head>
-
 <Header userIsLoggedIn={session} />
 
 <main>
