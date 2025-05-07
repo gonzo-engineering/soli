@@ -40,6 +40,7 @@
 	"dependencies": {
 		"@supabase/ssr": "^0.6.1",
 		"@supabase/supabase-js": "^2.49.4",
-		"pinata": "^2.2.0"
+		"pinata": "^2.2.0",
+		"stripe": "^18.1.0"
 	}
 }

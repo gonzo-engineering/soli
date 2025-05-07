@@ -7,3 +7,9 @@ export const prettifyDuration = (durationInSeconds: number) => {
 export const prettifyBalance = (tokensBalance: number) => {
 	return tokensBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
+
+export const prettifyPennies = (pence: number) => {
+	const pounds = Math.floor(pence / 100);
+	const pennies = pence % 100;
+	return `£${pounds}.${pennies < 10 ? '0' : ''}${pennies}`;
+};

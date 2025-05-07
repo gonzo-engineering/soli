@@ -1,8 +1,6 @@
 import type { ArtistManifest, Track, UserState } from '$lib/types';
 import { createClient } from '@supabase/supabase-js';
-
-const PUBLIC_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const PUBLIC_SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from './config';
 
 const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
