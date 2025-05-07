@@ -1,6 +1,7 @@
 // src/routes/+layout.server.ts
 import type { LayoutServerLoad } from './$types';
 import type { UserProfile } from '$lib/types';
+import { TABLES } from '$lib/global/config';
 
 export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSession }, cookies }) => {
 	const { session, user } = await safeGetSession();
@@ -13,7 +14,7 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSessio
 		}: {
 			data: UserProfile | null;
 		} = await supabase
-			.from('profiles')
+			.from(TABLES.listeners)
 			.select(`first_name, tokens_balance, pay_per_stream`)
 			.eq('id', session.user.id)
 			.single();

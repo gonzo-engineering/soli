@@ -1,6 +1,6 @@
 <div class="explainer">
 	<h2>About</h2>
-	<p>This is a thought experiment.</p>
+	<p><span class="strong">Soli</span> is a thought experiment.</p>
 	<p>
 		The thought: <span class="strong"
 			>What might music streaming look like if it was built in service of musicians rather than to
@@ -8,8 +8,8 @@
 		>
 	</p>
 	<p>
-		<span class="strong">Soli</span> is the experiment bit - a prototype of an open source and decentralised
-		music streaming network with fair, transparent remuneration.
+		This place is the experiment bit - a prototype of an open source and decentralised music
+		streaming network with fair, transparent remuneration.
 	</p>
 	<p>How hard can it be?</p>
 </div>

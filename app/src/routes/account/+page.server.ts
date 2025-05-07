@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { TABLES } from '$lib/global/config';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { session } = await safeGetSession();
@@ -19,7 +20,7 @@ export const actions: Actions = {
 
 		const { session } = await safeGetSession();
 
-		const { error } = await supabase.from('profiles').upsert({
+		const { error } = await supabase.from(TABLES.listeners).upsert({
 			id: session?.user.id,
 			first_name: firstName,
 			updated_at: new Date(),

@@ -1,9 +1,9 @@
-// src/hooks.server.ts
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$lib/global/config';
 import { createServerClient } from '@supabase/ssr';
-import type { Handle } from '@sveltejs/kit';
+import { redirect, type Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 
-export const handle: Handle = async ({ event, resolve }) => {
+export const supabase: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		cookies: {
 			getAll: () => event.cookies.getAll(),
@@ -51,3 +51,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	});
 };
+
+const authGuard: Handle = async ({ event, resolve }) => {
+	const { session, user } = await event.locals.safeGetSession();
+	event.locals.session = session;
+	event.locals.user = user;
+	if (
+		!event.locals.session &&
+		!event.url.pathname.startsWith('/login') &&
+		!event.url.pathname.startsWith('/auth')
+	) {
+		redirect(303, '/login');
+	}
+	return resolve(event);
+};
+export const handle: Handle = sequence(supabase, authGuard);
