@@ -1,0 +1,29 @@
+name: Weekly Soli Payroll
+
+on:
+  schedule:
+    - cron: "0 9 * * 0" # Every Sunday at 09:00 UTC
+  workflow_dispatch: # Manual run option
+
+jobs:
+  run-payroll:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run payroll script
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PLATFORM_VAULT_ID: ${{ secrets.PLATFORM_VAULT_ID }}
+        run: npx tsx scripts/payroll.ts

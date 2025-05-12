@@ -9,3 +9,7 @@ A few early considerations:
 - Could also create and publish summaries/reports for anyone interested
 
 Early doors but a key part of the puzzle.
+
+## Development
+
+For local development in the early stages running `npx tsx payroll.ts` does nicely.
