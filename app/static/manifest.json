@@ -6,6 +6,11 @@
     "start_url": "/",
     "background_color": "#121212",
     "theme_color": "#e0e0e0",
+    "id": "soli",
+    "dir": "ltr",
+    "categories": [
+        "music"
+    ],
     "icons": [
         {
             "src": "/icon-192.png",
