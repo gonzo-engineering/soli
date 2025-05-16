@@ -1,15 +1,8 @@
 import type { ArtistRaw, ReleaseHydrated } from '$lib/types/index.js';
 
 // TODO: Explore static generation where possible to
-// improve performance and keep requests to a minimum
-
-export const entries = async () => {
-	const artists: ArtistRaw[] = await fetch('/api/artists').then((res) => res.json());
-	const slugs = artists.map((artist) => {
-		return { slug: artist.id };
-	});
-	return slugs;
-};
+// improve performance and keep requests to a minimum.
+// May entail splitting the API into its own thing.
 
 export const load = async ({ params, fetch }) => {
 	const artists: ArtistRaw[] = await fetch('/api/artists').then((res) => res.json());
