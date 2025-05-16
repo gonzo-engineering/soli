@@ -35,14 +35,14 @@
 	<div class="audio-player">
 		<!-- <div>Current balance: {prettifyBalance(userState.liveBalance)} tokens</div> -->
 		<div>
-			{userState.activeSong.name} by
-			<a href={`/artists/${userState.activeSongArtist.artist.id}`}
-				>{userState.activeSongArtist.artist.name}</a
+			{userState.activeSong.title} by
+			<a href={`/artists/${userState.activeSongArtist.artistId}`}
+				>{userState.activeSongArtist.artistName}</a
 			>
 		</div>
-		{#key userState.activeSong.url}
+		{#key userState.activeSong.ipfs_cid}
 			<audio controls autoplay controlsList="nodownload noplaybackrate">
-				<source src={userState.activeSong.url} type="audio/mpeg" />
+				<source src={userState.activeSongUrl} type="audio/mpeg" />
 				Your browser does not support the audio element.
 			</audio>
 		{/key}
