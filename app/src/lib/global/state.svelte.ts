@@ -1,4 +1,4 @@
-import type { ArtistManifest, Track, UserState } from '$lib/types';
+import type { TrackRaw, UserState } from '$lib/types';
 import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL, TABLES } from './config';
 
@@ -6,6 +6,7 @@ const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
 export const userState: UserState = $state({
 	activeSong: null,
+	activeSongUrl: null,
 	activeSongArtist: null,
 	liveBalance: 0,
 	payPerStream: 3
@@ -32,7 +33,7 @@ const logStream = async (userId: string, artistId: string, trackId: string, toke
 const updateUserBalance = async (userId: string, newBalance: number) => {
 	console.log('Updating balance for user:', userId, 'New balance:', newBalance);
 	const { error } = await supabase
-		.from(TABLES.listeners)
+		.from(TABLES.users)
 		.update({ tokens_balance: newBalance })
 		.eq('id', userId)
 		.select();
@@ -44,9 +45,12 @@ const updateUserBalance = async (userId: string, newBalance: number) => {
 	}
 };
 
-export const setActiveSong = (
-	song: Track,
-	artist: ArtistManifest,
+export const setActiveSong = async (
+	song: TrackRaw,
+	artist: {
+		artistId: string;
+		artistName: string;
+	},
 	userId: string,
 	userBalance: number,
 	userPayPerStream: number
@@ -54,12 +58,17 @@ export const setActiveSong = (
 	if (userBalance < userPayPerStream) {
 		throw new Error('Not enough balance to play this song');
 	}
+
+	const songUrl = await fetch('/api/links/' + song.ipfs_cid).then((res) => res.text());
+
 	userState.activeSong = song;
 	userState.activeSongArtist = artist;
+	userState.activeSongUrl = songUrl;
+
 	// TODO: Improve this to use a more accurate timer
 	// Deduct the pay per stream after 30 of playtime
 	setTimeout(() => {
 		updateUserBalance(userId, userBalance - userPayPerStream);
-		logStream(userId, artist.artist.id, song.name, userPayPerStream);
+		logStream(userId, artist.artistId, song.id, userPayPerStream);
 	}, 30000);
 };

@@ -1,27 +1,26 @@
 <script lang="ts">
-	import type { Release } from '$lib/types';
+	import type { ReleaseHydrated } from '$lib/types';
+	import { makeImageLink } from '$lib/utils';
 	import ReleaseCard from './ReleaseCard.svelte';
 
 	let {
 		releases,
 		hideArtistName = false
 	}: {
-		releases: Release[];
+		releases: ReleaseHydrated[];
 		hideArtistName?: boolean;
 	} = $props();
 </script>
 
 <div class="releases-grid">
 	{#each releases as release}
-		{#if release.coverLink && release.artistName}
-			<ReleaseCard
-				link={`/releases/${release.id}`}
-				name={release.title}
-				artist={release.artistName}
-				coverArt={release.coverLink}
-				hideArtist={hideArtistName}
-			/>
-		{/if}
+		<ReleaseCard
+			link={`/releases/${release.id}`}
+			name={release.title}
+			artist={release.artist_name}
+			coverArt={makeImageLink(release.artwork_ipfs_cid)}
+			hideArtist={hideArtistName}
+		/>
 	{/each}
 </div>
 

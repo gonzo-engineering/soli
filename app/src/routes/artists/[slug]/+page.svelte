@@ -1,14 +1,15 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { ArtistHydrated, ArtistManifest, ReleaseHydrated } from '$lib/types';
+	import type { ArtistRaw, ReleaseHydrated } from '$lib/types';
+	import { makeImageLink } from '$lib/utils';
 
-	let { data }: { data: { artistManifest: ArtistManifest } } = $props();
+	let { data }: { data: { artist: ArtistRaw; releases: ReleaseHydrated[] } } = $props();
 
-	const { name, description, website } = data.artistManifest.artist;
+	const { name, bio, website_url, image_ipfs_cid } = data.artist;
 
-	const lps = data.artistManifest.releases.filter((release) => release.type === 'LP');
-	const eps = data.artistManifest.releases.filter((release) => release.type === 'EP');
-	const singles = data.artistManifest.releases.filter((release) => release.type === 'Single');
+	const lps = data.releases.filter((release) => release.release_type === 'lp');
+	const eps = data.releases.filter((release) => release.release_type === 'ep');
+	const singles = data.releases.filter((release) => release.release_type === 'single');
 </script>
 
 <svelte:head>
@@ -20,13 +21,15 @@
 
 <h2>{name}</h2>
 
-{#if data.artistManifest.artist.imageLink}
-	<img src={data.artistManifest.artist.imageLink} alt={`Image of ${name}`} />
+{#if image_ipfs_cid}
+	<img src={makeImageLink(image_ipfs_cid)} alt={`Image of ${name}`} />
 {/if}
 
-<div>{description}</div>
+<div>{bio}</div>
 
-<a href={website}>{website.replace('https://', '').replaceAll('/', '')}</a>
+{#if data.artist.website_url}
+	<a href={website_url}>{website_url?.replace('https://', '').replaceAll('/', '')}</a>
+{/if}
 
 <h3>Music</h3>
 

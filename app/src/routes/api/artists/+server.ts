@@ -1,10 +1,21 @@
-// Returns all the artist manifests
-
+import { TABLES } from '$lib/global/config';
+import { supabase } from '$lib/server/supabase';
+import type { ArtistRaw } from '$lib/types';
 import { json } from '@sveltejs/kit';
-import { getManifests } from '$lib/server/pinata';
 
 export async function GET() {
-	const allManifests = await getManifests();
+	const {
+		data,
+		error
+	}: {
+		data: ArtistRaw[] | null;
+		error: Error | null;
+	} = await supabase.from(TABLES.artists).select();
 
-	return json(allManifests);
+	if (error || !data) {
+		console.error('Error fetching artist data:', error);
+		return json({ error: 'Failed to fetch artist data' }, { status: 500 });
+	}
+
+	return json(data);
 }

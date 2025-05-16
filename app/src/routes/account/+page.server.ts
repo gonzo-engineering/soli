@@ -20,7 +20,7 @@ export const actions: Actions = {
 
 		const { session } = await safeGetSession();
 
-		const { error } = await supabase.from(TABLES.listeners).upsert({
+		const { error } = await supabase.from(TABLES.users).upsert({
 			id: session?.user.id,
 			first_name: firstName,
 			updated_at: new Date(),

@@ -9,8 +9,9 @@ export const PUBLIC_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 export const PUBLIC_SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const TABLES = {
-	listeners: 'users',
+	users: 'users',
 	artists: 'artists',
+	releasesHydrated: 'hydrated_releases',
 	streams: 'streams',
 	betaUsers: 'beta-users'
 };

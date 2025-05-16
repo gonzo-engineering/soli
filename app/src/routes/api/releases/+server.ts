@@ -1,22 +1,21 @@
-// Returns all the releases from all the manifests
-
 import { json } from '@sveltejs/kit';
-import type { Release } from '$lib/types';
-import { getManifests } from '$lib/server/pinata';
+import { supabase } from '$lib/server/supabase';
+import { TABLES } from '$lib/global/config';
+import type { ReleaseHydrated } from '$lib/types';
 
 export async function GET() {
-	const allManifests = await getManifests();
+	const {
+		data,
+		error
+	}: {
+		data: ReleaseHydrated[] | null;
+		error: Error | null;
+	} = await supabase.from(TABLES.releasesHydrated).select();
 
-	const allReleases: Release[] = allManifests
-		.map((manifest) => {
-			return manifest.releases.map((release) => {
-				return {
-					...release,
-					artistName: manifest.artist.name
-				};
-			});
-		})
-		.flat();
+	if (error || !data) {
+		console.error('Error fetching artist data:', error);
+		return json({ error: 'Failed to fetch artist data' }, { status: 500 });
+	}
 
-	return json(allReleases);
+	return json(data);
 }

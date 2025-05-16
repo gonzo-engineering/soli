@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({ request, locals: { supabase } }) =>
 		const topUpTokens = Math.round(topUpAmount * REVENUE_SPLIT.artists);
 
 		const { error } = await supabase
-			.from(TABLES.listeners)
+			.from(TABLES.users)
 			.update({
 				tokens_balance: topUpTokens + userTokensBalance
 			})
