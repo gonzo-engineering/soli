@@ -18,7 +18,7 @@
 			link={`/releases/${release.id}`}
 			name={release.title}
 			artist={release.artist_name}
-			coverArt={makeImageLink(release.artwork_ipfs_cid)}
+			coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
 			hideArtist={hideArtistName}
 		/>
 	{/each}
@@ -26,8 +26,8 @@
 
 <style>
 	.releases-grid {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		gap: 20px;
 	}
 </style>
