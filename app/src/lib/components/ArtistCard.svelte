@@ -11,20 +11,23 @@
 </script>
 
 <a href={link}>
-	<div class="artist-circle">
-		{#if image}
-			<img src={image} alt={`Image of ${name}`} />
-		{:else}
-			<img src="/person-placeholder.png" alt="Placeholder person" />
-		{/if}
+	<div class="artist-card">
+		<div class="artist-circle">
+			{#if image}
+				<img src={image} alt={`Image of ${name}`} />
+			{:else}
+				<img src="/person-placeholder.png" alt="Placeholder person" />
+			{/if}
+		</div>
+		<div class="artist-name">{name}</div>
 	</div>
-	<div class="artist-name">{name}</div>
 </a>
 
 <style>
+	.artist-card {
+		max-width: 150px;
+	}
 	.artist-circle {
-		width: 100px;
-		height: 100px;
 		border-radius: 50%;
 		border: solid 2px lightgray;
 		margin-bottom: 0.2rem;
@@ -37,6 +40,8 @@
 	img {
 		width: 100%;
 		height: 100%;
+		background-color: lightgray;
+		aspect-ratio: 1;
 		border-radius: 50%;
 		z-index: 0;
 	}

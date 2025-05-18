@@ -16,6 +16,6 @@ export const prettifyPennies = (pence: number) => {
 	return `£${pounds}.${pennies < 10 ? '0' : ''}${pennies}`;
 };
 
-export const makeImageLink = (cid: string) => {
-	return 'https://' + PUBLIC_GATEWAY_URL + '/ipfs/' + cid;
+export const makeImageLink = (cid: string, width: number) => {
+	return `https://${PUBLIC_GATEWAY_URL}/ipfs/${cid}?img-width=${width}`;
 };

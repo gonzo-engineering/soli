@@ -40,8 +40,6 @@
 	}
 	img {
 		aspect-ratio: 1;
-		width: 100px;
-		height: 100px;
 		border-radius: 10px;
 		margin-bottom: 0.5rem;
 		border: solid 2px lightgray;

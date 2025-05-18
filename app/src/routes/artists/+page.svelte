@@ -1,6 +1,5 @@
 <script lang="ts">
-	import ArtistCard from '$lib/components/ArtistCard.svelte';
-	import { makeImageLink } from '$lib/utils';
+	import ArtistCardGrid from '$lib/components/ArtistCardGrid.svelte';
 
 	let { data } = $props();
 </script>
@@ -12,22 +11,8 @@
 
 <h2>Artists</h2>
 
-<div class="artists-container">
-	{#each data.artists as artist}
-		<ArtistCard
-			link={`/artists/${artist.id}`}
-			name={artist.name}
-			image={artist.image_ipfs_cid
-				? makeImageLink(artist.image_ipfs_cid)
-				: '/person-placeholder.png'}
-		/>
-	{/each}
-</div>
-
-<style>
-	.artists-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-	}
-</style>
+{#if data.artists.length === 0}
+	<p>No artists found.</p>
+{:else}
+	<ArtistCardGrid artists={data.artists} />
+{/if}
