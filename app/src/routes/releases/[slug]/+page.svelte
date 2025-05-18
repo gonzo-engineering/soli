@@ -140,6 +140,9 @@
 		border-collapse: collapse;
 		text-align: left;
 	}
+	th {
+		font-weight: 500;
+	}
 	tr {
 		border-bottom: 1px solid lightgray;
 	}
