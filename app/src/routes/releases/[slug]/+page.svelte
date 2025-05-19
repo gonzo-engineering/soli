@@ -36,7 +36,7 @@
 </svelte:head>
 
 <div class="section-link">
-	> <a href="/artists">Releases</a>
+	> <a href="/releases">Releases</a>
 </div>
 
 <div class="release-summary-card">
