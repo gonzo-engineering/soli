@@ -42,42 +42,48 @@
 		<!-- TODO: Sort by type (LP, EP, Single) and release date -->
 
 		{#if lps.length > 0}
-			<h4>LPs</h4>
-			<ReleaseCardGrid
-				releases={lps.map((lp) => {
-					return {
-						...lp,
-						artistName: name
-					};
-				})}
-				hideArtistName
-			/>
+			<div class="release-type-section">
+				<h4>LPs</h4>
+				<ReleaseCardGrid
+					releases={lps.map((lp) => {
+						return {
+							...lp,
+							artistName: name
+						};
+					})}
+					hideArtistName
+				/>
+			</div>
 		{/if}
 
 		{#if eps.length > 0}
-			<h4>EPs</h4>
-			<ReleaseCardGrid
-				releases={eps.map((ep) => {
-					return {
-						...ep,
-						artistName: name
-					};
-				})}
-				hideArtistName
-			/>
+			<div class="release-type-section">
+				<h4>EPs</h4>
+				<ReleaseCardGrid
+					releases={eps.map((ep) => {
+						return {
+							...ep,
+							artistName: name
+						};
+					})}
+					hideArtistName
+				/>
+			</div>
 		{/if}
 
 		{#if singles.length > 0}
-			<h4>Singles</h4>
-			<ReleaseCardGrid
-				releases={singles.map((single) => {
-					return {
-						...single,
-						artistName: name
-					};
-				})}
-				hideArtistName
-			/>
+			<div class="release-type-section">
+				<h4>Singles</h4>
+				<ReleaseCardGrid
+					releases={singles.map((single) => {
+						return {
+							...single,
+							artistName: name
+						};
+					})}
+					hideArtistName
+				/>
+			</div>
 		{/if}
 	</div>
 </div>
@@ -99,6 +105,12 @@
 		margin: 0;
 		padding: 0;
 	}
+	h4 {
+		font-size: 1.6rem;
+		font-weight: 500;
+		margin-bottom: 0.5rem;
+		color: gray;
+	}
 	.artist-summary-card {
 		max-width: 500px;
 		line-height: 1.2;
@@ -113,5 +125,8 @@
 		border-radius: 10px;
 		margin-bottom: 0.5rem;
 		border: solid 2px lightgray;
+	}
+	.release-type-section {
+		margin-bottom: 1.5rem;
 	}
 </style>

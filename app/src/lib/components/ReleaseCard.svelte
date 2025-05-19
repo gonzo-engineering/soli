@@ -40,9 +40,10 @@
 	}
 	img {
 		aspect-ratio: 1;
-		border-radius: 10px;
+		/* border-radius: 10px; */
 		margin-bottom: 0.5rem;
-		border: solid 2px lightgray;
+		/* border: solid 2px lightgray; */
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	}
 	a {
 		text-decoration: none;
