@@ -23,7 +23,7 @@ jobs:
 
       - name: Run payroll script
         env:
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PLATFORM_VAULT_ID: ${{ secrets.PLATFORM_VAULT_ID }}
         run: npx tsx scripts/payroll.ts

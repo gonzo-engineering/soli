@@ -13,7 +13,7 @@ interface Stream {
 
 const PUBLIC_SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL;
 const PUBLIC_SUPABASE_ANON_KEY = process.env.PUBLIC_SUPABASE_ANON_KEY;
-const STRIPE_KEY = process.env.VITE_STRIPE_SECRET_KEY;
+const STRIPE_KEY = process.env.STRIPE_SECRET_KEY;
 
 if (!PUBLIC_SUPABASE_URL || !PUBLIC_SUPABASE_ANON_KEY || !STRIPE_KEY) {
   console.error("Missing environment variables");
