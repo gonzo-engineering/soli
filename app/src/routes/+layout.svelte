@@ -23,6 +23,10 @@
 	});
 </script>
 
+<svelte:head>
+	<meta name="theme-color" content="#1e1e1e" />
+</svelte:head>
+
 <Header userIsLoggedIn={session} />
 
 <main>
