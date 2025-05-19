@@ -117,7 +117,7 @@ const payoutPromises = artistEarningsWithNames.map(async (artist) => {
     return;
   }
   try {
-    const payout = await stripe.payouts.create({
+    const payout = await stripe.transfers.create({
       amount: total_earnings_for_period,
       currency: "gbp",
       destination: stripe_id,
