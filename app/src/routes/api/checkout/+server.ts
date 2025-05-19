@@ -20,11 +20,9 @@ export const POST: RequestHandler = async ({ request }) => {
 	const session = await stripe.checkout.sessions.create({
 		line_items: [lineItem],
 		mode: 'payment',
-		payment_intent_data: {
-			metadata: {
-				userId: userId,
-				balance: balance
-			}
+		metadata: {
+			userId: userId,
+			balance: balance
 		},
 		success_url: DOMAIN,
 		cancel_url: DOMAIN
