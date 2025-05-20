@@ -79,13 +79,12 @@
 	th {
 		font-weight: 500;
 	}
-	tr {
-		border-bottom: 1px solid lightgray;
-	}
-	tr:last-child {
-		border-bottom: none;
+	tr:not(:last-child) {
+		border-bottom: 1px solid gray;
 	}
 	.play-button-container {
-		text-align: right;
+		display: flex;
+		justify-content: end;
+		align-items: center;
 	}
 </style>
