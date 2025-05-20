@@ -25,9 +25,9 @@ export const POST: RequestHandler = async ({ request, locals: { supabase } }) =>
 		});
 	}
 
-	const userId = stripeSession.metadata.userId;
-	const userTokensBalance = stripeSession.metadata.balance;
-	const topUpAmount = stripeSession.amount_total;
+	const userId: string = stripeSession.metadata.userId;
+	const userTokensBalance = parseInt(stripeSession.metadata.balance);
+	const topUpAmount: number = stripeSession.amount_total;
 	const topUpTokens = Math.round(topUpAmount * REVENUE_SPLIT.artists);
 
 	const { error } = await supabase

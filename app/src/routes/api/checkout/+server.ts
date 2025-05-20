@@ -4,7 +4,15 @@ import type { RequestHandler } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const data = await request.json();
-	const { userId, balance, topUpAmount } = data;
+	const {
+		userId,
+		balance,
+		topUpAmount
+	}: {
+		userId: string;
+		balance: number;
+		topUpAmount: number;
+	} = data;
 	const lineItem = {
 		price_data: {
 			currency: 'gbp',
