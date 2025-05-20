@@ -47,4 +47,9 @@
 	.icon {
 		height: 50px;
 	}
+	@media (min-width: 600px) {
+		.icon:hover {
+			opacity: 0.8;
+		}
+	}
 </style>

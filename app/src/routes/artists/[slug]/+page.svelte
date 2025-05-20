@@ -96,8 +96,12 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
+		max-width: 1100px;
+		margin: 0 auto;
 		@media (min-width: 600px) {
-			flex-direction: row;
+			display: grid;
+			grid-template-columns: 1fr 2fr;
+			gap: 2rem;
 		}
 	}
 	h2,
@@ -110,6 +114,11 @@
 		font-weight: 500;
 		margin-bottom: 0.5rem;
 		color: gray;
+	}
+	@media (min-width: 600px) {
+		h3 {
+			display: none;
+		}
 	}
 	.artist-summary-card {
 		max-width: 500px;
@@ -128,5 +137,6 @@
 	}
 	.release-type-section {
 		margin-bottom: 1.5rem;
+		width: 100%;
 	}
 </style>

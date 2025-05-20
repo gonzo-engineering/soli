@@ -41,9 +41,13 @@
 		width: 100%;
 		height: 100%;
 		background-color: lightgray;
-		aspect-ratio: 1;
+		aspect-ratio: 1 / 1;
 		border-radius: 50%;
-		z-index: 0;
+	}
+	img:hover {
+		@media (min-width: 600px) {
+			opacity: 0.6;
+		}
 	}
 	a {
 		text-decoration: none;

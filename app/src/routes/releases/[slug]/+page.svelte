@@ -134,6 +134,7 @@
 	.cover-art {
 		aspect-ratio: 1/1;
 		background-color: lightgray;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	}
 	table {
 		width: 100%;
