@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { ArtistRaw, ReleaseHydrated, UserProfile } from '$lib/types';
-	import { makeImageLink, prettifyDuration } from '$lib/utils';
-	import { setActiveSong, userState } from '$lib/global/state.svelte';
+	import type { ReleaseHydrated, UserProfile } from '$lib/types';
+	import { formatReleaseType, makeImageLink } from '$lib/utils';
 	import type { Session } from '@supabase/supabase-js';
+	import ReleaseTracks from '$lib/components/releases/ReleaseTracks.svelte';
 
 	let {
 		data
@@ -15,19 +15,6 @@
 	} = $props();
 
 	const release = data.release;
-
-	const formatReleaseType = (type: string) => {
-		switch (type) {
-			case 'single':
-				return 'Single';
-			case 'album':
-				return 'Album';
-			case 'ep':
-				return 'EP';
-			default:
-				return type;
-		}
-	};
 </script>
 
 <svelte:head>
@@ -54,53 +41,7 @@
 		class="cover-art"
 	/>
 
-	<table>
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>Track</th>
-				<th>Duration</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each release.tracks as track, i}
-				<tr>
-					<td>{i + 1}</td>
-					<td>{track.title}</td>
-					<td>{prettifyDuration(track.duration_seconds)}</td>
-					<td>
-						{#if userState.liveBalance}
-							<button
-								class="play-button"
-								onclick={() =>
-									setActiveSong(
-										track,
-										{
-											artistId: release.artist_id,
-											artistName: release.artist_name
-										},
-										data.session.user.id,
-										userState.liveBalance ?? data.profileData.tokens_balance,
-										data.profileData.pay_per_stream
-									)}
-							>
-								{#if track.ipfs_cid === userState.activeSong?.ipfs_cid}
-									<span>Playing</span>
-								{:else}
-									<span>Play</span>
-								{/if}
-							</button>
-						{:else}
-							<button class="play-button" disabled>
-								<span>Play</span>
-							</button>
-						{/if}
-					</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
+	<ReleaseTracks {release} profileData={data.profileData} session={data.session} />
 
 	<hr />
 
@@ -135,20 +76,6 @@
 		aspect-ratio: 1/1;
 		background-color: lightgray;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-	}
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		text-align: left;
-	}
-	th {
-		font-weight: 500;
-	}
-	tr {
-		border-bottom: 1px solid lightgray;
-	}
-	tr:last-child {
-		border-bottom: none;
 	}
 	.tag {
 		display: inline-block;

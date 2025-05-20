@@ -19,3 +19,16 @@ export const prettifyPennies = (pence: number) => {
 export const makeImageLink = (cid: string, width: number) => {
 	return `https://${PUBLIC_GATEWAY_URL}/ipfs/${cid}?img-width=${width}`;
 };
+
+export const formatReleaseType = (type: string) => {
+	switch (type) {
+		case 'single':
+			return 'Single';
+		case 'album':
+			return 'Album';
+		case 'ep':
+			return 'EP';
+		default:
+			return type;
+	}
+};
