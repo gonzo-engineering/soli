@@ -12,9 +12,11 @@
 		coverArt: string;
 		hideArtist?: boolean;
 	} = $props();
+
+	const randomRotation = Math.floor(Math.random() * 4) - 2;
 </script>
 
-<a href={link}>
+<a href={link} style="--rotation: {randomRotation}deg">
 	<div class="release-card">
 		<img src={coverArt} alt={`Artwork for ${name} by ${artist}`} />
 		<div class="release-name">{name}</div>
@@ -39,10 +41,18 @@
 		color: lightgray;
 	}
 	img {
-		aspect-ratio: 1;
-		border-radius: 10px;
+		width: 100%;
+		aspect-ratio: 1 / 1;
 		margin-bottom: 0.5rem;
-		border: solid 2px lightgray;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+		transform: rotate(var(--rotation));
+		transition: transform 0.2s ease-in-out;
+	}
+	img:hover {
+		@media (min-width: 600px) {
+			transform: scale(1.05);
+			transition: transform 0.2s ease-in-out;
+		}
 	}
 	a {
 		text-decoration: none;

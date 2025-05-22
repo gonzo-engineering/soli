@@ -4,6 +4,10 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
+
+	const albumsAndEPs = data.releases.filter(
+		(release) => release.release_type === 'album' || release.release_type === 'ep'
+	);
 </script>
 
 <svelte:head>
@@ -14,7 +18,7 @@
 <section>
 	<a href="/releases"><h2>Releases</h2></a>
 
-	<ReleaseCardGrid releases={data.releases} />
+	<ReleaseCardGrid releases={albumsAndEPs} />
 </section>
 
 <section>

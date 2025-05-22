@@ -36,7 +36,7 @@
 </svelte:head>
 
 <div class="section-link">
-	> <a href="/artists">Releases</a>
+	> <a href="/releases">Releases</a>
 </div>
 
 <div class="release-summary-card">
@@ -134,6 +134,7 @@
 	.cover-art {
 		aspect-ratio: 1/1;
 		background-color: lightgray;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	}
 	table {
 		width: 100%;

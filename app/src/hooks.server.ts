@@ -61,7 +61,8 @@ const authGuard: Handle = async ({ event, resolve }) => {
 		!event.url.pathname.startsWith('/login') &&
 		!event.url.pathname.startsWith('/auth') &&
 		!event.url.pathname.startsWith('/about') &&
-		!event.url.pathname.startsWith('/contact')
+		!event.url.pathname.startsWith('/contact') &&
+		!event.url.pathname.startsWith('/api/checkout')
 	) {
 		redirect(303, '/login');
 	}
