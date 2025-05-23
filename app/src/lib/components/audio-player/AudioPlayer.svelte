@@ -1,26 +1,48 @@
 <script lang="ts">
-	import { userState } from '$lib/global/state.svelte.js';
+	import { setActiveSong, userState } from '$lib/global/state.svelte.js';
+	import type { ReleaseHydrated } from '$lib/types';
 
 	let {
+		userId,
+		userPayPerStream,
 		title,
-		artistName,
-		artistId,
+		release,
 		songUrl
 	}: {
+		userId: string;
+		userPayPerStream: number;
 		title: string;
-		artistName: string;
-		artistId: string;
+		release: ReleaseHydrated;
 		songUrl: string;
 	} = $props();
 </script>
 
 <div class="audio-player">
 	<div>
-		“{title}” by <a href={`/artists/${artistId}`}>{artistName}</a>
+		“{title}” by <a href={`/artists/${release.artist_id}`}>{release.artist_name}</a>
 	</div>
 	<audio
 		src={songUrl}
 		bind:paused={userState.activeSongIsPaused}
+		onended={() => {
+			if (userState.autoPlay) {
+				const currentSongIndex = release.tracks.findIndex(
+					(track) => track.ipfs_cid === userState.activeSong?.ipfs_cid
+				);
+				if (currentSongIndex !== -1 && currentSongIndex < release.tracks.length - 1) {
+					const nextSong = release.tracks[currentSongIndex + 1];
+					setActiveSong(
+						nextSong,
+						release,
+						userId,
+						userState.liveBalance ?? userPayPerStream,
+						userPayPerStream
+					);
+				} else {
+					userState.autoPlay = false;
+				}
+			}
+		}}
 		controls
 		autoplay
 		controlsList="nodownload noplaybackrate"

@@ -6,12 +6,10 @@ export interface UserProfile {
 
 export interface UserState {
 	activeSong: TrackRaw | null;
+	activeSongRelease: ReleaseHydrated | null;
 	activeSongUrl: string | null;
-	activeSongArtist: {
-		artistId: string;
-		artistName: string;
-	} | null;
 	activeSongIsPaused: boolean;
+	autoPlay: boolean;
 	liveBalance: number | null;
 	payPerStream: number;
 }

@@ -27,14 +27,12 @@
 			} else {
 				setActiveSong(
 					track,
-					{
-						artistId: release.artist_id,
-						artistName: release.artist_name
-					},
+					release,
 					session.user.id,
 					userState.liveBalance ?? profileData.tokens_balance,
 					profileData.pay_per_stream
 				);
+				userState.autoPlay = false;
 			}
 		}}
 	>
