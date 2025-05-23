@@ -46,19 +46,16 @@
 		onclick={() => {
 			setActiveSong(
 				release.tracks[0],
-				{
-					artistId: release.artist_id,
-					artistName: release.artist_name
-				},
+				release,
 				data.session.user.id,
 				userState.liveBalance ?? data.profileData.tokens_balance,
 				userState.payPerStream
 			);
-			const releaseTracks = release.tracks;
-			releaseTracks.shift();
-			userState.scheduledSongs = releaseTracks;
-		}}>Play full release</button
+			userState.autoPlay = true;
+		}}
 	>
+		Play full release
+	</button>
 
 	<ReleaseTracks {release} profileData={data.profileData} session={data.session} />
 

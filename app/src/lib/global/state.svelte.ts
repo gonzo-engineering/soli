@@ -1,4 +1,4 @@
-import type { TrackRaw, UserState } from '$lib/types';
+import type { ReleaseHydrated, TrackRaw, UserState } from '$lib/types';
 import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL, TABLES } from './config';
 
@@ -6,10 +6,10 @@ const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
 export const userState: UserState = $state({
 	activeSong: null,
+	activeSongRelease: null,
 	activeSongUrl: null,
-	activeSongArtist: null,
 	activeSongIsPaused: false,
-	scheduledSongs: [],
+	autoPlay: false,
 	liveBalance: 0,
 	payPerStream: 3
 });
@@ -49,10 +49,7 @@ const updateUserBalance = async (userId: string, newBalance: number) => {
 
 export const setActiveSong = async (
 	song: TrackRaw,
-	artist: {
-		artistId: string;
-		artistName: string;
-	},
+	release: ReleaseHydrated,
 	userId: string,
 	userBalance: number,
 	userPayPerStream: number
@@ -64,13 +61,13 @@ export const setActiveSong = async (
 	const songUrl = await fetch('/api/links/' + song.ipfs_cid).then((res) => res.text());
 
 	userState.activeSong = song;
-	userState.activeSongArtist = artist;
+	userState.activeSongRelease = release;
 	userState.activeSongUrl = songUrl;
 
 	// TODO: Improve this to use a more accurate timer
 	// Deduct the pay per stream after 30 of playtime
 	setTimeout(() => {
 		updateUserBalance(userId, userBalance - userPayPerStream);
-		logStream(userId, artist.artistId, song.id, userPayPerStream);
+		logStream(userId, release.artist_id, song.id, userPayPerStream);
 	}, 30000);
 };
