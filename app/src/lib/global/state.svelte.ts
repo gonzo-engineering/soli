@@ -9,6 +9,7 @@ export const userState: UserState = $state({
 	activeSongUrl: null,
 	activeSongArtist: null,
 	activeSongIsPaused: false,
+	scheduledSongs: [],
 	liveBalance: 0,
 	payPerStream: 3
 });

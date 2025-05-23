@@ -3,6 +3,7 @@
 	import { formatReleaseType, makeImageLink } from '$lib/utils';
 	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTracks from '$lib/components/releases/ReleaseTracks.svelte';
+	import { setActiveSong, userState } from '$lib/global/state.svelte';
 
 	let {
 		data
@@ -40,6 +41,24 @@
 		alt={`Cover art for '${release.title}' by ${release.artist_name}'`}
 		class="cover-art"
 	/>
+
+	<button
+		onclick={() => {
+			setActiveSong(
+				release.tracks[0],
+				{
+					artistId: release.artist_id,
+					artistName: release.artist_name
+				},
+				data.session.user.id,
+				userState.liveBalance ?? data.profileData.tokens_balance,
+				userState.payPerStream
+			);
+			const releaseTracks = release.tracks;
+			releaseTracks.shift();
+			userState.scheduledSongs = releaseTracks;
+		}}>Play full release</button
+	>
 
 	<ReleaseTracks {release} profileData={data.profileData} session={data.session} />
 

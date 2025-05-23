@@ -1,12 +1,16 @@
 <script lang="ts">
-	import { userState } from '$lib/global/state.svelte.js';
+	import { setActiveSong, userState } from '$lib/global/state.svelte.js';
 
 	let {
+		userId,
+		userPayPerStream,
 		title,
 		artistName,
 		artistId,
 		songUrl
 	}: {
+		userId: string;
+		userPayPerStream: number;
 		title: string;
 		artistName: string;
 		artistId: string;
@@ -21,6 +25,22 @@
 	<audio
 		src={songUrl}
 		bind:paused={userState.activeSongIsPaused}
+		onended={() => {
+			if (userState.scheduledSongs.length > 0) {
+				const song = userState.scheduledSongs[0];
+				setActiveSong(
+					song,
+					{
+						artistId: artistId,
+						artistName: artistName
+					},
+					userId,
+					userState.liveBalance ?? userPayPerStream,
+					userState.payPerStream
+				);
+				userState.scheduledSongs.shift();
+			}
+		}}
 		controls
 		autoplay
 		controlsList="nodownload noplaybackrate"

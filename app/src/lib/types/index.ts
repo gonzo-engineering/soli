@@ -11,6 +11,7 @@ export interface UserState {
 		artistId: string;
 		artistName: string;
 	} | null;
+	scheduledSongs: TrackRaw[];
 	activeSongIsPaused: boolean;
 	liveBalance: number | null;
 	payPerStream: number;
