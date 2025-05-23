@@ -130,10 +130,10 @@
 
 	.artist-summary-card img {
 		aspect-ratio: 1;
-		background-color: lightgray;
+		background-color: var(--color-accent);
 		border-radius: 10px;
 		margin-bottom: 0.5rem;
-		border: solid 2px lightgray;
+		border: solid 2px var(--color-accent);
 	}
 	.release-type-section {
 		margin-bottom: 1.5rem;

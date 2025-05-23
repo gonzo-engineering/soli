@@ -1,5 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200..700&display=swap');
 
+:root {
+	--color-background: #f0f0f0;
+	--color-text: #333333;
+	--color-text-secondary: #545454;
+	--color-accent: #333333;
+
+	--box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-background: #1e1e1e;
+		--color-text: #e0e0e0;
+		--color-text-secondary: #b0b0b0;
+		--color-accent: #e0e0e0;
+
+		--box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+	}
+}
+
 * {
 	font-family: 'Yanone Kaffeesatz', sans-serif;
 	font-weight: 300;
@@ -12,16 +32,16 @@ p {
 	margin-bottom: 1.4rem;
 }
 
+body {
+	background-color: var(--color-background);
+	color: var(--color-text);
+}
+
 a {
-	color: #e0e0e0;
+	color: var(--color-text);
+	text-decoration: underline;
 	font-size: inherit;
 }
-
-body {
-	background-color: #1e1e1e;
-	color: #e0e0e0;
-}
-
 svg {
 	width: 100%;
 	height: auto;
