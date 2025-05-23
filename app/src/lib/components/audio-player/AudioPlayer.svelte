@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { userState } from '$lib/global/state.svelte.js';
+
 	let {
 		title,
 		artistName,
@@ -16,7 +18,13 @@
 	<div>
 		{title} by <a href={`/artists/${artistId}`}>{artistName}</a>
 	</div>
-	<audio src={songUrl} controls autoplay controlsList="nodownload noplaybackrate"></audio>
+	<audio
+		src={songUrl}
+		bind:paused={userState.activeSongIsPaused}
+		controls
+		autoplay
+		controlsList="nodownload noplaybackrate"
+	></audio>
 </div>
 
 <style>

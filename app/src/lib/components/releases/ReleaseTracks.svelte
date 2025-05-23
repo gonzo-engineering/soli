@@ -38,7 +38,7 @@
 							class="play-button"
 							onclick={() => {
 								if (track.ipfs_cid == userState.activeSong?.ipfs_cid) {
-									// TODO: Pause the current song if it's playing
+									userState.activeSongIsPaused = !userState.activeSongIsPaused;
 								} else {
 									setActiveSong(
 										track,
@@ -53,7 +53,7 @@
 								}
 							}}
 						>
-							{#if track.ipfs_cid === userState.activeSong?.ipfs_cid}
+							{#if track.ipfs_cid === userState.activeSong?.ipfs_cid && !userState.activeSongIsPaused}
 								<Pause />
 							{:else}
 								<Play />

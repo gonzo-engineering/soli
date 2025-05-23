@@ -8,6 +8,7 @@ export const userState: UserState = $state({
 	activeSong: null,
 	activeSongUrl: null,
 	activeSongArtist: null,
+	activeSongIsPaused: false,
 	liveBalance: 0,
 	payPerStream: 3
 });
