@@ -16,7 +16,7 @@
 
 <div class="audio-player">
 	<div>
-		{title} by <a href={`/artists/${artistId}`}>{artistName}</a>
+		“{title}” by <a href={`/artists/${artistId}`}>{artistName}</a>
 	</div>
 	<audio
 		src={songUrl}
