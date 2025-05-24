@@ -6,7 +6,8 @@
 	<div class="section"></div>
 	<div class="section">
 		<a href="/" class="logo">
-			<img src="/soli-logo-full-white.png" class="icon" alt="Soli emblem" />
+			<img src="/full-logo-white.png" class="icon dark" alt="Soli emblem" />
+			<img src="/full-logo-black.png" class="icon light" alt="Soli emblem" />
 		</a>
 	</div>
 	<div class="section">
@@ -50,6 +51,17 @@
 	@media (min-width: 600px) {
 		.icon:hover {
 			opacity: 0.8;
+		}
+	}
+	.dark {
+		display: none;
+	}
+	@media (prefers-color-scheme: dark) {
+		.dark {
+			display: block;
+		}
+		.light {
+			display: none;
 		}
 	}
 </style>

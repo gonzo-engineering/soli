@@ -29,7 +29,7 @@
 	}
 	.artist-circle {
 		border-radius: 50%;
-		border: solid 2px lightgray;
+		border: solid 2px var(--color-accent);
 		margin-bottom: 0.2rem;
 	}
 	.artist-name {
@@ -40,7 +40,7 @@
 	img {
 		width: 100%;
 		height: 100%;
-		background-color: lightgray;
+		background-color: var(--color-accent);
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
 	}

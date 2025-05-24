@@ -38,13 +38,13 @@
 	}
 	.artist-name {
 		font-size: 0.8rem;
-		color: lightgray;
+		color: var(--color-text-secondary);
 	}
 	img {
 		width: 100%;
 		aspect-ratio: 1 / 1;
 		margin-bottom: 0.5rem;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+		box-shadow: var(--box-shadow);
 		transform: rotate(var(--rotation));
 		transition: transform 0.2s ease-in-out;
 	}
