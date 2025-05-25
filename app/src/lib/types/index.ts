@@ -39,7 +39,7 @@ export interface ReleaseHydrated {
 	id: string;
 	title: string;
 	artwork_ipfs_cid: string;
-	release_type: string;
+	release_type: 'album' | 'ep' | 'single';
 	release_date: string;
 	artist_id: string;
 	artist_name: string;

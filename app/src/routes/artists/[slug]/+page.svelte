@@ -7,7 +7,7 @@
 
 	const { name, bio, website_url, image_ipfs_cid } = data.artist;
 
-	const lps = data.releases.filter((release) => release.release_type === 'lp');
+	const lps = data.releases.filter((release) => release.release_type === 'album');
 	const eps = data.releases.filter((release) => release.release_type === 'ep');
 	const singles = data.releases.filter((release) => release.release_type === 'single');
 </script>
