@@ -9,8 +9,8 @@
 	export let data;
 	export let form;
 
-	let { session, supabase, profileData } = data;
-	$: ({ session, supabase, profileData } = data);
+	let { session, supabase, profileData, artistProfiles } = data;
+	$: ({ session, supabase, profileData, artistProfiles } = data);
 
 	let profileForm: HTMLFormElement;
 	let loading = false;
@@ -146,6 +146,16 @@
 		</div>
 	</form>
 </ContentBlock>
+
+{#if artistProfiles && artistProfiles.length > 0}
+	<hr />
+	<h3>Your artist profiles</h3>
+	{#each artistProfiles as profile (profile.id)}
+		<div>
+			<a href={`/artists/${profile.id}`}>{profile.name}</a>
+		</div>
+	{/each}
+{/if}
 
 <style>
 	hr {

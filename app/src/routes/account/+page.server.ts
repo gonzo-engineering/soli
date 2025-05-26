@@ -1,15 +1,39 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { TABLES } from '$lib/global/config';
+import type { ArtistRaw } from '$lib/types';
 
-export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
+export const load: PageServerLoad = async ({ fetch, locals: { safeGetSession, supabase } }) => {
 	const { session } = await safeGetSession();
 
 	if (!session) {
 		redirect(303, '/');
 	}
 
-	return { session };
+	const {
+		data: userData,
+		error: userError
+	}: {
+		data: { artist_id: string }[] | null;
+		error: Error | null;
+	} = await supabase.from(TABLES.artistMembers).select('artist_id').eq('user_id', session.user.id);
+
+	if (userError || !userData) {
+		console.error('Error fetching user data:', userError);
+		return fail(500, { error: 'Failed to fetch user data' });
+	}
+
+	const artistProfiles: ArtistRaw[] = await fetch('/api/artists')
+		.then((res) => res.json())
+		.then((data: ArtistRaw[]) => {
+			return data.filter((artist) => userData.some((user) => user.artist_id === artist.id));
+		})
+		.catch((error) => {
+			console.error('Error fetching artists:', error);
+			return [];
+		});
+
+	return { session, artistProfiles };
 };
 
 export const actions: Actions = {
