@@ -90,11 +90,6 @@ const artistEarningsWithNames = artistIds.map((artistId) => {
   };
 });
 
-console.log(
-  "Artist earnings from the last seven days:",
-  artistEarningsWithNames
-);
-
 // Send a payout to each artist
 export const stripe = new Stripe(STRIPE_KEY, {
   apiVersion: "2025-04-30.basil",
