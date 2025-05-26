@@ -11,27 +11,28 @@ export const load: PageServerLoad = async ({ fetch, locals: { safeGetSession, su
 	}
 
 	const {
-		data: userData,
+		data: connectedArtistsData,
 		error: userError
 	}: {
 		data: { artist_id: string }[] | null;
 		error: Error | null;
 	} = await supabase.from(TABLES.artistMembers).select('artist_id').eq('user_id', session.user.id);
 
-	if (userError || !userData) {
+	if (userError || !connectedArtistsData) {
 		console.error('Error fetching user data:', userError);
 		return fail(500, { error: 'Failed to fetch user data' });
 	}
 
-	const artistProfiles: ArtistRaw[] = await fetch('/api/artists')
-		.then((res) => res.json())
-		.then((data: ArtistRaw[]) => {
-			return data.filter((artist) => userData.some((user) => user.artist_id === artist.id));
+	const artistProfiles: ArtistRaw[] = await Promise.all(
+		connectedArtistsData.map((artist) => {
+			return fetch(`/api/artists/${artist.artist_id}`)
+				.then((res) => res.json())
+				.catch((error) => {
+					console.error(`Error fetching artist ${artist.artist_id}:`, error);
+					return null;
+				});
 		})
-		.catch((error) => {
-			console.error('Error fetching artists:', error);
-			return [];
-		});
+	);
 
 	return { session, artistProfiles };
 };
