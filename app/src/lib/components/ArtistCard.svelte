@@ -30,12 +30,13 @@
 	.artist-circle {
 		border-radius: 50%;
 		border: solid 2px var(--color-accent);
-		margin-bottom: 0.2rem;
+		margin-bottom: 0.4rem;
 	}
 	.artist-name {
 		text-align: center;
 		font-size: 0.8rem;
 		font-weight: 500;
+		line-height: 1;
 	}
 	img {
 		width: 100%;
