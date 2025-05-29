@@ -25,7 +25,8 @@
 </script>
 
 <svelte:head>
-	<meta name="theme-color" content="#1e1e1e" />
+	<meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)" />
+	<meta name="theme-color" content="#f0f0f0" media="(prefers-color-scheme: light)" />
 </svelte:head>
 
 <Header userIsLoggedIn={session} />
