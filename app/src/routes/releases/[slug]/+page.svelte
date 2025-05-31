@@ -16,11 +16,15 @@
 	} = $props();
 
 	const release = data.release;
+	const releaseType = release.release_type;
 </script>
 
 <svelte:head>
-	<title>{release.title} · Releases · Soli</title>
-	<meta name="description" content={`The release page for ${release.title} by ${release.title}.`} />
+	<title>{release.title} · {release.artist_name} · Soli</title>
+	<meta
+		name="description"
+		content={`The release page for '${release.title}' by ${release.title}.`}
+	/>
 </svelte:head>
 
 <div class="section-link">
@@ -54,7 +58,7 @@
 			userState.autoPlay = true;
 		}}
 	>
-		Play full release
+		Play full {releaseType === 'ep' ? 'EP' : releaseType}
 	</button>
 
 	<ReleaseTracks {release} profileData={data.profileData} session={data.session} />
@@ -63,7 +67,7 @@
 
 	<div>
 		<div>
-			{formatReleaseType(release.release_type)} released {new Date(
+			{formatReleaseType(releaseType)} released {new Date(
 				release.release_date
 			).toLocaleDateString()}
 		</div>
@@ -101,5 +105,8 @@
 		margin: 0.5rem 0;
 		border-radius: 4px;
 		width: fit-content;
+	}
+	button:hover {
+		cursor: pointer;
 	}
 </style>

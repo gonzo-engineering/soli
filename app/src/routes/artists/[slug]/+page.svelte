@@ -1,15 +1,17 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import type { ArtistRaw, ReleaseHydrated } from '$lib/types';
-	import { makeImageLink } from '$lib/utils';
+	import { makeImageLink, sortReleasesByDate } from '$lib/utils';
 
 	let { data }: { data: { artist: ArtistRaw; releases: ReleaseHydrated[] } } = $props();
 
 	const { name, bio, website_url, image_ipfs_cid } = data.artist;
 
-	const lps = data.releases.filter((release) => release.release_type === 'album');
-	const eps = data.releases.filter((release) => release.release_type === 'ep');
-	const singles = data.releases.filter((release) => release.release_type === 'single');
+	const releasesSorted = sortReleasesByDate(data.releases);
+
+	const lps = releasesSorted.filter((release) => release.release_type === 'album');
+	const eps = releasesSorted.filter((release) => release.release_type === 'ep');
+	const singles = releasesSorted.filter((release) => release.release_type === 'single');
 </script>
 
 <svelte:head>
@@ -104,8 +106,7 @@
 			gap: 2rem;
 		}
 	}
-	h2,
-	h3 {
+	h2 {
 		margin: 0;
 		padding: 0;
 	}

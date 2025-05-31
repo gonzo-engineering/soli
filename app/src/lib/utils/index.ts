@@ -1,4 +1,5 @@
 import { PUBLIC_GATEWAY_URL } from '$env/static/public';
+import type { ReleaseHydrated } from '$lib/types';
 
 export const prettifyDuration = (durationInSeconds: number) => {
 	const minutes = Math.floor(durationInSeconds / 60);
@@ -31,4 +32,10 @@ export const formatReleaseType = (type: string) => {
 		default:
 			return type;
 	}
+};
+
+export const sortReleasesByDate = (releases: ReleaseHydrated[]) => {
+	return releases.sort((a, b) => {
+		return new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
+	});
 };
