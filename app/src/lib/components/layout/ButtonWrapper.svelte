@@ -4,6 +4,7 @@
 </script>
 
 <div
+	class="button-wrapper"
 	onclick={onClickFunction}
 	onkeydown={(e) => {
 		if (e.key === 'Enter' || e.key === ' ') {
@@ -15,3 +16,14 @@
 >
 	{@render children()}
 </div>
+
+<style>
+	.button-wrapper {
+		display: flex;
+		justify-content: right;
+	}
+	.button-wrapper:hover {
+		cursor: pointer;
+		opacity: 0.8;
+	}
+</style>

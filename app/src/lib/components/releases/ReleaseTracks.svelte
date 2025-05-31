@@ -50,9 +50,4 @@
 	tr:not(:last-child) {
 		border-bottom: 1px solid gray;
 	}
-	.play-button-container {
-		display: flex;
-		justify-content: end;
-		align-items: center;
-	}
 </style>

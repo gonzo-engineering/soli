@@ -4,6 +4,7 @@
 	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTracks from '$lib/components/releases/ReleaseTracks.svelte';
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
+	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 
 	let {
 		data
@@ -46,8 +47,8 @@
 		class="cover-art"
 	/>
 
-	<button
-		onclick={() => {
+	<ButtonWrapper
+		onClickFunction={() => {
 			setActiveSong(
 				release.tracks[0],
 				release,
@@ -58,8 +59,10 @@
 			userState.autoPlay = true;
 		}}
 	>
-		Play full {releaseType === 'ep' ? 'EP' : releaseType}
-	</button>
+		<div class="play-full-release-button">
+			Play full {releaseType === 'ep' ? 'EP' : releaseType}
+		</div>
+	</ButtonWrapper>
 
 	<ReleaseTracks {release} profileData={data.profileData} session={data.session} />
 
@@ -106,7 +109,11 @@
 		border-radius: 4px;
 		width: fit-content;
 	}
-	button:hover {
-		cursor: pointer;
+	.play-full-release-button {
+		background-color: var(--color-accent);
+		color: var(--color-background);
+		width: 100%;
+		border-radius: 4px;
+		text-align: center;
 	}
 </style>
