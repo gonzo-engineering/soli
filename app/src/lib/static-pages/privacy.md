@@ -1,7 +1,7 @@
 ---
-slug: privacy
 title: Privacy Policy
 description: All the seedy things we don't do with your data.
+parentSection: null
 ---
 
 We care about your privacy. No really, we do. Here’s how we handle your data:
@@ -35,4 +35,4 @@ We use minimal cookies to keep you logged in. No tracking cookies.
 
 You can access, update, or delete your data at any time. If you’re in the EU, this includes full GDPR rights.
 
-If you have questions or concerns, email us.
+If you have questions or concerns, [email us](/contact).

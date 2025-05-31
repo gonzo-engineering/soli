@@ -1,10 +1,10 @@
 ---
-slug: terms-of-service
 title: Terms of Service
 description: A few house rules for those using Soli.
+parentSection: null
 ---
 
-Welcome to Soli — an open source, not for profit, artist-centric platform for discovering and streaming independent music.
+Soli is an open source, not for profit, artist-centric platform for discovering and streaming independent music.
 
 By using Soli, you agree to the following:
 
@@ -22,7 +22,7 @@ When you top up your balance, you receive streaming credits ("tokens"). These ar
 
 ### 4. Payments to Artists
 
-Each time you stream a track, part of your token balance goes directly to the artist at you. Our payout system is transparent and explained [here](/about#payments).
+Each time you stream a track, part of your token balance goes directly to the artist. Our payout system is transparent and explained [here](/remuneration).
 
 ### 5. Platform Access
 
@@ -32,4 +32,4 @@ We do our best to keep Soli running, but we can’t guarantee uninterrupted serv
 
 We may update these terms occasionally. When we do, we’ll let you know clearly and ahead of time.
 
-Questions? Email us.
+Questions? [Get in touch](/contact).

@@ -1,7 +1,7 @@
 ---
-slug: pledge
 title: Pledge to Artists
 description: Soli exists to support artists - not exploit them. Here is what we promise.
+parentSection: about
 ---
 
 Soli exists to support musicians - not exploit them. Here is what we promise:
