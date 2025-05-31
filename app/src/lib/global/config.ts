@@ -15,3 +15,13 @@ export const TABLES = {
 	streams: 'streams',
 	betaUsers: 'beta-users'
 };
+
+export const PUBLIC_PATH_ROOTS = [
+	'/login',
+	'/auth',
+	'/about',
+	'/contact',
+	'/privacy',
+	'/terms',
+	'/api/checkout'
+];

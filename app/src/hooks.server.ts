@@ -1,4 +1,8 @@
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$lib/global/config';
+import {
+	PUBLIC_PATH_ROOTS,
+	PUBLIC_SUPABASE_ANON_KEY,
+	PUBLIC_SUPABASE_URL
+} from '$lib/global/config';
 import { createServerClient } from '@supabase/ssr';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
@@ -56,13 +60,10 @@ const authGuard: Handle = async ({ event, resolve }) => {
 	const { session, user } = await event.locals.safeGetSession();
 	event.locals.session = session;
 	event.locals.user = user;
+
 	if (
 		!event.locals.session &&
-		!event.url.pathname.startsWith('/login') &&
-		!event.url.pathname.startsWith('/auth') &&
-		!event.url.pathname.startsWith('/about') &&
-		!event.url.pathname.startsWith('/contact') &&
-		!event.url.pathname.startsWith('/api/checkout')
+		!PUBLIC_PATH_ROOTS.some((path) => event.url.pathname.startsWith(path))
 	) {
 		redirect(303, '/login');
 	}
