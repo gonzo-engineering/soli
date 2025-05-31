@@ -20,4 +20,7 @@
 	.main {
 		margin: 2rem 0;
 	}
+	h2 {
+		max-width: 90%;
+	}
 </style>

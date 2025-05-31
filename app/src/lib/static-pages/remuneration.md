@@ -1,5 +1,5 @@
 ---
-title: How remuneration works
+title: How remuneration on Soli works
 description: How artists are paid on Soli.
 parentSection: about
 ---
