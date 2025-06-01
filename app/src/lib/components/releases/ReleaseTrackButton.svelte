@@ -4,6 +4,7 @@
 	import type { Session } from '@supabase/supabase-js';
 	import Pause from '../icons/Pause.svelte';
 	import Play from '../icons/Play.svelte';
+	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 
 	let {
 		track,
@@ -19,9 +20,8 @@
 </script>
 
 {#if userState.liveBalance}
-	<button
-		class="play-button"
-		onclick={() => {
+	<ButtonWrapper
+		onClickFunction={() => {
 			if (track.ipfs_cid == userState.activeSong?.ipfs_cid) {
 				userState.activeSongIsPaused = !userState.activeSongIsPaused;
 			} else {
@@ -37,13 +37,30 @@
 		}}
 	>
 		{#if track.ipfs_cid === userState.activeSong?.ipfs_cid && !userState.activeSongIsPaused}
-			<Pause />
+			<div class="play-button"><Pause /></div>
 		{:else}
-			<Play />
+			<div class="play-button"><Play /></div>
 		{/if}
-	</button>
+	</ButtonWrapper>
 {:else}
 	<button class="play-button" disabled>
 		<span>Play</span>
 	</button>
 {/if}
+
+<style>
+	button:hover {
+		cursor: pointer;
+	}
+	.play-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		padding: 10%;
+		border-radius: 50%;
+		background-color: var(--color-accent);
+		color: var(--color-background);
+	}
+</style>
