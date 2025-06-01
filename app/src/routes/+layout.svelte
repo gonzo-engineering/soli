@@ -9,10 +9,11 @@
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import AudioPlayer from '$lib/components/audio-player/AudioPlayer.svelte';
 
-	export let data;
+	let { children, data } = $props();
 
-	let { supabase, session } = data;
-	$: ({ supabase, session } = data);
+	let { supabase, session } = $state(data);
+
+	let menuIsOpen = $state(false);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
@@ -22,6 +23,13 @@
 		});
 		return () => data.subscription.unsubscribe();
 	});
+
+	const menuLinks = [
+		{ href: '/account', label: 'Account' },
+		{ href: '/releases', label: 'Releases' },
+		{ href: '/artists', label: 'Artists' },
+		{ href: '/about', label: 'About' }
+	];
 </script>
 
 <svelte:head>
@@ -29,10 +37,27 @@
 	<meta name="theme-color" content="#f0f0f0" media="(prefers-color-scheme: light)" />
 </svelte:head>
 
-<Header userIsLoggedIn={session} />
+{#if menuIsOpen}
+	<div class="menu">
+		<Header bind:menuIsOpen />
+		<nav>
+			<ul>
+				{#if session}
+					{#each menuLinks as link}
+						<li><a href={link.href} onclick={() => (menuIsOpen = !menuIsOpen)}>{link.label}</a></li>
+					{/each}
+				{:else}
+					<li><a href="/login" onclick={() => (menuIsOpen = !menuIsOpen)}>Login</a></li>
+				{/if}
+			</ul>
+		</nav>
+	</div>
+{:else}
+	<Header bind:menuIsOpen />
+{/if}
 
 <main>
-	<slot />
+	{@render children()}
 </main>
 
 <Footer />
@@ -50,5 +75,27 @@
 <style>
 	main {
 		margin: 0 1rem;
+	}
+	.menu {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: var(--color-background);
+		z-index: 1000;
+	}
+	ul {
+		list-style: none;
+		padding: 1rem;
+		margin: 0;
+	}
+	li {
+		margin: 0.5rem 0;
+	}
+	a {
+		text-decoration: none;
+		color: var(--color-text);
+		font-size: 1.4rem;
 	}
 </style>

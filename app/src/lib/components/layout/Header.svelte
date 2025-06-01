@@ -1,40 +1,41 @@
 <script lang="ts">
 	import Menu from '../icons/Menu.svelte';
+	import Cross from '../icons/Cross.svelte';
 	import Search from '../icons/Search.svelte';
 	import ButtonWrapper from './ButtonWrapper.svelte';
 
-	let menuIsOpen = $state(false);
+	let {
+		menuIsOpen = $bindable()
+	}: {
+		menuIsOpen: boolean;
+	} = $props();
+
 	let searchIsOpen = $state(false);
 </script>
 
 <header>
-	<ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
+	<!-- <ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
 		<Search />
-	</ButtonWrapper>
+	</ButtonWrapper> -->
+	<div style="width: 30px;"></div>
 	<a href="/">
 		<img src="/full-logo-white.png" class="icon dark" alt="Soli emblem" />
 		<img src="/full-logo-black.png" class="icon light" alt="Soli emblem" />
 	</a>
 	<ButtonWrapper onClickFunction={() => (menuIsOpen = !menuIsOpen)}>
-		<Menu />
+		{#if menuIsOpen}
+			<Cross />
+		{:else}
+			<Menu />
+		{/if}
 	</ButtonWrapper>
 </header>
 
-{#if menuIsOpen}
-	<nav class="menu">
-		<ul>
-			<li><a href="/about">Playlists</a></li>
-			<li><a href="/">Collections</a></li>
-			<li><a href="/account">Account</a></li>
-		</ul>
-	</nav>
-{/if}
-
-{#if searchIsOpen}
+<!-- {#if searchIsOpen}
 	<div class="search-container">
 		<input type="text" placeholder="Search..." />
 	</div>
-{/if}
+{/if} -->
 
 <style>
 	header {
