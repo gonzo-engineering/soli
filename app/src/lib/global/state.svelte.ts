@@ -1,8 +1,18 @@
-import type { ReleaseHydrated, TrackRaw, UserState } from '$lib/types';
+import type { ReleaseHydrated, TrackRaw } from '../../../../shared/types';
 import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL, TABLES } from './config';
 
 const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
+
+interface UserState {
+	activeSong: TrackRaw | null;
+	activeSongRelease: ReleaseHydrated | null;
+	activeSongUrl: string | null;
+	activeSongIsPaused: boolean;
+	autoPlay: boolean;
+	liveBalance: number | null;
+	payPerStream: number;
+}
 
 export const userState: UserState = $state({
 	activeSong: null,

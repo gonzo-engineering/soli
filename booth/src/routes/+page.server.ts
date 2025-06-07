@@ -52,6 +52,7 @@ export const actions: Actions = {
       const formData = await request.formData();
       const uploadedFile = formData?.get("fileToUpload") as File;
       const uploadedFileTitle = formData?.get("title") as string;
+      const artistId = formData?.get("artistId") as string;
       const artistGroup = formData?.get("artistGroup") as string;
 
       if (!uploadedFile.name || uploadedFile.size === 0) {
@@ -65,6 +66,15 @@ export const actions: Actions = {
         .file(uploadedFile)
         .name(uploadedFileTitle)
         .group(artistGroup);
+
+      // TODO: Add track to Supabase database
+      // const { data, error } = await supabase.from('tracks').insert({
+      //   title: uploadedFileTitle,
+      //   ipfs_cid: upload.cid,
+      //   artist_id: artistId,
+      //   duration_seconds: 0, // Placeholder, needs to be calculated
+      //   created_at: new Date().toISOString()
+      // });
 
       const url = await pinata.gateways.public.convert(upload.cid);
       return { url, filename: uploadedFile.name, status: 200 };

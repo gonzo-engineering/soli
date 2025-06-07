@@ -1,5 +1,5 @@
 import { PUBLIC_GATEWAY_URL } from '$env/static/public';
-import type { ReleaseHydrated } from '$lib/types';
+import type { ReleaseHydrated } from '../../../../shared/types';
 
 export const prettifyDuration = (durationInSeconds: number) => {
 	const minutes = Math.floor(durationInSeconds / 60);

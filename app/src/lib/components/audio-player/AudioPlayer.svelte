@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setActiveSong, userState } from '$lib/global/state.svelte.js';
-	import type { ReleaseHydrated } from '$lib/types';
+	import type { ReleaseHydrated } from '../../../../../shared/types';
 
 	let {
 		userId,

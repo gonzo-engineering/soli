@@ -4,16 +4,6 @@ export interface UserProfile {
   pay_per_stream: number;
 }
 
-export interface UserState {
-  activeSong: TrackRaw | null;
-  activeSongRelease: ReleaseHydrated | null;
-  activeSongUrl: string | null;
-  activeSongIsPaused: boolean;
-  autoPlay: boolean;
-  liveBalance: number | null;
-  payPerStream: number;
-}
-
 export interface ArtistRaw {
   id: string;
   name: string;

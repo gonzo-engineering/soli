@@ -1,6 +1,6 @@
 import { TABLES } from '$lib/global/config';
 import { supabase } from '$lib/server/supabase';
-import type { ArtistRaw } from '$lib/types';
+import type { ArtistRaw } from '../../../../../../shared/types';
 import { json } from '@sveltejs/kit';
 
 export async function GET({ params }) {

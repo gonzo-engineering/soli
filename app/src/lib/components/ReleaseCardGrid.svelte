@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ReleaseHydrated } from '$lib/types';
+	import type { ReleaseHydrated } from '../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
 	import ReleaseCard from './ReleaseCard.svelte';
 

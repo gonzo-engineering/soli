@@ -1,4 +1,4 @@
-import type { ArtistRaw, ReleaseHydrated } from '$lib/types/index.js';
+import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
 
 // TODO: Explore static generation where possible to
 // improve performance and keep requests to a minimum.

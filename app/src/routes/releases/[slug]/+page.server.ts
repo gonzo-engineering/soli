@@ -1,4 +1,4 @@
-import type { ReleaseHydrated } from '$lib/types/index.js';
+import type { ReleaseHydrated } from '../../../../../shared/types';
 
 export const load = async ({ fetch, params }) => {
 	const releases: ReleaseHydrated[] = await fetch('/api/releases').then((res) => res.json());
