@@ -20,6 +20,7 @@ export interface ArtistRaw {
 	bio?: string;
 	website_url?: string;
 	stripe_account_id: string;
+	pinata_group_id: string;
 	created_at: string;
 	image_ipfs_cid?: string;
 }

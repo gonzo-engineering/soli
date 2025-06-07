@@ -8,12 +8,12 @@
 
 	let { data, form } = $props();
 
-	let { session, supabase, profileData, artistProfiles } = $state(data);
+	let { session, profileData } = $state(data);
 
-	let profileForm: HTMLFormElement;
 	let firstName: string = profileData?.first_name ?? '';
 	let tokensBalance: number = profileData?.tokens_balance ?? 0;
 
+	let profileForm = $state();
 	let loading = $state(false);
 	let payPerStream = $state(profileData?.pay_per_stream ?? 3);
 	let topUpAmount = $state(0);
@@ -53,7 +53,7 @@
 </svelte:head>
 
 <ContentBlock>
-	<h2>Hi, {data.profileData?.first_name}</h2>
+	<h2>Hi there</h2>
 	<div class="form-widget">
 		<h3>Details and settings</h3>
 		<form
@@ -144,18 +144,6 @@
 		</div>
 	</form>
 </ContentBlock>
-
-{#if artistProfiles && artistProfiles.length > 0}
-	<ContentBlock>
-		<h3>Artist dashboard</h3>
-		<h4>Your artist profiles</h4>
-		{#each artistProfiles as profile (profile.id)}
-			<div>
-				<a href={`/artists/${profile.id}`}>{profile.name}</a>
-			</div>
-		{/each}
-	</ContentBlock>
-{/if}
 
 <style>
 	hr {
