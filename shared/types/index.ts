@@ -18,10 +18,8 @@ export interface ArtistRaw {
 export interface TrackRaw {
   id: string;
   artist_id: string;
-  release_id: string;
   title: string;
   ipfs_cid: string;
-  manifest_cid?: string;
   duration_seconds: number;
   created_at: string;
 }

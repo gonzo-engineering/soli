@@ -1,22 +1,35 @@
 import { fail, json, type Actions } from "@sveltejs/kit";
 import { pinata } from "$lib/server/pinata";
 import { supabase } from "$lib/server/stripe";
-import type { ArtistRaw } from "../../../shared/types";
+import type { ArtistRaw, TrackRaw } from "../../../shared/types";
 
 export const load = async () => {
   const groups = await pinata.groups.private.list();
 
   const {
-    data,
-    error,
+    data: artists,
+    error: artistsError,
   }: {
     data: ArtistRaw[] | null;
     error: Error | null;
   } = await supabase.from("artists").select("*");
 
-  if (error) {
-    console.error("Error fetching artists:", error);
+  // Get all songs
+  const {
+    data: songs,
+    error: songsError,
+  }: {
+    data: TrackRaw[] | null;
+    error: Error | null;
+  } = await supabase.from("tracks").select("*");
+
+  if (artistsError || !artists) {
+    console.error("Error fetching artists:", artistsError);
     return fail(500, { error: "Failed to fetch artists" });
+  }
+  if (songsError || !songs) {
+    console.error("Error fetching songs:", songsError);
+    return fail(500, { error: "Failed to fetch songs" });
   }
 
   // const {
@@ -43,7 +56,7 @@ export const load = async () => {
   // 	})
   // );
 
-  return { groups, artists: data };
+  return { groups, artists, songs };
 };
 
 export const actions: Actions = {
