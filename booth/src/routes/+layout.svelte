@@ -4,7 +4,7 @@
 
 <div class="dashboard-container">
   <div class="side-panel">
-    <h1>Booth</h1>
+    <h1>Soli • Booth</h1>
   </div>
   <main>
     <slot />
@@ -20,7 +20,7 @@
     overflow: hidden;
   }
   .side-panel {
-    width: 300px;
+    width: 350px;
     text-align: center;
     color: white;
     background-color: #313131;
