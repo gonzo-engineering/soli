@@ -2,6 +2,8 @@ import { fail, json, type Actions } from "@sveltejs/kit";
 import { pinata } from "$lib/server/pinata";
 import { supabase } from "$lib/server/stripe";
 import type { ReleaseRaw } from "../../../shared/types";
+import { parseFile } from "music-metadata";
+import fs from "fs/promises";
 
 // const {
 // 	data: connectedArtistsData,
@@ -50,6 +52,18 @@ export const actions: Actions = {
         });
       }
 
+      // Write to temporary file system
+      const bytes = await uploadedFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const tempPath = `/tmp/${uploadedFile.name}`;
+
+      await fs.writeFile(tempPath, buffer);
+
+      const metadata = await parseFile(tempPath);
+      const duration = Math.round(metadata.format.duration || 0);
+
+      await fs.unlink(tempPath); // Clean up temporary file
+
       const pinataFileName = `${artistName} - ${uploadedFileTitle}`;
 
       const upload = await pinata.upload.private
@@ -61,7 +75,7 @@ export const actions: Actions = {
         title: uploadedFileTitle,
         ipfs_cid: upload.cid,
         artist_id: artistId,
-        duration_seconds: 0, // Placeholder, need to calculate
+        duration_seconds: duration,
       });
 
       if (error) {

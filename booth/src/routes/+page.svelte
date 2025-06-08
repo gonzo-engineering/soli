@@ -82,7 +82,6 @@
         <div class="card">
           <img src={makeImageLink(release.artwork_ipfs_cid, 100)} alt="" />
           <h3>{release.title} ({release.release_type})</h3>
-          <div>Supabase UUID: {release.id}</div>
           <ol>
             {#each release.tracks as track}
               <li>
@@ -100,8 +99,6 @@
       {#each activeArtistSongs as song}
         <div class="card">
           <h3>{song.title}</h3>
-          <div>Supabase UUID: {song.id}</div>
-          <div>Pinata CID: {song.ipfs_cid}</div>
         </div>
       {/each}
     </div>
@@ -249,9 +246,6 @@
     flex-direction: row;
     gap: 2rem;
   }
-  .upload-form {
-    text-align: center;
-  }
   .forms {
     display: flex;
     flex-direction: column;
@@ -267,7 +261,9 @@
   .hidden {
     display: none;
   }
+  .releases-list,
   .songs-list {
+    min-width: 300px;
     max-width: 500px;
   }
   .card,
