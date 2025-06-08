@@ -1,7 +1,13 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import type { GroupListResponse } from "pinata";
-  import type { ArtistRaw, TrackRaw } from "../../../shared/types";
+  import type {
+    ArtistRaw,
+    ReleaseHydrated,
+    ReleaseRaw,
+    TrackRaw,
+  } from "../../../shared/types";
+  import { makeImageLink } from "$lib/utils";
 
   let {
     form,
@@ -12,11 +18,24 @@
       groups: GroupListResponse;
       artists: ArtistRaw[];
       songs: TrackRaw[];
+      releasesRaw: ReleaseRaw[];
+      releasesHydrated: ReleaseHydrated[];
     };
   } = $props();
 
   let uploading = $state(false);
   let activeArtist: ArtistRaw | null = $state(null);
+  let activeArtistSongs = $derived(
+    data.songs.filter((song) => song.artist_id === activeArtist?.id)
+  );
+  let activeArtistReleasesRaw = $derived(
+    data.releasesRaw.filter((release) => release.artist_id === activeArtist?.id)
+  );
+  let activeArtistReleasesHydrated = $derived(
+    data.releasesHydrated.filter(
+      (release) => release.artist_id === activeArtist?.id
+    )
+  );
 
   function handleUpload() {
     uploading = true;
@@ -32,33 +51,54 @@
   <meta name="description" content="Upload and manage your music." />
 </svelte:head>
 
-<h2>
-  Active artist: {activeArtist ? activeArtist.name : "None selected"}
-</h2>
+<div class="artist-selector">
+  <h2>
+    Active artist: <select
+      bind:value={activeArtist}
+      onchange={() => {
+        activeArtistSongs = data.songs.filter(
+          (song) => song.artist_id === activeArtist?.id
+        );
+        activeArtistReleasesHydrated = data.releasesHydrated.filter(
+          (release) => release.artist_id === activeArtist?.id
+        );
+      }}
+    >
+      <option value={null}>Select an artist</option>
+      {#each data.artists as artist}
+        <option value={artist}>{artist.name}</option>
+      {/each}
+    </select>
+  </h2>
+</div>
 
 <div class="dashboard">
-  <div class="artists-list">
-    <h2>Artists</h2>
-    {#each data.artists as artist}
-      <div
-        class="artist-card"
-        class:artist-card-active={activeArtist?.id === artist.id}
-        onclick={() => (activeArtist = artist)}
-        onkeydown={() => (activeArtist = artist)}
-        tabindex="0"
-        role="button"
-      >
-        <h3>{artist.name}</h3>
-        <div>Supabase UUID: {artist.id}</div>
-        <div>Pinata group ID: {artist.pinata_group_id ?? "n/a"}</div>
-      </div>
-    {/each}
-  </div>
   {#if activeArtist}
+    <div class="releases-list">
+      <h2>
+        Releases ({activeArtistReleasesHydrated.length})
+      </h2>
+      {#each activeArtistReleasesHydrated as release}
+        <div class="card">
+          <img src={makeImageLink(release.artwork_ipfs_cid, 100)} alt="" />
+          <h3>{release.title} ({release.release_type})</h3>
+          <div>Supabase UUID: {release.id}</div>
+          <ol>
+            {#each release.tracks as track}
+              <li>
+                {track.title}
+              </li>
+            {/each}
+          </ol>
+        </div>
+      {/each}
+    </div>
     <div class="songs-list">
-      <h2>Songs</h2>
-      {#each data.songs.filter((song) => song.artist_id === activeArtist?.id) as song}
-        <div class="song-card">
+      <h2>
+        Songs ({activeArtistSongs.length})
+      </h2>
+      {#each activeArtistSongs as song}
+        <div class="card">
           <h3>{song.title}</h3>
           <div>Supabase UUID: {song.id}</div>
           <div>Pinata CID: {song.ipfs_cid}</div>
@@ -67,49 +107,155 @@
     </div>
   {/if}
   {#if activeArtist}
-    <div class="upload-form">
-      <h2>Upload a song</h2>
-      <form
-        method="POST"
-        enctype="multipart/form-data"
-        use:enhance={handleUpload}
-      >
-        <input type="file" id="file" name="fileToUpload" accept=".mp3" />
-        <label for="file">Choose an MP3 file</label>
-        <input type="text" name="title" placeholder="Title" required />
-        <input
-          type="text"
-          name="artistName"
-          value={activeArtist.name}
-          required
-        />
-        <input type="text" name="artistID" value={activeArtist.id} required />
-        <input
-          type="text"
-          name="artistGroup"
-          value={activeArtist.pinata_group_id}
-          required
-        />
-        <button disabled={uploading} type="submit">
-          {uploading ? "Uploading..." : "Upload"}
-        </button>
-      </form>
-      {#if form && form.status === 200}
-        <p>File uploaded successfully!</p>
-      {/if}
+    <div class="forms">
+      <div class="upload-form">
+        <h2>Upload a song</h2>
+        <form
+          method="POST"
+          enctype="multipart/form-data"
+          action="?/uploadTrack"
+          use:enhance={handleUpload}
+        >
+          <input type="file" id="file" name="fileToUpload" accept=".mp3" />
+          <label for="file">Choose an MP3 file</label>
+          <input type="text" name="title" placeholder="Title" required />
+          <input
+            type="text"
+            name="artistName"
+            value={activeArtist.name}
+            class="hidden"
+            required
+          />
+          <input
+            type="text"
+            name="artistID"
+            value={activeArtist.id}
+            class="hidden"
+            required
+          />
+          <input
+            type="text"
+            name="artistGroup"
+            value={activeArtist.pinata_group_id}
+            class="hidden"
+            required
+          />
+          <button disabled={uploading} type="submit">
+            {uploading ? "Uploading..." : "Upload"}
+          </button>
+        </form>
+        {#if form && form.status === 200}
+          <p>File uploaded successfully!</p>
+        {/if}
+      </div>
+      <div class="add-release-form">
+        <h2>Add a release</h2>
+        <form
+          method="POST"
+          action="?/addRelease"
+          enctype="multipart/form-data"
+          use:enhance={handleUpload}
+        >
+          <input
+            type="file"
+            id="releaseArtwork"
+            name="releaseArtwork"
+            accept=".jpg,.jpeg,.png"
+          />
+          <label for="releaseArtwork">Choose release artwork</label>
+          <input
+            type="text"
+            name="releaseTitle"
+            placeholder="Release Title"
+            required
+          />
+          <select name="releaseType" required>
+            <option value="" disabled selected>Select release type</option>
+            <option value="album">album</option>
+            <option value="single">single</option>
+            <option value="ep">ep</option>
+          </select>
+          <input
+            type="text"
+            name="artistID"
+            value={activeArtist.id}
+            class="hidden"
+            required
+          />
+          <input
+            type="date"
+            name="releaseDate"
+            placeholder="Release Date"
+            required
+          />
+          <input
+            type="text"
+            name="releaseTags"
+            placeholder="Tags (comma-separated)"
+            required
+          />
+          <button disabled={uploading} type="submit">
+            {uploading ? "Adding..." : "Add Release"}
+          </button>
+        </form>
+        {#if form && form.status === 200}
+          <p>Release added successfully!</p>
+        {/if}
+      </div>
+      <div class="add-track-to-release-form">
+        <h2>Add a track to release</h2>
+        <form
+          method="POST"
+          action="?/addTrackToRelease"
+          use:enhance={handleUpload}
+        >
+          <select name="releaseID" required>
+            <option value="" disabled selected>Select a release</option>
+            {#each activeArtistReleasesRaw as release}
+              <option value={release.id}>{release.title}</option>
+            {/each}
+          </select>
+          <select name="trackID" required>
+            <option value="" disabled selected>Select a track</option>
+            {#each activeArtistSongs as song}
+              <option value={song.id}>{song.title}</option>
+            {/each}
+          </select>
+          <input
+            type="number"
+            name="trackNumber"
+            placeholder="Track Number"
+            min="1"
+            required
+          />
+          <button disabled={uploading} type="submit">
+            {uploading ? "Adding..." : "Add Track"}
+          </button>
+        </form>
+        {#if form && form.status === 200}
+          <p>Track added to release successfully!</p>
+        {/if}
+      </div>
     </div>
   {/if}
 </div>
 
 <style>
+  .artist-selector {
+    margin-bottom: 1rem;
+  }
   .dashboard {
     display: flex;
     flex-direction: row;
     gap: 2rem;
-    padding: 2rem;
   }
   .upload-form {
     text-align: center;
+  }
+  .forms {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
   form {
     display: flex;
@@ -118,20 +264,18 @@
     max-width: 300px;
     margin: auto;
   }
-  .artists-list,
+  .hidden {
+    display: none;
+  }
   .songs-list {
     max-width: 500px;
   }
-  .artist-card,
-  .song-card {
+  .card,
+  .card {
     border: 1px solid #ccc;
     padding: 1rem;
     margin: 0.5rem 0;
-    cursor: pointer;
+    /* cursor: pointer; */
     border-radius: 5px;
-  }
-  .artist-card-active {
-    color: white;
-    background-color: #313131;
   }
 </style>

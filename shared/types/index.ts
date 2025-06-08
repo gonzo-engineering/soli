@@ -38,15 +38,15 @@ export interface ReleaseHydrated {
 
 // Not currently using as the API returns the hydrated version
 
-// export interface ReleaseRaw {
-// 	id: string;
-// 	artist_id: string;
-// 	title: string;
-// 	release_type: string;
-// 	artwork_ipfs_cid: string;
-// 	release_date: string;
-// 	tags: string[];
-// 	ipfs_manifest_cid?: string;
-// 	created_at: string;
-// 	updated_at: string;
-// }
+export interface ReleaseRaw {
+  id: string;
+  artist_id: string;
+  title: string;
+  release_type: string;
+  artwork_ipfs_cid: string;
+  release_date: string;
+  tags: string[];
+  ipfs_manifest_cid?: string;
+  created_at: string;
+  updated_at: string;
+}
