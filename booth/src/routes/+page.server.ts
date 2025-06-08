@@ -1,7 +1,6 @@
 import { fail, json, type Actions } from "@sveltejs/kit";
 import { pinata } from "$lib/server/pinata";
 import { supabase } from "$lib/server/stripe";
-import type { ReleaseRaw } from "../../../shared/types";
 import { parseFile } from "music-metadata";
 import fs from "fs/promises";
 
@@ -92,7 +91,6 @@ export const actions: Actions = {
   },
   addRelease: async ({ request }) => {
     try {
-      console.log("Adding release...");
       const formData = await request.formData();
       const releaseArtwork = formData.get("releaseArtwork") as File;
       const releaseName = formData.get("releaseTitle") as string;

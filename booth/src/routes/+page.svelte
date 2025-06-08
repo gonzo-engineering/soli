@@ -8,6 +8,7 @@
     TrackRaw,
   } from "../../../shared/types";
   import { makeImageLink } from "$lib/utils";
+  import { formatReleaseType } from "../../../shared/utils";
 
   let {
     form,
@@ -79,16 +80,28 @@
         Releases ({activeArtistReleasesHydrated.length})
       </h2>
       {#each activeArtistReleasesHydrated as release}
-        <div class="card">
-          <img src={makeImageLink(release.artwork_ipfs_cid, 100)} alt="" />
-          <h3>{release.title} ({release.release_type})</h3>
-          <ol>
-            {#each release.tracks as track}
-              <li>
-                {track.title}
-              </li>
-            {/each}
-          </ol>
+        <div class="card release-card">
+          <div>
+            <img
+              class="cover-artwork"
+              src={makeImageLink(release.artwork_ipfs_cid, 100)}
+              alt=""
+            />
+          </div>
+
+          <div>
+            <h3>{release.title}</h3>
+            <div><b>Type</b>: {formatReleaseType(release.release_type)}</div>
+            <div><b>Release date</b>: {release.release_date}</div>
+            <div><b>Track</b>:</div>
+            <ol>
+              {#each release.tracks as track}
+                <li>
+                  {track.title}
+                </li>
+              {/each}
+            </ol>
+          </div>
         </div>
       {/each}
     </div>
@@ -250,13 +263,13 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    flex: 1;
   }
   form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     max-width: 300px;
-    margin: auto;
   }
   .hidden {
     display: none;
@@ -265,13 +278,20 @@
   .songs-list {
     min-width: 300px;
     max-width: 500px;
+    flex: 1;
   }
-  .card,
   .card {
     border: 1px solid #ccc;
     padding: 1rem;
     margin: 0.5rem 0;
     /* cursor: pointer; */
     border-radius: 5px;
+  }
+  .release-card {
+    display: flex;
+    gap: 1rem;
+  }
+  .cover-artwork {
+    aspect-ratio: 1 / 1;
   }
 </style>

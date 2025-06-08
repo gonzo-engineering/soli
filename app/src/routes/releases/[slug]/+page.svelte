@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { ReleaseHydrated, UserProfile } from '../../../../../shared/types';
-	import { formatReleaseType, makeImageLink } from '$lib/utils';
+	import { makeImageLink } from '$lib/utils';
 	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTracks from '$lib/components/releases/ReleaseTracks.svelte';
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
+	import { formatReleaseType } from '../../../../../shared/utils';
 
 	let {
 		data

@@ -6,6 +6,7 @@ import type {
   ReleaseRaw,
   TrackRaw,
 } from "../../../shared/types";
+import { sortReleasesByDate } from "../../../shared/utils";
 
 export const load = async () => {
   const {
@@ -63,5 +64,10 @@ export const load = async () => {
     return 0;
   });
 
-  return { artists, releasesRaw, releasesHydrated, songs };
+  return {
+    artists,
+    releasesRaw,
+    releasesHydrated: sortReleasesByDate(releasesHydrated),
+    songs,
+  };
 };
