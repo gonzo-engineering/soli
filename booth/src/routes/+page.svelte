@@ -16,6 +16,7 @@
   } = $props();
 
   let uploading = $state(false);
+  let activeArtist: ArtistRaw | null = $state(null);
 
   function handleUpload() {
     uploading = true;
@@ -31,51 +32,73 @@
   <meta name="description" content="Upload and manage your music." />
 </svelte:head>
 
+<h2>
+  Active artist: {activeArtist ? activeArtist.name : "None selected"}
+</h2>
+
 <div class="dashboard">
   <div class="artists-list">
     <h2>Artists</h2>
     {#each data.artists as artist}
-      <div class="file">
+      <div
+        class="artist-card"
+        class:artist-card-active={activeArtist?.id === artist.id}
+        onclick={() => (activeArtist = artist)}
+        onkeydown={() => (activeArtist = artist)}
+        tabindex="0"
+        role="button"
+      >
         <h3>{artist.name}</h3>
         <div>Supabase UUID: {artist.id}</div>
         <div>Pinata group ID: {artist.pinata_group_id ?? "n/a"}</div>
       </div>
     {/each}
   </div>
-  <div class="songs-list">
-    <h2>Songs</h2>
-    {#each data.songs as song}
-      <div class="file">
-        <h3>{song.title}</h3>
-        <div>Supabase UUID: {song.id}</div>
-        <div>Pinata CID: {song.ipfs_cid}</div>
-      </div>
-    {/each}
-  </div>
-  <div class="upload-form">
-    <h2>Upload a song</h2>
-    <form
-      method="POST"
-      enctype="multipart/form-data"
-      use:enhance={handleUpload}
-    >
-      <input type="file" id="file" name="fileToUpload" accept=".mp3" />
-      <label for="file">Choose an MP3 file</label>
-      <input type="text" name="title" placeholder="Title" required />
-      <input
-        type="text"
-        name="artistGroup"
-        placeholder="Artist's Pinata group ID"
-        required
-      />
-      <button disabled={uploading} type="submit">
-        {uploading ? "Uploading..." : "Upload"}
-      </button>
-    </form>
-    {#if form && form.status === 200}
-      <p>File uploaded successfully!</p>
-    {/if}
-  </div>
+  {#if activeArtist}
+    <div class="songs-list">
+      <h2>Songs</h2>
+      {#each data.songs.filter((song) => song.artist_id === activeArtist?.id) as song}
+        <div class="song-card">
+          <h3>{song.title}</h3>
+          <div>Supabase UUID: {song.id}</div>
+          <div>Pinata CID: {song.ipfs_cid}</div>
+        </div>
+      {/each}
+    </div>
+  {/if}
+  {#if activeArtist}
+    <div class="upload-form">
+      <h2>Upload a song</h2>
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        use:enhance={handleUpload}
+      >
+        <input type="file" id="file" name="fileToUpload" accept=".mp3" />
+        <label for="file">Choose an MP3 file</label>
+        <input type="text" name="title" placeholder="Title" required />
+        <input
+          type="text"
+          name="artistName"
+          value={activeArtist.name}
+          required
+        />
+        <input type="text" name="artistID" value={activeArtist.id} required />
+        <input
+          type="text"
+          name="artistGroup"
+          value={activeArtist.pinata_group_id}
+          required
+        />
+        <button disabled={uploading} type="submit">
+          {uploading ? "Uploading..." : "Upload"}
+        </button>
+      </form>
+      {#if form && form.status === 200}
+        <p>File uploaded successfully!</p>
+      {/if}
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -99,9 +122,16 @@
   .songs-list {
     max-width: 500px;
   }
-  .file {
+  .artist-card,
+  .song-card {
     border: 1px solid #ccc;
     padding: 1rem;
     margin: 0.5rem 0;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .artist-card-active {
+    color: white;
+    background-color: #313131;
   }
 </style>

@@ -32,6 +32,12 @@ export const load = async () => {
     return fail(500, { error: "Failed to fetch songs" });
   }
 
+  songs.sort((a, b) => {
+    if (a.title < b.title) return -1;
+    if (a.title > b.title) return 1;
+    return 0;
+  });
+
   // const {
   // 	data: connectedArtistsData,
   // 	error: userError
@@ -65,7 +71,8 @@ export const actions: Actions = {
       const formData = await request.formData();
       const uploadedFile = formData?.get("fileToUpload") as File;
       const uploadedFileTitle = formData?.get("title") as string;
-      const artistId = formData?.get("artistId") as string;
+      const artistName = formData?.get("artistName") as string;
+      const artistId = formData?.get("artistID") as string;
       const artistGroup = formData?.get("artistGroup") as string;
 
       if (!uploadedFile.name || uploadedFile.size === 0) {
@@ -74,20 +81,31 @@ export const actions: Actions = {
           message: "You must provide a file to upload",
         });
       }
+      if (!artistName || !artistId || !artistGroup) {
+        return fail(400, {
+          error: true,
+          message: "Artist name, ID, and group are required",
+        });
+      }
+
+      const pinataFileName = `${artistName} - ${uploadedFileTitle}`;
 
       const upload = await pinata.upload.private
         .file(uploadedFile)
-        .name(uploadedFileTitle)
+        .name(pinataFileName)
         .group(artistGroup);
 
-      // TODO: Add track to Supabase database
-      // const { data, error } = await supabase.from('tracks').insert({
-      //   title: uploadedFileTitle,
-      //   ipfs_cid: upload.cid,
-      //   artist_id: artistId,
-      //   duration_seconds: 0, // Placeholder, needs to be calculated
-      //   created_at: new Date().toISOString()
-      // });
+      const { error } = await supabase.from("tracks").insert({
+        title: uploadedFileTitle,
+        ipfs_cid: upload.cid,
+        artist_id: artistId,
+        duration_seconds: 0, // Placeholder, need to calculate
+      });
+
+      if (error) {
+        console.error("Error inserting track into Supabase:", error);
+        return fail(500, { error: true, message: "Failed to save track data" });
+      }
 
       const url = await pinata.gateways.public.convert(upload.cid);
       return { url, filename: uploadedFile.name, status: 200 };
