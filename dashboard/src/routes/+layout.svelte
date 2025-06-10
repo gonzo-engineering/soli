@@ -4,7 +4,7 @@
 
 <div class="dashboard-container">
   <div class="side-panel">
-    <h1>Soli • Booth</h1>
+    <h1>Soli • Dashboard</h1>
   </div>
   <main>
     <slot />

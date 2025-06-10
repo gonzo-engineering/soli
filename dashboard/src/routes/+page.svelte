@@ -48,7 +48,7 @@
 </script>
 
 <svelte:head>
-  <title>Booth · Soli</title>
+  <title>Dashboard · Soli</title>
   <meta name="description" content="Upload and manage your music." />
 </svelte:head>
 
