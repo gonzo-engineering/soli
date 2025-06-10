@@ -9,6 +9,7 @@
   } from "../../../shared/types";
   import { makeImageLink } from "$lib/utils";
   import { formatReleaseType } from "../../../shared/utils";
+  import { dashboardState } from "$lib/state.svelte";
 
   let {
     form,
@@ -25,7 +26,7 @@
   } = $props();
 
   let uploading = $state(false);
-  let activeArtist: ArtistRaw | null = $state(null);
+  let activeArtist: ArtistRaw | null = $derived(dashboardState.activeArtist);
   let activeArtistSongs = $derived(
     data.songs.filter((song) => song.artist_id === activeArtist?.id)
   );
@@ -51,27 +52,6 @@
   <title>Dashboard · Soli</title>
   <meta name="description" content="Upload and manage your music." />
 </svelte:head>
-
-<div class="artist-selector">
-  <h2>
-    Active artist: <select
-      bind:value={activeArtist}
-      onchange={() => {
-        activeArtistSongs = data.songs.filter(
-          (song) => song.artist_id === activeArtist?.id
-        );
-        activeArtistReleasesHydrated = data.releasesHydrated.filter(
-          (release) => release.artist_id === activeArtist?.id
-        );
-      }}
-    >
-      <option value={null}>Select an artist</option>
-      {#each data.artists as artist}
-        <option value={artist}>{artist.name}</option>
-      {/each}
-    </select>
-  </h2>
-</div>
 
 <div class="dashboard">
   {#if activeArtist}
@@ -251,9 +231,6 @@
 </div>
 
 <style>
-  .artist-selector {
-    margin-bottom: 1rem;
-  }
   .dashboard {
     display: flex;
     flex-direction: row;
