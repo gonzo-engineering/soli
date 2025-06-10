@@ -11,12 +11,18 @@
   <div class="side-panel">
     <h1>Soli • Dashboard</h1>
     <hr />
-    <h2>Artists</h2>
     {#if artists}
+      <h2>Artists</h2>
       {#each artists as artist}
         <div
           class="artist-selector"
-          onclick={() => (dashboardState.activeArtist = artist)}
+          onclick={() => {
+            if (dashboardState.activeArtist?.id !== artist.id) {
+              dashboardState.activeArtist = artist;
+            } else {
+              dashboardState.activeArtist = null;
+            }
+          }}
           onkeydown={() => (dashboardState.activeArtist = artist)}
           tabindex="0"
           role="button"
@@ -69,5 +75,6 @@
   .active {
     background-color: #444;
     color: white;
+    transition: background-color 0.2s ease;
   }
 </style>

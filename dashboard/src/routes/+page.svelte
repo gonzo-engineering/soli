@@ -10,6 +10,7 @@
   import { makeImageLink } from "$lib/utils";
   import { formatReleaseType } from "../../../shared/utils";
   import { dashboardState } from "$lib/state.svelte";
+  import ReleaseCard from "$lib/components/ReleaseCard.svelte";
 
   let {
     form,
@@ -60,29 +61,7 @@
         Releases ({activeArtistReleasesHydrated.length})
       </h2>
       {#each activeArtistReleasesHydrated as release}
-        <div class="card release-card">
-          <div>
-            <img
-              class="cover-artwork"
-              src={makeImageLink(release.artwork_ipfs_cid, 100)}
-              alt=""
-            />
-          </div>
-
-          <div>
-            <h3>{release.title}</h3>
-            <div><b>Type</b>: {formatReleaseType(release.release_type)}</div>
-            <div><b>Release date</b>: {release.release_date}</div>
-            <div><b>Track</b>:</div>
-            <ol>
-              {#each release.tracks as track}
-                <li>
-                  {track.title}
-                </li>
-              {/each}
-            </ol>
-          </div>
-        </div>
+        <ReleaseCard {release} />
       {/each}
     </div>
     <div class="songs-list">
@@ -95,8 +74,6 @@
         </div>
       {/each}
     </div>
-  {/if}
-  {#if activeArtist}
     <div class="forms">
       <div class="upload-form">
         <h2>Upload a song</h2>
@@ -227,6 +204,8 @@
         {/if}
       </div>
     </div>
+  {:else}
+    <p>Select an artist to manage their releases and songs.</p>
   {/if}
 </div>
 
@@ -255,20 +234,17 @@
   .songs-list {
     min-width: 300px;
     max-width: 500px;
+  }
+  .releases-list {
+    flex: 2;
+  }
+  .songs-list {
     flex: 1;
   }
   .card {
     border: 1px solid #ccc;
     padding: 1rem;
     margin: 0.5rem 0;
-    /* cursor: pointer; */
     border-radius: 5px;
-  }
-  .release-card {
-    display: flex;
-    gap: 1rem;
-  }
-  .cover-artwork {
-    aspect-ratio: 1 / 1;
   }
 </style>

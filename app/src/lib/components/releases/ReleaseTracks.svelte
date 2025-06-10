@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ReleaseHydrated, UserProfile } from '../../../../../shared/types';
-	import { prettifyDuration } from '$lib/utils';
+	import { prettifyDuration } from '../../../../../shared/utils';
 	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 
