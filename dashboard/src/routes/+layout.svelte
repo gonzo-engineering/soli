@@ -1,11 +1,18 @@
-<script>
+<script lang="ts">
   import "../../../shared/styles/reset.css";
   import "../../../shared/styles/global.css";
-  import { dashboardState } from "$lib/state.svelte";
+  import { dashboardState, type DashboardSectionId } from "$lib/state.svelte";
 
   let { children, data } = $props();
 
   const artists = $derived(data.artists);
+
+  const dashboardSections: { id: DashboardSectionId; name: string }[] = [
+    { id: "profile", name: "Profile" },
+    { id: "music", name: "Music" },
+    // { id: "stats", name: "Stats" },
+    // { id: "payouts", name: "Payouts" },
+  ];
 </script>
 
 <div class="dashboard-container">
@@ -14,28 +21,52 @@
     <hr />
     {#if artists}
       <h3>Artists</h3>
-      {#each artists as artist}
-        <div
-          class="artist-selector"
-          onclick={() => {
-            if (dashboardState.activeArtist?.id !== artist.id) {
-              dashboardState.activeArtist = artist;
-            } else {
-              dashboardState.activeArtist = null;
-            }
-          }}
-          onkeydown={() => (dashboardState.activeArtist = artist)}
-          tabindex="0"
-          role="button"
-          class:active={dashboardState.activeArtist?.id === artist.id}
-        >
-          {artist.name}
-        </div>
-      {/each}
+      <select
+        class="artist-selector"
+        onchange={(e) => {
+          const selectedId = (e.target as HTMLSelectElement).value;
+          dashboardState.activeArtist =
+            artists.find((a) => a.id === selectedId) || null;
+          dashboardState.activeSection = "profile";
+        }}
+      >
+        <option value="" disabled selected>Select an artist</option>
+        {#each artists as artist}
+          <option
+            value={artist.id}
+            class:active={dashboardState.activeArtist?.id === artist.id}
+          >
+            {artist.name}
+          </option>
+        {/each}
+      </select>
     {:else}
       <li>No artists found.</li>
     {/if}
+    {#if dashboardState.activeArtist}
+      <hr />
+      {#each dashboardSections as section}
+        <div
+          class="section-selector"
+          class:active={dashboardState.activeSection === section.id}
+          role="button"
+          onclick={() => {
+            dashboardState.activeSection = section.id;
+          }}
+          onkeydown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              dashboardState.activeSection = section.id;
+            }
+          }}
+          aria-label={`${section.name} Section`}
+          tabindex="0"
+        >
+          {section.name}
+        </div>
+      {/each}
+    {/if}
   </div>
+
   <main>
     {@render children()}
   </main>
@@ -54,12 +85,18 @@
     font-weight: 600;
     margin-bottom: 1rem;
   }
-  .artist-selector {
+  h3 {
+    margin: 0.5rem 0;
+  }
+  .section-selector {
     padding: 0.5rem;
     line-height: 1.1;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.2s ease;
+  }
+  select {
+    padding: 0.5rem;
   }
   .side-panel {
     width: 350px;
