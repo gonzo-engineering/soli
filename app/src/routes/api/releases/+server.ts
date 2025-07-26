@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import { supabase } from '$lib/server/supabase';
 import { TABLES } from '$lib/global/config';
-import type { ReleaseHydrated } from '$lib/types';
-import { sortReleasesByDate } from '$lib/utils';
+import type { ReleaseHydrated } from '../../../../../shared/types';
+import { sortReleasesByDate } from '../../../../../shared/utils';
 
 export async function GET() {
 	const {

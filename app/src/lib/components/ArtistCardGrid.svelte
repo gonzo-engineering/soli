@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ArtistRaw } from '$lib/types';
+	import type { ArtistRaw } from '../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
 	import ArtistCard from './ArtistCard.svelte';
 

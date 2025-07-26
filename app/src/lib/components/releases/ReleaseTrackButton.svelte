@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
-	import type { ReleaseHydrated, UserProfile, TrackRaw } from '$lib/types';
+	import type { ReleaseHydrated, UserProfile, TrackRaw } from '../../../../../shared/types';
 	import type { Session } from '@supabase/supabase-js';
 	import Pause from '../icons/Pause.svelte';
 	import Play from '../icons/Play.svelte';

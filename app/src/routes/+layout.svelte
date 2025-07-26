@@ -1,6 +1,6 @@
 <script>
-	import '$lib/styles/reset.css';
-	import '$lib/styles/global.css';
+	import '../../../shared/styles/reset.css';
+	import '../../../shared/styles/global.css';
 
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';

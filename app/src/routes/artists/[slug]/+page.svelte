@@ -1,7 +1,8 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { ArtistRaw, ReleaseHydrated } from '$lib/types';
-	import { makeImageLink, sortReleasesByDate } from '$lib/utils';
+	import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
+	import { makeImageLink } from '$lib/utils';
+	import { sortReleasesByDate } from '../../../../../shared/utils';
 
 	let { data }: { data: { artist: ArtistRaw; releases: ReleaseHydrated[] } } = $props();
 

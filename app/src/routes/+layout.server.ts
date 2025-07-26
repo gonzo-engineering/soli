@@ -1,6 +1,6 @@
 // src/routes/+layout.server.ts
 import type { LayoutServerLoad } from './$types';
-import type { UserProfile } from '$lib/types';
+import type { UserProfile } from '../../../shared/types';
 import { TABLES } from '$lib/global/config';
 
 export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSession }, cookies }) => {

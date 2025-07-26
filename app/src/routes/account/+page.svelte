@@ -6,19 +6,17 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import ContentBlock from '$lib/components/ContentBlock.svelte';
 
-	export let data;
-	export let form;
+	let { data, form } = $props();
 
-	let { session, supabase, profileData } = data;
-	$: ({ session, supabase, profileData } = data);
+	let { session, profileData } = $state(data);
 
-	let profileForm: HTMLFormElement;
-	let loading = false;
 	let firstName: string = profileData?.first_name ?? '';
 	let tokensBalance: number = profileData?.tokens_balance ?? 0;
-	$: payPerStream = profileData?.pay_per_stream ?? 3;
 
-	$: topUpAmount = 0;
+	let profileForm = $state();
+	let loading = $state(false);
+	let payPerStream = $state(profileData?.pay_per_stream ?? 3);
+	let topUpAmount = $state(0);
 
 	const handleSubmit: SubmitFunction = () => {
 		loading = true;
@@ -40,7 +38,7 @@
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
-				userId: session.user.id,
+				userId: session?.user.id,
 				balance: tokensBalance,
 				topUpAmount
 			})
@@ -55,7 +53,7 @@
 </svelte:head>
 
 <ContentBlock>
-	<h2>Hi, {data.profileData?.first_name}</h2>
+	<h2>Hi there</h2>
 	<div class="form-widget">
 		<h3>Details and settings</h3>
 		<form
@@ -67,7 +65,7 @@
 		>
 			<div>
 				<label for="email">Email</label>
-				<input id="email" type="text" value={session.user.email} disabled />
+				<input id="email" type="text" value={session?.user.email} disabled />
 			</div>
 
 			<div>
@@ -134,7 +132,7 @@
 				{Math.round(topUpAmount * REVENUE_SPLIT.artists)} tokens,
 				{prettifyPennies(topUpAmount * REVENUE_SPLIT.platform)} goes to us
 			</div>
-			<button on:click={checkout}>Top up</button>
+			<button onclick={checkout}>Top up</button>
 		</div>
 	</div>
 

@@ -1,4 +1,4 @@
-import type { ArtistRaw, ReleaseHydrated } from '$lib/types/index.js';
+import type { ArtistRaw, ReleaseHydrated } from '../../../shared/types';
 
 export const load = async ({ fetch }) => {
 	const artists: ArtistRaw[] = await fetch('/api/artists').then((res) => res.json());

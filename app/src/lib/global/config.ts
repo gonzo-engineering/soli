@@ -11,6 +11,7 @@ export const PUBLIC_SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export const TABLES = {
 	users: 'users',
 	artists: 'artists',
+	artistMembers: 'artist_members',
 	releasesHydrated: 'hydrated_releases',
 	streams: 'streams',
 	betaUsers: 'beta-users'
