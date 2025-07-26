@@ -7,10 +7,9 @@
     ReleaseRaw,
     TrackRaw,
   } from "../../../shared/types";
-  import { makeImageLink } from "$lib/utils";
-  import { formatReleaseType } from "../../../shared/utils";
   import { dashboardState } from "$lib/state.svelte";
-  import ReleaseCard from "$lib/components/ReleaseCard.svelte";
+  import Card from "$lib/components/Card.svelte";
+  import ReleaseInfo from "$lib/components/ReleaseInfo.svelte";
 
   let {
     form,
@@ -61,7 +60,9 @@
         Releases ({activeArtistReleasesHydrated.length})
       </h2>
       {#each activeArtistReleasesHydrated as release}
-        <ReleaseCard {release} />
+        <Card>
+          <ReleaseInfo {release} />
+        </Card>
       {/each}
     </div>
     <div class="songs-list">
@@ -69,9 +70,9 @@
         Songs ({activeArtistSongs.length})
       </h2>
       {#each activeArtistSongs as song}
-        <div class="card">
-          <h3>{song.title}</h3>
-        </div>
+        <Card>
+          <div>{song.title}</div>
+        </Card>
       {/each}
     </div>
     <div class="forms">
@@ -112,7 +113,7 @@
           </button>
         </form>
         {#if form && form.status === 200}
-          <p>File uploaded successfully!</p>
+          <div>File uploaded successfully!</div>
         {/if}
       </div>
       <div class="add-release-form">
@@ -205,7 +206,7 @@
       </div>
     </div>
   {:else}
-    <p>Select an artist to manage their releases and songs.</p>
+    <div>Select an artist to manage their releases and songs.</div>
   {/if}
 </div>
 
@@ -213,19 +214,20 @@
   .dashboard {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
     gap: 2rem;
-  }
-  .forms {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    flex: 1;
   }
   form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-width: 300px;
+  }
+  input[type="text"],
+  input[type="date"],
+  input[type="number"],
+  select {
+    padding: 0.5rem;
+    border-radius: 4px;
   }
   .hidden {
     display: none;
@@ -241,10 +243,10 @@
   .songs-list {
     flex: 1;
   }
-  .card {
-    border: 1px solid #ccc;
-    padding: 1rem;
-    margin: 0.5rem 0;
-    border-radius: 5px;
+  .forms {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex: 1;
   }
 </style>

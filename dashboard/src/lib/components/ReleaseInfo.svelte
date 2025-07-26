@@ -13,8 +13,8 @@
   } = $props();
 </script>
 
-<div class="card release-card">
-  <div>
+<div class="release-info">
+  <div class="artwork">
     <img
       class="cover-artwork"
       src={makeImageLink(release.artwork_ipfs_cid, 150)}
@@ -22,7 +22,7 @@
     />
   </div>
 
-  <div>
+  <div class="details">
     <h3>{release.title}</h3>
     <div><b>Type</b>: {formatReleaseType(release.release_type)}</div>
     <div><b>Release date</b>: {release.release_date}</div>
@@ -30,7 +30,8 @@
     <ol>
       {#each release.tracks as track}
         <li>
-          {track.title} ({prettifyDuration(track.duration_seconds)})
+          {track.title}
+          <small>({prettifyDuration(track.duration_seconds)})</small>
         </li>
       {/each}
     </ol>
@@ -38,16 +39,27 @@
 </div>
 
 <style>
-  .release-card {
+  .release-info {
     display: flex;
+    align-items: center;
     gap: 1rem;
-    border: 1px solid #ccc;
-    padding: 1rem;
+  }
+  h3 {
     margin: 0.5rem 0;
-    border-radius: 5px;
+  }
+  .artwork {
+    flex: 1;
+  }
+  .details {
+    flex: 2;
   }
   .cover-artwork {
     width: 150px;
     aspect-ratio: 1 / 1;
+    box-shadow: var(--box-shadow);
+  }
+  small {
+    font-weight: 500;
+    font-size: 70%;
   }
 </style>

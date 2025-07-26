@@ -1,5 +1,6 @@
 <script>
   import "../../../shared/styles/reset.css";
+  import "../../../shared/styles/global.css";
   import { dashboardState } from "$lib/state.svelte";
 
   let { children, data } = $props();
@@ -12,7 +13,7 @@
     <h1>Soli • Dashboard</h1>
     <hr />
     {#if artists}
-      <h2>Artists</h2>
+      <h3>Artists</h3>
       {#each artists as artist}
         <div
           class="artist-selector"
@@ -49,14 +50,13 @@
     overflow: hidden;
   }
   h1 {
-    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
     margin-bottom: 1rem;
-  }
-  h2 {
-    padding: 0.5rem;
   }
   .artist-selector {
     padding: 0.5rem;
+    line-height: 1.1;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.2s ease;
@@ -69,12 +69,17 @@
   }
   main {
     flex: 1;
-    padding: 1rem;
+    padding: 2rem;
     overflow-y: auto;
   }
   .active {
     background-color: #444;
     color: white;
     transition: background-color 0.2s ease;
+  }
+  hr {
+    margin: 1rem 0 2rem 0;
+    border: none;
+    border-top: 1px solid gray;
   }
 </style>
