@@ -245,7 +245,7 @@
     {:else if dashboardState.activeSection === "stats"}
       <div class="artist-stats">
         <h2>Stats</h2>
-        <div><strong>Total Streams:</strong> {activeArtistStreams.length}</div>
+        <div><strong>Total streams:</strong> {activeArtistStreams.length}</div>
         <div>
           <strong>Average payout per stream:</strong>
           {calculateAveragePayout(activeArtistStreams).toFixed(2)}p
