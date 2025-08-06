@@ -4,6 +4,7 @@ import type {
   ArtistRaw,
   ReleaseHydrated,
   ReleaseRaw,
+  StreamLog,
   TrackRaw,
 } from "../../../shared/types";
 import { sortReleasesByDate } from "../../../shared/utils";
@@ -76,10 +77,24 @@ export const load = async () => {
     return 0;
   });
 
+  // Get all streams for the artist
+  const {
+    data: streams,
+    error: streamsError,
+  }: {
+    data: StreamLog[] | null; // Adjust type as needed
+    error: Error | null;
+  } = await supabase.from("streams").select("*");
+  if (streamsError || !streams) {
+    console.error("Error fetching streams:", streamsError);
+    return fail(500, { error: "Failed to fetch streams" });
+  }
+
   return {
     artists,
     releasesRaw,
     releasesHydrated: sortReleasesByDate(releasesHydrated),
     songs,
+    streams,
   };
 };

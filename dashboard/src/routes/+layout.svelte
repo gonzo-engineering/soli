@@ -11,7 +11,7 @@
     { id: "profile", name: "Profile" },
     { id: "music", name: "Music" },
     { id: "stats", name: "Stats" },
-    { id: "payouts", name: "Payouts" },
+    // { id: "payouts", name: "Payouts" },
   ];
 </script>
 

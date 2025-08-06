@@ -50,3 +50,12 @@ export interface ReleaseRaw {
   created_at: string;
   updated_at: string;
 }
+
+export interface StreamLog {
+  id: string;
+  streamed_at: string;
+  user_id: string;
+  track_id: string;
+  artist_id: string;
+  tokens_used: number;
+}
