@@ -10,8 +10,8 @@
   const dashboardSections: { id: DashboardSectionId; name: string }[] = [
     { id: "profile", name: "Profile" },
     { id: "music", name: "Music" },
-    // { id: "stats", name: "Stats" },
-    // { id: "payouts", name: "Payouts" },
+    { id: "stats", name: "Stats" },
+    { id: "payouts", name: "Payouts" },
   ];
 </script>
 
@@ -97,6 +97,7 @@
   }
   select {
     padding: 0.5rem;
+    border-radius: 4px;
   }
   .side-panel {
     width: 350px;

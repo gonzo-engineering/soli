@@ -15,22 +15,35 @@
   {:else}
     <div>No profile image</div>
   {/if}
-  <div>Name: {activeArtist.name}</div>
-  <div>Bio: {activeArtist.bio}</div>
   <div>
-    Website: <a
-      href={activeArtist.website_url}
-      target="_blank"
-      rel="noopener noreferrer">{activeArtist.website_url}</a
-    >
+    <div><strong>Name:</strong> {activeArtist.name}</div>
+    <div><strong>Bio:</strong> {activeArtist.bio}</div>
+    <div>
+      <strong>Website:</strong>
+      <a
+        href={activeArtist.website_url}
+        target="_blank"
+        rel="noopener noreferrer">{activeArtist.website_url}</a
+      >
+    </div>
   </div>
-  <div>
-    Created At: {new Date(activeArtist.created_at).toLocaleDateString()}
-  </div>
+  <button
+    class="edit-button"
+    onclick={() => {
+      // Logic to handle editing the profile
+      console.log("Edit profile clicked");
+    }}
+  >
+    Edit profile details
+  </button>
 </div>
 
 <style>
   .artist-profile {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 </style>

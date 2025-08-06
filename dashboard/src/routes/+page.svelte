@@ -12,6 +12,7 @@
   import ReleaseInfo from "$lib/components/ReleaseInfo.svelte";
   import { PUBLIC_GATEWAY_URL } from "$env/static/public";
   import ProfileSummary from "$lib/components/ProfileSummary.svelte";
+  import { prettifyDuration } from "../../../shared/utils";
 
   let {
     form,
@@ -78,7 +79,12 @@
         </h2>
         {#each activeArtistSongs as song}
           <Card>
-            <div>{song.title}</div>
+            <div class="song-wrapper">
+              <div>{song.title}</div>
+              <div>
+                <small>{prettifyDuration(song.duration_seconds)}</small>
+              </div>
+            </div>
           </Card>
         {/each}
       </div>
@@ -268,5 +274,14 @@
     flex-direction: column;
     gap: 2rem;
     flex: 1;
+  }
+  .song-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  small {
+    font-weight: 500;
+    font-size: 70%;
   }
 </style>
