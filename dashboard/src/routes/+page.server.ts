@@ -180,4 +180,61 @@ export const actions: Actions = {
       return json({ error: "Internal Server Error" }, { status: 500 });
     }
   },
+  updateArtistDetails: async ({ request }) => {
+    try {
+      const formData = await request.formData();
+      const artistId = formData.get("artistID") as string;
+      const artistImage = formData.get("artistImage") as File | null;
+      const artistName = formData.get("artistName") as string;
+      const artistBio = formData.get("artistBio") as string;
+      const artistWebsite = formData.get("artistWebsite") as string;
+
+      if (!artistId) {
+        return fail(400, {
+          error: true,
+          message: "Artist ID required",
+        });
+      }
+
+      let imageCid: string | null = null;
+      if (artistImage) {
+        const pinataFileName = `${artistName} profile image`;
+        const upload = await pinata.upload.public
+          .file(artistImage)
+          .name(pinataFileName)
+          .group("49d68c8c-764d-467d-b74c-9f64e8bc9647");
+
+        if (!upload || !upload.cid) {
+          console.error("Error uploading artist image to Pinata:", upload);
+          return fail(500, {
+            error: true,
+            message: "Failed to upload artist image to Pinata",
+          });
+        }
+        imageCid = upload.cid;
+      }
+
+      const { error } = await supabase
+        .from("artists")
+        .update({
+          bio: artistBio,
+          website_url: artistWebsite,
+          image_ipfs_cid: imageCid,
+        })
+        .eq("id", artistId);
+
+      if (error) {
+        console.error("Error updating artist details:", error);
+        return fail(500, {
+          error: true,
+          message: "Failed to update artist details",
+        });
+      }
+
+      return { status: 200, message: "Artist details updated successfully" };
+    } catch (error) {
+      console.log(error);
+      return json({ error: "Internal Server Error" }, { status: 500 });
+    }
+  },
 };
