@@ -21,7 +21,8 @@
 		"vite": "^6.3.5"
 	},
 	"dependencies": {
-		"@supabase/supabase-js": "^2.52.1",
+		"@supabase/ssr": "^0.6.1",
+		"@supabase/supabase-js": "^2.54.0",
 		"music-metadata": "^11.7.3",
 		"pinata": "^2.4.9"
 	}

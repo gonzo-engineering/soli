@@ -2,10 +2,22 @@
   import "../../../shared/styles/reset.css";
   import "../../../shared/styles/global.css";
   import { dashboardState, type DashboardSectionId } from "$lib/state.svelte";
+  import { invalidate } from "$app/navigation";
+  import { onMount } from "svelte";
 
   let { children, data } = $props();
 
+  let { supabase, session } = $state(data);
   const artists = $derived(data.artists);
+
+  onMount(() => {
+    const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
+      if (newSession?.expires_at !== session?.expires_at) {
+        invalidate("supabase:auth");
+      }
+    });
+    return () => data.subscription.unsubscribe();
+  });
 
   const dashboardSections: { id: DashboardSectionId; name: string }[] = [
     { id: "profile", name: "Profile" },

@@ -8,8 +8,14 @@ import type {
   TrackRaw,
 } from "../../../shared/types";
 import { sortReleasesByDate } from "../../../shared/utils";
+import type { LayoutServerLoad } from "./$types";
 
-export const load = async () => {
+export const load: LayoutServerLoad = async ({
+  locals: { safeGetSession },
+  cookies,
+}) => {
+  const { session, user } = await safeGetSession();
+
   const {
     data: artists,
     error: artistsError,
@@ -91,6 +97,9 @@ export const load = async () => {
   }
 
   return {
+    session,
+    user,
+    cookies: cookies.getAll(),
     artists,
     releasesRaw,
     releasesHydrated: sortReleasesByDate(releasesHydrated),
