@@ -4,6 +4,7 @@
   import { dashboardState, type DashboardSectionId } from "$lib/state.svelte";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
+  import { redirect } from "@sveltejs/kit";
 
   let { children, data } = $props();
 
@@ -77,6 +78,15 @@
         </div>
       {/each}
     {/if}
+    <hr />
+    <button
+      onclick={async () => {
+        await supabase.auth.signOut();
+        redirect(303, "/login");
+      }}
+    >
+      Log out
+    </button>
   </div>
 
   <main>
