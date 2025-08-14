@@ -9,6 +9,7 @@ import type {
 } from "../../../shared/types";
 import { sortReleasesByDate } from "../../../shared/utils";
 import type { LayoutServerLoad } from "./$types";
+import { POWER_USER_ID } from "$lib/config";
 
 export const load: LayoutServerLoad = async ({
   locals: { safeGetSession },
@@ -16,13 +17,49 @@ export const load: LayoutServerLoad = async ({
 }) => {
   const { session, user } = await safeGetSession();
 
+  if (!session || !user) {
+    return fail(401, { error: "Unauthorized" });
+  }
+
   const {
-    data: artists,
+    data: userData,
+    error: userError,
+  }: {
+    data: { artist_id: string }[] | null;
+    error: Error | null;
+  } = await supabase
+    .from("artist_members")
+    .select("artist_id")
+    .eq("user_id", session.user.id);
+
+  if (userError || !userData) {
+    console.error("Error fetching user data:", userError);
+    return fail(500, { error: "Failed to fetch user data" });
+  }
+
+  // Get all artist IDs for the user, unless they are a power user
+  // in which case fetch all artists
+  const {
+    data: connectedArtists,
     error: artistsError,
   }: {
     data: ArtistRaw[] | null;
     error: Error | null;
-  } = await supabase.from("artists").select("*");
+  } =
+    session.user.id === POWER_USER_ID
+      ? await supabase.from("artists").select("*")
+      : await supabase
+          .from("artists")
+          .select("*")
+          .in(
+            "id",
+            userData.map((u) => u.artist_id)
+          );
+
+  if (artistsError || !connectedArtists) {
+    console.error("Error fetching artists:", artistsError);
+    return fail(500, { error: "Failed to fetch artists" });
+  }
 
   const {
     data: songs,
@@ -52,7 +89,7 @@ export const load: LayoutServerLoad = async ({
     error: Error | null;
   } = await supabase.from("hydrated_releases").select("*");
 
-  if (artistsError || !artists) {
+  if (artistsError || !connectedArtists) {
     console.error("Error fetching artists:", artistsError);
     return fail(500, { error: "Failed to fetch artists" });
   }
@@ -77,7 +114,7 @@ export const load: LayoutServerLoad = async ({
     return 0;
   });
 
-  artists.sort((a, b) => {
+  connectedArtists.sort((a, b) => {
     if (a.name < b.name) return -1;
     if (a.name > b.name) return 1;
     return 0;
@@ -100,7 +137,7 @@ export const load: LayoutServerLoad = async ({
     session,
     user,
     cookies: cookies.getAll(),
-    artists,
+    artists: connectedArtists,
     releasesRaw,
     releasesHydrated: sortReleasesByDate(releasesHydrated),
     songs,

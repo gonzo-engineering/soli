@@ -32,7 +32,7 @@
     <h1>Soli • Dashboard</h1>
     <hr />
     {#if artists}
-      <h3>Artists</h3>
+      <h3>Your linked artists</h3>
       <select
         class="artist-selector"
         onchange={(e) => {
