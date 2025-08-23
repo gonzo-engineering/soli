@@ -29,65 +29,67 @@
 </script>
 
 <div class="dashboard-container">
-  <div class="side-panel">
-    <h1>Soli • Dashboard</h1>
-    <hr />
-    {#if artists}
-      <h3>Your linked artists</h3>
-      <select
-        class="artist-selector"
-        onchange={(e) => {
-          const selectedId = (e.target as HTMLSelectElement).value;
-          dashboardState.activeArtist =
-            artists.find((a) => a.id === selectedId) || null;
-          dashboardState.activeSection = "profile";
+  {#if data.session}
+    <div class="side-panel">
+      <h1>Soli • Dashboard</h1>
+      <hr />
+      {#if artists}
+        <h3>Your linked artists</h3>
+        <select
+          class="artist-selector"
+          onchange={(e) => {
+            const selectedId = (e.target as HTMLSelectElement).value;
+            dashboardState.activeArtist =
+              artists.find((a) => a.id === selectedId) || null;
+            dashboardState.activeSection = "profile";
+          }}
+        >
+          <option value="" disabled selected>Select an artist</option>
+          {#each artists as artist}
+            <option
+              value={artist.id}
+              class:active={dashboardState.activeArtist?.id === artist.id}
+            >
+              {artist.name}
+            </option>
+          {/each}
+        </select>
+      {:else}
+        <li>No artists found.</li>
+      {/if}
+      {#if dashboardState.activeArtist}
+        <hr />
+        {#each dashboardSections as section}
+          <div
+            class="section-selector"
+            class:active={dashboardState.activeSection === section.id}
+            role="button"
+            onclick={() => {
+              dashboardState.activeSection = section.id;
+            }}
+            onkeydown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                dashboardState.activeSection = section.id;
+              }
+            }}
+            aria-label={`${section.name} Section`}
+            tabindex="0"
+          >
+            {section.name}
+          </div>
+        {/each}
+      {/if}
+      <hr />
+      <button
+        onclick={async () => {
+          await supabase.auth.signOut();
+          redirect(303, "/login");
         }}
       >
-        <option value="" disabled selected>Select an artist</option>
-        {#each artists as artist}
-          <option
-            value={artist.id}
-            class:active={dashboardState.activeArtist?.id === artist.id}
-          >
-            {artist.name}
-          </option>
-        {/each}
-      </select>
-    {:else}
-      <li>No artists found.</li>
-    {/if}
-    {#if dashboardState.activeArtist}
-      <hr />
-      {#each dashboardSections as section}
-        <div
-          class="section-selector"
-          class:active={dashboardState.activeSection === section.id}
-          role="button"
-          onclick={() => {
-            dashboardState.activeSection = section.id;
-          }}
-          onkeydown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              dashboardState.activeSection = section.id;
-            }
-          }}
-          aria-label={`${section.name} Section`}
-          tabindex="0"
-        >
-          {section.name}
-        </div>
-      {/each}
-    {/if}
-    <hr />
-    <button
-      onclick={async () => {
-        await supabase.auth.signOut();
-        redirect(303, "/login");
-      }}
-    >
-      Log out
-    </button>
-  </div>
+        Log out
+      </button>
+    </div>
+  {/if}
 
   <main>
     {@render children()}

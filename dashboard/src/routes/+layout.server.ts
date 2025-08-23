@@ -18,7 +18,16 @@ export const load: LayoutServerLoad = async ({
   const { session, user } = await safeGetSession();
 
   if (!session || !user) {
-    return fail(401, { error: "Unauthorized" });
+    return {
+      session,
+      user,
+      cookies: cookies.getAll(),
+      artists: [],
+      releasesRaw: [],
+      releasesHydrated: [],
+      songs: [],
+      streams: [],
+    };
   }
 
   const {
