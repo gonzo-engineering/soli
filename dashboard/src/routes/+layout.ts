@@ -5,6 +5,7 @@ import {
 } from "@supabase/ssr";
 import type { LayoutLoad } from "./$types";
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from "$lib/config";
+import { cookieOptions } from "../../../shared/utils/cookies";
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
   depends("supabase:auth");
@@ -14,6 +15,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
         global: {
           fetch,
         },
+        cookieOptions,
       })
     : createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
         global: {
@@ -24,6 +26,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
             return data.cookies ?? null;
           },
         },
+        cookieOptions,
       });
 
   return {
