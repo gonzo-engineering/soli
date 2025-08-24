@@ -3,16 +3,26 @@
 	import { prettifyDuration } from '../../../../../shared/utils';
 	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	const {
 		release,
 		profileData,
+		favourites,
 		session
 	}: {
 		release: ReleaseHydrated;
 		profileData: UserProfile;
+		favourites: string[];
 		session: Session;
 	} = $props();
+
+	const handleFavTrackChange: SubmitFunction = () => {
+		return async ({ update }) => {
+			update();
+		};
+	};
 </script>
 
 <table>
@@ -21,6 +31,7 @@
 			<th>#</th>
 			<th>Track</th>
 			<th>Duration</th>
+			<th></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -32,6 +43,25 @@
 				<td>{prettifyDuration(track.duration_seconds)}</td>
 				<td class="play-button-container">
 					<ReleaseTrackButton {track} {release} {profileData} {session} />
+				</td>
+				<td>
+					<form method="post" action="?/toggleTrackInFavourites" use:enhance={handleFavTrackChange}>
+						<div>
+							<input type="hidden" name="trackId" value={track.id} />
+							<button
+								type="submit"
+								name="action"
+								value="toggleTrackInFavourites"
+								aria-label="Remove from favourites"
+							>
+								{#if favourites.includes(track.id)}
+									❤️
+								{:else}
+									🤍
+								{/if}
+							</button>
+						</div>
+					</form>
 				</td>
 			</tr>
 		{/each}

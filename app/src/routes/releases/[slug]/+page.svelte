@@ -13,6 +13,7 @@
 		data: {
 			release: ReleaseHydrated;
 			profileData: UserProfile;
+			favourites: string[];
 			session: Session;
 		};
 	} = $props();
@@ -65,7 +66,12 @@
 		</div>
 	</ButtonWrapper>
 
-	<ReleaseTracks {release} profileData={data.profileData} session={data.session} />
+	<ReleaseTracks
+		{release}
+		profileData={data.profileData}
+		favourites={data.favourites}
+		session={data.session}
+	/>
 
 	<hr />
 
