@@ -9,12 +9,12 @@
 	const {
 		release,
 		profileData,
-		favourites,
+		likedTrackIDs,
 		session
 	}: {
 		release: ReleaseHydrated;
 		profileData: UserProfile;
-		favourites: string[];
+		likedTrackIDs: string[];
 		session: Session;
 	} = $props();
 
@@ -45,16 +45,16 @@
 					<ReleaseTrackButton {track} {release} {profileData} {session} />
 				</td>
 				<td>
-					<form method="post" action="?/toggleTrackInFavourites" use:enhance={handleFavTrackChange}>
+					<form method="post" action="?/toggleLikedTrack" use:enhance={handleFavTrackChange}>
 						<div>
 							<input type="hidden" name="trackId" value={track.id} />
 							<button
 								type="submit"
 								name="action"
-								value="toggleTrackInFavourites"
-								aria-label="Remove from favourites"
+								value="toggleLikedTrack"
+								aria-label="Remove from likes tracks"
 							>
-								{#if favourites.includes(track.id)}
+								{#if likedTrackIDs.includes(track.id)}
 									❤️
 								{:else}
 									🤍

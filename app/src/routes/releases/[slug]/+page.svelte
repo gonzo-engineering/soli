@@ -13,7 +13,7 @@
 		data: {
 			release: ReleaseHydrated;
 			profileData: UserProfile;
-			favourites: string[];
+			likedTrackIDs: string[];
 			session: Session;
 		};
 	} = $props();
@@ -69,7 +69,7 @@
 	<ReleaseTracks
 		{release}
 		profileData={data.profileData}
-		favourites={data.favourites}
+		likedTrackIDs={data.likedTrackIDs}
 		session={data.session}
 	/>
 
