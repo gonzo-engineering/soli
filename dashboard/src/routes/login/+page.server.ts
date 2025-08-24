@@ -32,6 +32,20 @@ export const actions: Actions = {
       });
     }
 
+    const { error: betaUserError } = await supabase
+      .from("beta-users")
+      .select("email")
+      .eq("email", email)
+      .single();
+
+    if (betaUserError) {
+      return fail(400, {
+        success: false,
+        email,
+        message: "Your email is not on the beta list.",
+      });
+    }
+
     const { error } = await supabase.auth.signInWithOtp({ email });
 
     if (error) {

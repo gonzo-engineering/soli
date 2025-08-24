@@ -4,13 +4,23 @@
   import { dashboardState, type DashboardSectionId } from "$lib/state.svelte";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
-  import { redirect } from "@sveltejs/kit";
+  import { type SubmitFunction } from "@sveltejs/kit";
   import { dev } from "$app/environment";
+  import { enhance } from "$app/forms";
 
   let { children, data } = $props();
 
   let { supabase, session } = $state(data);
+  let loading = $state(false);
   const artists = $derived(data.artists);
+
+  const handleSignOut: SubmitFunction = () => {
+    loading = true;
+    return async ({ update }) => {
+      loading = false;
+      update();
+    };
+  };
 
   onMount(() => {
     const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
@@ -82,14 +92,11 @@
         {/each}
       {/if}
       <hr />
-      <button
-        onclick={async () => {
-          await supabase.auth.signOut();
-          redirect(303, "/login");
-        }}
-      >
-        Log out
-      </button>
+      <form method="post" action="?/signout" use:enhance={handleSignOut}>
+        <div>
+          <button class="button block" disabled={loading}>Sign Out</button>
+        </div>
+      </form>
     </div>
   {/if}
 

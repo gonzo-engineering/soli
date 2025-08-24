@@ -1,4 +1,4 @@
-import { fail, json, type Actions } from "@sveltejs/kit";
+import { fail, json, redirect, type Actions } from "@sveltejs/kit";
 import { pinata } from "$lib/server/pinata";
 import { supabase } from "$lib/server/stripe";
 import { parseFile } from "music-metadata";
@@ -239,6 +239,13 @@ export const actions: Actions = {
     } catch (error) {
       console.log(error);
       return json({ error: "Internal Server Error" }, { status: 500 });
+    }
+  },
+  signout: async ({ locals: { supabase, safeGetSession } }) => {
+    const { session } = await safeGetSession();
+    if (session) {
+      await supabase.auth.signOut();
+      redirect(303, "/");
     }
   },
 };
