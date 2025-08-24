@@ -46,7 +46,12 @@ export const actions: Actions = {
       });
     }
 
-    const { error } = await supabase.auth.signInWithOtp({ email });
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: "https://dashboard.soli.network",
+      },
+    });
 
     if (error) {
       return fail(400, {
