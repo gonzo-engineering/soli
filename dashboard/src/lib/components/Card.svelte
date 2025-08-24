@@ -9,9 +9,17 @@
 </div>
 
 <style>
+  :root {
+    --card-background: #f9f9f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --card-background: #313131;
+    }
+  }
   .card {
-    color: var(--color-background);
-    background-color: var(--color-text);
+    color: var(--color-text);
+    background-color: var(--card-background);
     line-height: 1.1;
     padding: 0.5rem;
     margin: 0.5rem 0;

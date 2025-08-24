@@ -1,10 +1,7 @@
 <script lang="ts">
   import { makeImageLink } from "$lib/utils";
   import type { ReleaseHydrated } from "../../../../shared/types";
-  import {
-    formatReleaseType,
-    prettifyDuration,
-  } from "../../../../shared/utils";
+  import { formatReleaseType } from "../../../../shared/utils";
 
   const {
     release,
@@ -31,7 +28,6 @@
       {#each release.tracks as track}
         <li>
           {track.title}
-          <small>({prettifyDuration(track.duration_seconds)})</small>
         </li>
       {/each}
     </ol>
@@ -57,9 +53,5 @@
     width: 150px;
     aspect-ratio: 1 / 1;
     box-shadow: var(--box-shadow);
-  }
-  small {
-    font-weight: 500;
-    font-size: 70%;
   }
 </style>

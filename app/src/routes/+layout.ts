@@ -1,8 +1,8 @@
-// src/routes/+layout.ts
 import { createBrowserClient, createServerClient, isBrowser } from '@supabase/ssr';
 import type { LayoutLoad } from './$types';
 import { userState } from '$lib/global/state.svelte';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$lib/global/config';
+import { cookieOptions } from '../../../shared/utils/cookies';
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 	depends('supabase:auth');
@@ -11,7 +11,8 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		? createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 				global: {
 					fetch
-				}
+				},
+				cookieOptions
 			})
 		: createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 				global: {
@@ -21,7 +22,8 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 					getAll() {
 						return data.cookies;
 					}
-				}
+				},
+				cookieOptions
 			});
 
 	/**
