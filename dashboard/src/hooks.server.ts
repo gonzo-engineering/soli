@@ -1,3 +1,4 @@
+import { dev } from "$app/environment";
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from "$lib/config";
 import { createServerClient } from "@supabase/ssr";
 import { redirect, type Handle } from "@sveltejs/kit";
@@ -51,7 +52,8 @@ const authGuard: Handle = async ({ event, resolve }) => {
 
   if (
     !event.locals.session &&
-    !["/login", "/auth"].some((path) => event.url.pathname.startsWith(path))
+    !["/login", "/auth"].some((path) => event.url.pathname.startsWith(path)) &&
+    !dev
   ) {
     redirect(303, "/login");
   }

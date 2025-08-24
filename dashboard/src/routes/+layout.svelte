@@ -5,6 +5,7 @@
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
   import { redirect } from "@sveltejs/kit";
+  import { dev } from "$app/environment";
 
   let { children, data } = $props();
 
@@ -29,7 +30,7 @@
 </script>
 
 <div class="dashboard-container">
-  {#if data.session}
+  {#if data.session || dev}
     <div class="side-panel">
       <h1>Soli • Dashboard</h1>
       <hr />

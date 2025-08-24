@@ -34,10 +34,23 @@
     {:else}
       <div>No profile image</div>
     {/if}
+    <input
+      type="hidden"
+      name="existingImageCID"
+      value={activeArtist.image_ipfs_cid}
+    />
     <label for="file">Change profile image</label>
-    <input type="file" id="file" name="artistImage" accept=".jpg,.jpeg,.png" />
+    <input
+      type="file"
+      id="file"
+      name="artistImageNew"
+      accept=".jpg,.jpeg,.png"
+      required={false}
+    />
     <label for="artistBio">Bio</label>
-    <textarea name="artistBio" placeholder="Bio">{activeArtist.bio}</textarea>
+    <textarea name="artistBio" placeholder="Bio" required={false}>
+      {activeArtist.bio}
+    </textarea>
     <label for="artistWebsite">Website</label>
     <input
       type="text"
@@ -45,6 +58,7 @@
       id="artistWebsite"
       placeholder="Website URL"
       value={activeArtist.website_url}
+      required={false}
     />
     <button disabled={uploading} type="submit">
       {uploading ? "Updating..." : "Update profile"}

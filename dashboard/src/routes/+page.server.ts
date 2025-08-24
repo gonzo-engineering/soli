@@ -184,10 +184,13 @@ export const actions: Actions = {
     try {
       const formData = await request.formData();
       const artistId = formData.get("artistID") as string;
-      const artistImage = formData.get("artistImage") as File | null;
+      const artistExistingImageCID = formData.get("existingImageCID") as
+        | string
+        | undefined;
+      const artistImage = formData.get("artistImageNew") as File | null;
       const artistName = formData.get("artistName") as string;
-      const artistBio = formData.get("artistBio") as string;
-      const artistWebsite = formData.get("artistWebsite") as string;
+      const artistBio = formData.get("artistBio") as string | undefined;
+      const artistWebsite = formData.get("artistWebsite") as string | undefined;
 
       if (!artistId) {
         return fail(400, {
@@ -196,8 +199,8 @@ export const actions: Actions = {
         });
       }
 
-      let imageCid: string | null = null;
-      if (artistImage) {
+      let imageCid: string | undefined = artistExistingImageCID;
+      if (artistImage && artistImage.size > 0) {
         const pinataFileName = `${artistName} profile image`;
         const upload = await pinata.upload.public
           .file(artistImage)
@@ -211,6 +214,7 @@ export const actions: Actions = {
             message: "Failed to upload artist image to Pinata",
           });
         }
+        // TODO: Delete old artist image if it exists
         imageCid = upload.cid;
       }
 

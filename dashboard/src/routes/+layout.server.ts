@@ -10,6 +10,7 @@ import type {
 import { sortReleasesByDate } from "../../../shared/utils";
 import type { LayoutServerLoad } from "./$types";
 import { POWER_USER_ID } from "$lib/config";
+import { dev } from "$app/environment";
 
 export const load: LayoutServerLoad = async ({
   locals: { safeGetSession },
@@ -17,7 +18,9 @@ export const load: LayoutServerLoad = async ({
 }) => {
   const { session, user } = await safeGetSession();
 
-  if (!session || !user) {
+  const userID = dev ? POWER_USER_ID : session?.user.id;
+
+  if (!session && !dev) {
     return {
       session,
       user,
@@ -39,7 +42,7 @@ export const load: LayoutServerLoad = async ({
   } = await supabase
     .from("artist_members")
     .select("artist_id")
-    .eq("user_id", session.user.id);
+    .eq("user_id", userID);
 
   if (userError || !userData) {
     console.error("Error fetching user data:", userError);
@@ -55,7 +58,7 @@ export const load: LayoutServerLoad = async ({
     data: ArtistRaw[] | null;
     error: Error | null;
   } =
-    session.user.id === POWER_USER_ID
+    userID === POWER_USER_ID
       ? await supabase.from("artists").select("*")
       : await supabase
           .from("artists")
