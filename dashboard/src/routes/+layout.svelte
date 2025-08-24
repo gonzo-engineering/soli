@@ -34,6 +34,7 @@
     <div class="side-panel">
       <h1>Soli • Dashboard</h1>
       <hr />
+      <div>User: {session?.user?.email}</div>
       {#if artists}
         <h3>Your linked artists</h3>
         <select
