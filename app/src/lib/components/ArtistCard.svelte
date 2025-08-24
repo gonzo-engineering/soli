@@ -31,6 +31,9 @@
 		border-radius: 50%;
 		border: solid 2px var(--color-accent);
 		margin-bottom: 0.4rem;
+		img {
+			object-fit: cover;
+		}
 	}
 	.artist-name {
 		text-align: center;

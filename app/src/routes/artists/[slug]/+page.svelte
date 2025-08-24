@@ -29,7 +29,7 @@
 		<h2>{name}</h2>
 
 		{#if image_ipfs_cid}
-			<img src={makeImageLink(image_ipfs_cid, 500)} alt={`Image of ${name}`} />
+			<img class="artist-image" src={makeImageLink(image_ipfs_cid, 500)} alt={`Image of ${name}`} />
 		{/if}
 
 		<div>{bio}</div>
@@ -121,6 +121,9 @@
 		h3 {
 			display: none;
 		}
+	}
+	.artist-image {
+		object-fit: cover;
 	}
 	.artist-summary-card {
 		max-width: 500px;
