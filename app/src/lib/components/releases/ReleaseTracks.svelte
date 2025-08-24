@@ -5,6 +5,7 @@
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import Heart from '../icons/Heart.svelte';
 
 	const {
 		release,
@@ -46,21 +47,19 @@
 				</td>
 				<td>
 					<form method="post" action="?/toggleLikedTrack" use:enhance={handleFavTrackChange}>
-						<div>
-							<input type="hidden" name="trackId" value={track.id} />
-							<button
-								type="submit"
-								name="action"
-								value="toggleLikedTrack"
-								aria-label="Remove from likes tracks"
-							>
-								{#if likedTrackIDs.includes(track.id)}
-									❤️
-								{:else}
-									🤍
-								{/if}
-							</button>
-						</div>
+						<input type="hidden" name="trackId" value={track.id} />
+						<button
+							type="submit"
+							name="action"
+							value="toggleLikedTrack"
+							aria-label="Remove from likes tracks"
+						>
+							{#if likedTrackIDs.includes(track.id)}
+								<Heart filled />
+							{:else}
+								<Heart />
+							{/if}
+						</button>
 					</form>
 				</td>
 			</tr>
@@ -77,7 +76,21 @@
 	th {
 		font-weight: 500;
 	}
+	form {
+		text-align: right;
+	}
 	tr:not(:last-child) {
 		border-bottom: 1px solid gray;
+	}
+	form {
+		display: flex;
+		justify-content: flex-end;
+	}
+	button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		color: var(--color-text);
+		display: flex;
 	}
 </style>
