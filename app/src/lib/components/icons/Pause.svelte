@@ -1,23 +1,17 @@
 <svg
-	width="24px"
-	height="24px"
-	viewBox="0 0 24 24"
-	fill="none"
 	xmlns="http://www.w3.org/2000/svg"
-	color="currentColor"
-	stroke-width="1.5"
+	viewBox="0 0 640 640"
+	fill="currentColor"
+	stroke="currentColor"
 >
 	<path
-		d="M6 18.4V5.6C6 5.26863 6.26863 5 6.6 5H9.4C9.73137 5 10 5.26863 10 5.6V18.4C10 18.7314 9.73137 19 9.4 19H6.6C6.26863 19 6 18.7314 6 18.4Z"
-		fill="currentColor"
-		stroke="currentColor"
-		stroke-width="1.5"
-	>
-	</path>
-	<path
-		d="M14 18.4V5.6C14 5.26863 14.2686 5 14.6 5H17.4C17.7314 5 18 5.26863 18 5.6V18.4C18 18.7314 17.7314 19 17.4 19H14.6C14.2686 19 14 18.7314 14 18.4Z"
-		fill="currentColor"
-		stroke="currentColor"
-		stroke-width="1.5"
-	></path>
+		d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM288 256L288 384C288 401.7 273.7 416 256 416C238.3 416 224 401.7 224 384L224 256C224 238.3 238.3 224 256 224C273.7 224 288 238.3 288 256zM416 256L416 384C416 401.7 401.7 416 384 416C366.3 416 352 401.7 352 384L352 256C352 238.3 366.3 224 384 224C401.7 224 416 238.3 416 256z"
+	/>
 </svg>
+
+<style>
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+</style>

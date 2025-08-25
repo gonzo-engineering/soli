@@ -26,6 +26,7 @@
 
 	const menuLinks = [
 		{ href: '/account', label: 'Account' },
+		{ href: '/likes', label: 'Liked tracks' },
 		{ href: '/releases', label: 'Releases' },
 		{ href: '/artists', label: 'Artists' },
 		{ href: '/about', label: 'About' }
@@ -66,9 +67,10 @@
 	<AudioPlayer
 		userId={data.session?.user.id}
 		userPayPerStream={data.profileData?.pay_per_stream}
-		title={userState.activeSong.title}
+		track={userState.activeSong}
 		release={userState.activeSongRelease}
 		songUrl={userState.activeSongUrl}
+		likedTracks={data.likedTracks}
 	/>
 {/if}
 

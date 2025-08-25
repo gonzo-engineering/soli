@@ -14,7 +14,8 @@ export const TABLES = {
 	artistMembers: 'artist_members',
 	releasesHydrated: 'hydrated_releases',
 	streams: 'streams',
-	betaUsers: 'beta-users'
+	betaUsers: 'beta-users',
+	likedTracks: 'liked_tracks'
 };
 
 export const PUBLIC_PATH_ROOTS = [

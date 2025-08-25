@@ -41,5 +41,11 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		userState.payPerStream = data.profileData.pay_per_stream;
 	}
 
-	return { supabase, session, user, profileData: data.profileData };
+	return {
+		supabase,
+		session,
+		user,
+		profileData: data.profileData,
+		likedTracks: data.likedTracks
+	};
 };
