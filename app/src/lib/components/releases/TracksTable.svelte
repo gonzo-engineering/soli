@@ -8,7 +8,7 @@
 		profileData,
 		likedTracks,
 		session,
-		showArtist = false
+		showReleaseAndArtist = false
 	}: {
 		release: ReleaseHydrated;
 		profileData: UserProfile;
@@ -17,7 +17,7 @@
 			release: ReleaseHydrated | null;
 		}[];
 		session: Session;
-		showArtist?: boolean;
+		showReleaseAndArtist?: boolean;
 	} = $props();
 </script>
 
@@ -26,7 +26,8 @@
 		<tr>
 			<th>#</th>
 			<th>Track</th>
-			{#if showArtist}
+			{#if showReleaseAndArtist}
+				<th>Release</th>
 				<th>Artist</th>
 			{/if}
 			<th>Duration</th>
@@ -43,7 +44,7 @@
 				{profileData}
 				{session}
 				{likedTracks}
-				{showArtist}
+				{showReleaseAndArtist}
 			/>
 		{/each}
 	</tbody>

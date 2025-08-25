@@ -12,6 +12,7 @@
 			<tr>
 				<th></th>
 				<th>Track</th>
+				<th class="hide-on-mobile">Release</th>
 				<th>Artist</th>
 				<th>Duration</th>
 				<th></th>
@@ -26,7 +27,7 @@
 					session={data.session}
 					profileData={data.profileData}
 					likedTracks={data.likedTracks}
-					showArtist={true}
+					showReleaseAndArtist={true}
 				/>
 			{/each}
 		</tbody>
@@ -41,5 +42,13 @@
 	}
 	th {
 		font-weight: 500;
+	}
+	.hide-on-mobile {
+		display: none;
+	}
+	@media (min-width: 640px) {
+		.hide-on-mobile {
+			display: table-cell;
+		}
 	}
 </style>

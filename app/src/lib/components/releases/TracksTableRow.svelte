@@ -12,7 +12,7 @@
 		profileData,
 		session,
 		likedTracks,
-		showArtist = false
+		showReleaseAndArtist = false
 	}: {
 		i?: number;
 		track: TrackRaw;
@@ -23,15 +23,16 @@
 			track: TrackRaw;
 			release: ReleaseHydrated | null;
 		}[];
-		showArtist: boolean;
+		showReleaseAndArtist: boolean;
 	} = $props();
 </script>
 
 <tr>
 	<td>{i || ''}</td>
 	<td>{track.title}</td>
-	{#if showArtist}
-		<td>{release.artist_name}</td>
+	{#if showReleaseAndArtist}
+		<td class="hide-on-mobile"><a href={`/releases/${release.id}`}>{release.title}</a></td>
+		<td><a href={`/artists/${release.artist_id}`}>{release.artist_name}</a></td>
 	{/if}
 	<td>{prettifyDuration(track.duration_seconds)}</td>
 	<td class="play-button-container">
@@ -45,5 +46,13 @@
 <style>
 	tr:not(:last-child) {
 		border-bottom: 1px solid gray;
+	}
+	.hide-on-mobile {
+		display: none;
+	}
+	@media (min-width: 640px) {
+		.hide-on-mobile {
+			display: table-cell;
+		}
 	}
 </style>
