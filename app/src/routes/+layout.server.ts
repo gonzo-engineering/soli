@@ -38,16 +38,21 @@ export const load: LayoutServerLoad = async ({
 			.in('id', trackIDs);
 		likedTracks = likedTracksRaw?.map((track) => ({ track, release: null })) || [];
 		for (const likedTrack of likedTracks) {
-			const { data: releaseID } = await supabase
+			const { data: releaseID, error: releaseIDError } = await supabase
 				.from('release_tracks')
-				.select(`release_id`)
+				.select('release_id')
 				.eq('track_id', likedTrack.track.id)
 				.single();
+			if (releaseIDError) {
+				console.error('Error fetching release ID:', releaseIDError);
+				continue;
+			}
 			const release = await fetch(`/api/releases/${releaseID.release_id}`).then((res) =>
 				res.json()
 			);
 			likedTrack.release = release;
 		}
+		likedTracks = likedTracks.filter((t) => t.release);
 	}
 
 	return {

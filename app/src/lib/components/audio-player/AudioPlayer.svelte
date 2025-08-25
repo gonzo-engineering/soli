@@ -1,25 +1,31 @@
 <script lang="ts">
 	import { setActiveSong, userState } from '$lib/global/state.svelte.js';
-	import type { ReleaseHydrated } from '../../../../../shared/types';
+	import type { ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
+	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 
 	let {
 		userId,
 		userPayPerStream,
-		title,
+		track,
 		release,
-		songUrl
+		songUrl,
+		likedTracks
 	}: {
 		userId: string;
 		userPayPerStream: number;
-		title: string;
+		track: TrackRaw;
 		release: ReleaseHydrated;
 		songUrl: string;
+		likedTracks: {
+			track: TrackRaw;
+			release: ReleaseHydrated | null;
+		}[];
 	} = $props();
 </script>
 
 <div class="audio-player">
 	<div>
-		“{title}” by <a href={`/artists/${release.artist_id}`}>{release.artist_name}</a>
+		“{track.title}” by <a href={`/artists/${release.artist_id}`}>{release.artist_name}</a>
 	</div>
 	<audio
 		src={songUrl}
@@ -47,6 +53,7 @@
 		autoplay
 		controlsList="nodownload noplaybackrate"
 	></audio>
+	<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'dark'} />
 </div>
 
 <style>
@@ -72,5 +79,8 @@
 			flex-direction: row;
 			gap: 2rem;
 		}
+	}
+	.like-button-wrapper {
+		color: #333;
 	}
 </style>
