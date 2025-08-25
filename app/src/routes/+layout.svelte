@@ -26,6 +26,7 @@
 
 	const menuLinks = [
 		{ href: '/account', label: 'Account' },
+		{ href: '/likes', label: 'Liked tracks' },
 		{ href: '/releases', label: 'Releases' },
 		{ href: '/artists', label: 'Artists' },
 		{ href: '/about', label: 'About' }

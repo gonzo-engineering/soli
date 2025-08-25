@@ -1,12 +1,15 @@
 import type { LayoutServerLoad } from './$types';
-import type { UserProfile } from '../../../shared/types';
+import type { ReleaseHydrated, TrackRaw, UserProfile } from '../../../shared/types';
 import { TABLES } from '$lib/global/config';
 
 export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSession }, cookies }) => {
 	const { session, user } = await safeGetSession();
 
 	let profileData = null;
-	let likedTrackIDs: string[] = [];
+	let likedTracks: {
+		track: TrackRaw;
+		release: ReleaseHydrated | null;
+	}[] = [];
 
 	if (session) {
 		const {
@@ -20,18 +23,36 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSessio
 			.single();
 		profileData = profile;
 		const {
-			data: likedTracks
+			data: likedTrackIDs
 		}: {
 			data: { track_id: string }[] | null;
 		} = await supabase.from(TABLES.likedTracks).select(`track_id`).eq('user_id', session.user.id);
-		likedTrackIDs = likedTracks?.map((fav) => fav.track_id) ?? [];
+		const trackIDs = likedTrackIDs ? likedTrackIDs.map((t) => t.track_id) : [];
+		const { data: likedTracksRaw } = await supabase
+			.from('tracks')
+			.select(`id, artist_id, title, ipfs_cid, duration_seconds`)
+			.in('id', trackIDs);
+		likedTracks = likedTracksRaw?.map((track) => ({ track, release: null })) || [];
+		for (const likedTrack of likedTracks) {
+			const { data: releaseID } = await supabase
+				.from('release_tracks')
+				.select(`release_id`)
+				.eq('track_id', likedTrack.track.id)
+				.single();
+			const { data: hydratedRelease } = await supabase
+				.from(TABLES.releasesHydrated)
+				.select(`id, artist_name, artist_id, title, release_date`)
+				.eq('id', releaseID.release_id)
+				.single();
+			likedTrack.release = hydratedRelease;
+		}
 	}
 
 	return {
 		session,
 		user,
 		profileData,
-		likedTrackIDs,
+		likedTracks,
 		cookies: cookies.getAll()
 	};
 };

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { ReleaseHydrated, UserProfile } from '../../../../../shared/types';
+	import type { ReleaseHydrated, TrackRaw, UserProfile } from '../../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
 	import type { Session } from '@supabase/supabase-js';
-	import ReleaseTracks from '$lib/components/releases/ReleaseTracks.svelte';
+	import ReleaseTracks from '$lib/components/releases/TracksTable.svelte';
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import { formatReleaseType } from '../../../../../shared/utils';
@@ -13,7 +13,10 @@
 		data: {
 			release: ReleaseHydrated;
 			profileData: UserProfile;
-			likedTrackIDs: string[];
+			likedTracks: {
+				track: TrackRaw;
+				release: ReleaseHydrated | null;
+			}[];
 			session: Session;
 		};
 	} = $props();
@@ -69,7 +72,7 @@
 	<ReleaseTracks
 		{release}
 		profileData={data.profileData}
-		likedTrackIDs={data.likedTrackIDs}
+		likedTracks={data.likedTracks}
 		session={data.session}
 	/>
 
