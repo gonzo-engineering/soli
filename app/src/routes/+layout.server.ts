@@ -2,7 +2,11 @@ import type { LayoutServerLoad } from './$types';
 import type { ReleaseHydrated, TrackRaw, UserProfile } from '../../../shared/types';
 import { TABLES } from '$lib/global/config';
 
-export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSession }, cookies }) => {
+export const load: LayoutServerLoad = async ({
+	locals: { supabase, safeGetSession },
+	cookies,
+	fetch
+}) => {
 	const { session, user } = await safeGetSession();
 
 	let profileData = null;
@@ -39,12 +43,10 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSessio
 				.select(`release_id`)
 				.eq('track_id', likedTrack.track.id)
 				.single();
-			const { data: hydratedRelease } = await supabase
-				.from(TABLES.releasesHydrated)
-				.select(`id, artist_name, artist_id, title, release_date`)
-				.eq('id', releaseID.release_id)
-				.single();
-			likedTrack.release = hydratedRelease;
+			const release = await fetch(`/api/releases/${releaseID.release_id}`).then((res) =>
+				res.json()
+			);
+			likedTrack.release = release;
 		}
 	}
 

@@ -1,13 +1,13 @@
 import type { Actions } from '@sveltejs/kit';
-import type { ReleaseHydrated } from '../../../../../shared/types';
 import { TABLES } from '../../../lib/global/config';
+import type { ReleaseHydrated } from '../../../../../shared/types';
 
 export const load = async ({ fetch, params }) => {
-	const releases: ReleaseHydrated[] = await fetch('/api/releases').then((res) => res.json());
+	const release: ReleaseHydrated = await fetch(`/api/releases/${params.slug}`).then((res) =>
+		res.json()
+	);
 
-	const matchingRelease = releases.find((release) => release.id === params.slug);
-
-	if (!matchingRelease) {
+	if (!release) {
 		return {
 			status: 404,
 			error: new Error('Not Found')
@@ -15,7 +15,7 @@ export const load = async ({ fetch, params }) => {
 	}
 
 	return {
-		release: matchingRelease
+		release
 	};
 };
 
