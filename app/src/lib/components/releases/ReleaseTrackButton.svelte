@@ -37,9 +37,9 @@
 		}}
 	>
 		{#if track.ipfs_cid === userState.activeSong?.ipfs_cid && !userState.activeSongIsPaused}
-			<div class="play-button"><Pause /></div>
+			<Pause />
 		{:else}
-			<div class="play-button"><Play /></div>
+			<Play />
 		{/if}
 	</ButtonWrapper>
 {:else}
@@ -51,16 +51,5 @@
 <style>
 	button:hover {
 		cursor: pointer;
-	}
-	.play-button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 32px;
-		height: 32px;
-		padding: 10%;
-		border-radius: 50%;
-		background-color: var(--color-accent);
-		color: var(--color-background);
 	}
 </style>
