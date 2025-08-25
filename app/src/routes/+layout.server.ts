@@ -42,6 +42,7 @@ export const load: LayoutServerLoad = async ({
 				.from('release_tracks')
 				.select('release_id')
 				.eq('track_id', likedTrack.track.id)
+				.limit(1)
 				.single();
 			if (releaseIDError) {
 				console.error('Error fetching release ID:', releaseIDError);

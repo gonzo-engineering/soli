@@ -4,6 +4,11 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>Your likes · Soli</title>
+	<meta name="description" content="Browse your liked tracks on Soli." />
+</svelte:head>
+
 <h2>Your liked tracks</h2>
 
 {#if data.session}
