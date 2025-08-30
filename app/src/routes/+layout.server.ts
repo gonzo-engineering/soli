@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async ({
 }) => {
 	const { session, user } = await safeGetSession();
 
-	let profileData = null;
+	let profileData: UserProfile | null = null;
 	let likedTracks: {
 		track: TrackRaw;
 		release: ReleaseHydrated | null;
@@ -17,16 +17,7 @@ export const load: LayoutServerLoad = async ({
 	let followedIDs: string[] = [];
 
 	if (session) {
-		const {
-			data: profile
-		}: {
-			data: UserProfile | null;
-		} = await supabase
-			.from(TABLES.users)
-			.select(`first_name, tokens_balance, pay_per_stream`)
-			.eq('id', session.user.id)
-			.single();
-		profileData = profile;
+		profileData = await fetch(`/api/users/${session.user.id}`).then((res) => res.json());
 		const {
 			data: likedTrackIDs
 		}: {

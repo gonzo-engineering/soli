@@ -1,7 +1,8 @@
-import { REVENUE_SPLIT, TABLES } from '$lib/global/config';
+import { REVENUE_SPLIT } from '$lib/global/config';
+import { updateUserTokensBalance } from '$lib/global/state.svelte';
 import { type RequestHandler } from '@sveltejs/kit';
 
-export const POST: RequestHandler = async ({ request, locals: { supabase } }) => {
+export const POST: RequestHandler = async ({ request }) => {
 	const requestBody = await request.json();
 
 	if (requestBody.type !== 'checkout.session.completed') {
@@ -26,20 +27,16 @@ export const POST: RequestHandler = async ({ request, locals: { supabase } }) =>
 	}
 
 	const userId: string = stripeSession.metadata.userId;
-	const userTokensBalance = parseInt(stripeSession.metadata.balance);
 	const topUpAmount: number = stripeSession.amount_total;
 	const topUpTokens = Math.round(topUpAmount * REVENUE_SPLIT.artists);
 
-	const { error } = await supabase
-		.from(TABLES.users)
-		.update({
-			tokens_balance: topUpTokens + userTokensBalance
-		})
-		.eq('id', userId);
+	const { error } = await updateUserTokensBalance(userId, topUpTokens, 'add');
+
 	if (error) {
 		console.error('Error updating user balance:', error);
 		return new Response(JSON.stringify({ message: 'Error topping up balance' }), { status: 500 });
 	}
+
 	console.log('User balance updated successfully.');
 
 	return new Response(JSON.stringify({ request }), {
