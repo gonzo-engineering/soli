@@ -60,7 +60,9 @@ export const updateUserTokensBalance = async (
 		console.error('Error updating user balance:', response.statusText);
 	}
 	const data = await response.json();
-	userState.liveBalance = data.tokens_balance;
+	if (userState.liveBalance !== null) {
+		userState.liveBalance += balanceChange;
+	}
 	return { data, error: response.ok ? null : new Error(response.statusText) };
 };
 
