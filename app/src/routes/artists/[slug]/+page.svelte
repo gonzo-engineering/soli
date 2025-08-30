@@ -38,13 +38,6 @@
 	<div class="artist-summary-card">
 		<h2>{name}</h2>
 
-		<form action="?/toggleFollowedArtist" method="POST" use:enhance={handleUpload}>
-			<input type="hidden" name="artistID" value={data.artist.id} />
-			<button type="submit"
-				>{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}</button
-			>
-		</form>
-
 		{#if image_ipfs_cid}
 			<img class="artist-image" src={makeImageLink(image_ipfs_cid, 500)} alt={`Image of ${name}`} />
 		{/if}
@@ -54,6 +47,21 @@
 		{#if data.artist.website_url}
 			<a href={website_url}>{website_url?.replace('https://', '').replaceAll('/', '')}</a>
 		{/if}
+
+		<hr />
+
+		<div>
+			<div>
+				You are {data.followedArtists.includes(data.artist.id) ? 'following' : 'not following'} this
+				artist.
+			</div>
+			<form action="?/toggleFollowedArtist" method="POST" use:enhance={handleUpload}>
+				<input type="hidden" name="artistID" value={data.artist.id} />
+				<button type="submit"
+					>{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}</button
+				>
+			</form>
+		</div>
 	</div>
 
 	<div class="artist-music">
@@ -133,6 +141,11 @@
 		font-weight: 500;
 		margin-bottom: 0.5rem;
 		color: gray;
+	}
+	hr {
+		border: none;
+		border-top: 1px solid var(--color-accent);
+		margin: 1rem 0;
 	}
 	@media (min-width: 600px) {
 		h3 {
