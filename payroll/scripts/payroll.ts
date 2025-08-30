@@ -36,7 +36,8 @@ if (!data) {
 // TODO: Make this more robust, and possibly going from midnight to midnight
 // ending before the script runs to avoid double counting
 const today = new Date();
-const sevenDaysAgo = new Date(today.getDate() - 7);
+const sevenDaysAgo = new Date();
+sevenDaysAgo.setDate(today.getDate() - 7);
 
 const streamsFromLastSevenDays: Stream[] = data.filter((stream) => {
   const streamDate = new Date(stream.streamed_at);
