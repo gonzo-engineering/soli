@@ -73,4 +73,6 @@ export async function PATCH({ request, params, fetch }) {
 
 		return json({ message: 'User balance updated successfully.' });
 	}
+
+	return json({ error: 'Invalid request' }, { status: 400 });
 }
