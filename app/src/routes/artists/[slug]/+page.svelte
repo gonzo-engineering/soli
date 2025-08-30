@@ -3,8 +3,12 @@
 	import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
 	import { sortReleasesByDate } from '../../../../../shared/utils';
+	import { enhance } from '$app/forms';
 
-	let { data }: { data: { artist: ArtistRaw; releases: ReleaseHydrated[] } } = $props();
+	let {
+		data
+	}: { data: { artist: ArtistRaw; releases: ReleaseHydrated[]; followedArtists: string[] } } =
+		$props();
 
 	const { name, bio, website_url, image_ipfs_cid } = data.artist;
 
@@ -13,6 +17,12 @@
 	const lps = releasesSorted.filter((release) => release.release_type === 'album');
 	const eps = releasesSorted.filter((release) => release.release_type === 'ep');
 	const singles = releasesSorted.filter((release) => release.release_type === 'single');
+
+	function handleUpload() {
+		return async ({ update }: { update: () => Promise<void> }) => {
+			await update();
+		};
+	}
 </script>
 
 <svelte:head>
@@ -37,6 +47,21 @@
 		{#if data.artist.website_url}
 			<a href={website_url}>{website_url?.replace('https://', '').replaceAll('/', '')}</a>
 		{/if}
+
+		<hr />
+
+		<div>
+			<div>
+				You are {data.followedArtists.includes(data.artist.id) ? 'following' : 'not following'} this
+				artist.
+			</div>
+			<form action="?/toggleFollowedArtist" method="POST" use:enhance={handleUpload}>
+				<input type="hidden" name="artistID" value={data.artist.id} />
+				<button type="submit"
+					>{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}</button
+				>
+			</form>
+		</div>
 	</div>
 
 	<div class="artist-music">
@@ -116,6 +141,11 @@
 		font-weight: 500;
 		margin-bottom: 0.5rem;
 		color: gray;
+	}
+	hr {
+		border: none;
+		border-top: 1px solid var(--color-accent);
+		margin: 1rem 0;
 	}
 	@media (min-width: 600px) {
 		h3 {

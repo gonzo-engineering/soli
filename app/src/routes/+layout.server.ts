@@ -9,23 +9,15 @@ export const load: LayoutServerLoad = async ({
 }) => {
 	const { session, user } = await safeGetSession();
 
-	let profileData = null;
+	let profileData: UserProfile | null = null;
 	let likedTracks: {
 		track: TrackRaw;
 		release: ReleaseHydrated | null;
 	}[] = [];
+	let followedIDs: string[] = [];
 
 	if (session) {
-		const {
-			data: profile
-		}: {
-			data: UserProfile | null;
-		} = await supabase
-			.from(TABLES.users)
-			.select(`first_name, tokens_balance, pay_per_stream`)
-			.eq('id', session.user.id)
-			.single();
-		profileData = profile;
+		profileData = await fetch(`/api/users/${session.user.id}`).then((res) => res.json());
 		const {
 			data: likedTrackIDs
 		}: {
@@ -54,6 +46,14 @@ export const load: LayoutServerLoad = async ({
 			likedTrack.release = release;
 		}
 		likedTracks = likedTracks.filter((t) => t.release);
+
+		const followedArtistIDs = await supabase
+			.from(TABLES.followedArtists)
+			.select('artist_id')
+			.eq('user_id', session.user.id);
+		if (followedArtistIDs.data) {
+			followedIDs = followedArtistIDs.data.map((a) => a.artist_id);
+		}
 	}
 
 	return {
@@ -61,6 +61,7 @@ export const load: LayoutServerLoad = async ({
 		user,
 		profileData,
 		likedTracks,
+		followedArtists: followedIDs,
 		cookies: cookies.getAll()
 	};
 };

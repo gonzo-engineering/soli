@@ -42,19 +42,26 @@ const logStream = async (userId: string, artistId: string, trackId: string, toke
 	}
 };
 
-const updateUserBalance = async (userId: string, newBalance: number) => {
-	console.log('Updating balance for user:', userId, 'New balance:', newBalance);
-	const { error } = await supabase
-		.from(TABLES.users)
-		.update({ tokens_balance: newBalance })
-		.eq('id', userId)
-		.select();
-	if (error) {
-		console.error('Error updating balance:', error);
-	} else {
-		console.log('Balance updated successfully');
-		userState.liveBalance = newBalance;
+export const updateUserTokensBalance = async (
+	userId: string,
+	tokens: number,
+	addOrSubtract: 'add' | 'subtract'
+) => {
+	const balanceChange = addOrSubtract === 'add' ? tokens : -tokens;
+	const response = await fetch(`/api/users/${userId}`, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ balanceChange })
+	});
+
+	if (!response.ok) {
+		console.error('Error updating user balance:', response.statusText);
 	}
+	const data = await response.json();
+	userState.liveBalance = data.tokens_balance;
+	return { data, error: response.ok ? null : new Error(response.statusText) };
 };
 
 export const setActiveSong = async (
@@ -77,7 +84,7 @@ export const setActiveSong = async (
 	// TODO: Improve this to use a more accurate timer
 	// Deduct the pay per stream after 30 of playtime
 	setTimeout(() => {
-		updateUserBalance(userId, userBalance - userPayPerStream);
+		updateUserTokensBalance(userId, userPayPerStream, 'subtract');
 		logStream(userId, release.artist_id, song.id, userPayPerStream);
 	}, 30000);
 };
