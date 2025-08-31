@@ -59,3 +59,8 @@ export interface StreamLog {
   artist_id: string;
   tokens_used: number;
 }
+
+export interface LikedTrackObject {
+  track: TrackRaw;
+  release: ReleaseHydrated;
+}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ReleaseHydrated, TrackRaw, UserProfile } from '../../../../../shared/types';
+	import type { LikedTrackObject, ReleaseHydrated, UserProfile } from '../../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
 	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTracks from '$lib/components/releases/TracksTable.svelte';
@@ -13,10 +13,7 @@
 		data: {
 			release: ReleaseHydrated;
 			profileData: UserProfile;
-			likedTracks: {
-				track: TrackRaw;
-				release: ReleaseHydrated | null;
-			}[];
+			likedTracks: LikedTrackObject[];
 			session: Session;
 		};
 	} = $props();

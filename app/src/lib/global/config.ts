@@ -12,6 +12,8 @@ export const TABLES = {
 	users: 'users',
 	artists: 'artists',
 	artistMembers: 'artist_members',
+	tracks: 'tracks',
+	releaseTracks: 'release_tracks',
 	releasesHydrated: 'hydrated_releases',
 	streams: 'streams',
 	betaUsers: 'beta-users',

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
+	import type { LikedTrackObject } from '../../../../../shared/types';
 	import { enhance } from '$app/forms';
 	import Heart from '../icons/Heart.svelte';
 
@@ -10,10 +10,7 @@
 		lightOrDark
 	}: {
 		trackID: string;
-		likedTracks: {
-			track: TrackRaw;
-			release: ReleaseHydrated | null;
-		}[];
+		likedTracks: LikedTrackObject[];
 		lightOrDark: 'light' | 'dark';
 	} = $props();
 
