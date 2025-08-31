@@ -1,17 +1,20 @@
 import type { Actions } from '@sveltejs/kit';
 import type { ArtistRaw } from '../../../../../shared/types';
+import { API_BASE } from '$lib/global/config';
 
 // TODO: Explore static generation where possible to
 // improve performance and keep requests to a minimum.
 // May entail splitting the API into its own thing.
 
 export const load = async ({ params, fetch }) => {
-	const matchingArtist: ArtistRaw = await fetch(`/api/artists/${params.slug}`).then((res) => {
-		if (!res.ok) {
-			throw new Error(`Failed to fetch artist with slug: ${params.slug}`);
+	const matchingArtist: ArtistRaw = await fetch(`${API_BASE}/artists/${params.slug}`).then(
+		(res) => {
+			if (!res.ok) {
+				throw new Error(`Failed to fetch artist with slug: ${params.slug}`);
+			}
+			return res.json();
 		}
-		return res.json();
-	});
+	);
 
 	if (!matchingArtist) {
 		return {
@@ -20,7 +23,7 @@ export const load = async ({ params, fetch }) => {
 		};
 	}
 
-	const artistReleases = await fetch(`/api/artists/${params.slug}/releases`).then((res) => {
+	const artistReleases = await fetch(`${API_BASE}/artists/${params.slug}/releases`).then((res) => {
 		if (!res.ok) {
 			throw new Error(`Failed to fetch releases for artist with slug: ${params.slug}`);
 		}
@@ -41,7 +44,7 @@ export const actions: Actions = {
 			const artistID = formData.get('artistID');
 			const addOrRemove = formData.get('addOrRemove');
 			if (artistID && addOrRemove) {
-				await fetch(`/api/users/${session.user.id}/following`, {
+				await fetch(`${API_BASE}/users/${session.user.id}/following`, {
 					method: addOrRemove === 'remove' ? 'DELETE' : 'POST',
 					headers: {
 						'Content-Type': 'application/json'

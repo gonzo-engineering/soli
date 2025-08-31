@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { API_BASE } from '$lib/global/config';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { session } = await safeGetSession();
@@ -19,7 +20,7 @@ export const actions: Actions = {
 
 		const { session } = await safeGetSession();
 
-		const { error } = await fetch(`/api/users/${session?.user.id}`, {
+		const { error } = await fetch(`${API_BASE}/users/${session?.user.id}`, {
 			method: 'PATCH',
 			body: JSON.stringify({
 				updateProfileInfo: {

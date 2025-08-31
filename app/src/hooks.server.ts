@@ -4,7 +4,7 @@ import {
 	PUBLIC_SUPABASE_URL
 } from '$lib/global/config';
 import { createServerClient } from '@supabase/ssr';
-import { redirect, type Handle, type HandleFetch } from '@sveltejs/kit';
+import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
 export const supabase: Handle = async ({ event, resolve }) => {
@@ -70,8 +70,3 @@ const authGuard: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 export const handle: Handle = sequence(supabase, authGuard);
-
-export const handleFetch: HandleFetch = async ({ request, fetch }) => {
-	// TODO: Only allow requests from authorised origins
-	return fetch(request);
-};

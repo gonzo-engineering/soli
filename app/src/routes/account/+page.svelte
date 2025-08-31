@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { userState } from '$lib/global/state.svelte.js';
-	import { REVENUE_SPLIT } from '$lib/global/config.js';
+	import { REVENUE_SPLIT } from '../../../../shared/config';
 	import { prettifyBalance, prettifyPennies } from '$lib/utils/index.js';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import ContentBlock from '$lib/components/ContentBlock.svelte';

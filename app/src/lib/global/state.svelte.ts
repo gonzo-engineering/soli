@@ -1,4 +1,5 @@
 import type { ReleaseHydrated, TrackRaw } from '../../../../shared/types';
+import { API_BASE } from './config';
 
 interface UserState {
 	activeSong: TrackRaw | null;
@@ -22,7 +23,7 @@ export const userState: UserState = $state({
 
 const logStream = async (userId: string, artistId: string, trackId: string, tokensUsed: number) => {
 	console.log(`Logging stream for '${trackId}' by user ${userId}`);
-	const { status } = await fetch('/api/streams', {
+	const { status } = await fetch(`${API_BASE}/streams`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -42,7 +43,7 @@ export const updateUserTokensBalance = async (
 	addOrSubtract: 'add' | 'subtract'
 ) => {
 	const balanceChange = addOrSubtract === 'add' ? tokens : -tokens;
-	const response = await fetch(`/api/users/${userId}`, {
+	const response = await fetch(`${API_BASE}/users/${userId}`, {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json'
@@ -71,7 +72,7 @@ export const setActiveSong = async (
 		throw new Error('Not enough balance to play this song');
 	}
 
-	const songUrl = await fetch('/api/links/' + song.ipfs_cid).then((res) => res.text());
+	const songUrl = await fetch(`${API_BASE}/links/${song.ipfs_cid}`).then((res) => res.text());
 
 	userState.activeSong = song;
 	userState.activeSongRelease = release;
