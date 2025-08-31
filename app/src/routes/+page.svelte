@@ -11,10 +11,6 @@
 
 	const followedArtists = data.artists.filter((artist) => data.followedArtists.includes(artist.id));
 	const otherArtists = data.artists.filter((artist) => !data.followedArtists.includes(artist.id));
-
-	console.log('Profile Data:', data.profileData);
-	console.log('Liked Tracks:', data.likedTracks);
-	console.log('Followed IDs:', data.followedArtists);
 </script>
 
 <svelte:head>
