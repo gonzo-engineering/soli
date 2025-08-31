@@ -1,7 +1,7 @@
 // src/routes/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { TABLES } from '$lib/global/config';
+import { TABLES } from '../../../../shared/config';
 
 export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) => {
 	const { session } = await safeGetSession();
@@ -17,7 +17,6 @@ export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) 
 export const actions: Actions = {
 	default: async (event) => {
 		const {
-			// url,
 			request,
 			locals: { supabase }
 		} = event;

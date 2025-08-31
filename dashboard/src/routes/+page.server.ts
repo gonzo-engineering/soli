@@ -4,30 +4,6 @@ import { supabase } from "$lib/server/stripe";
 import { parseFile } from "music-metadata";
 import fs from "fs/promises";
 
-// const {
-// 	data: connectedArtistsData,
-// 	error: userError
-// }: {
-// 	data: { artist_id: string }[] | null;
-// 	error: Error | null;
-// } = await supabase.from(TABLES.artistMembers).select('artist_id').eq('user_id', session.user.id);
-
-// if (userError || !connectedArtistsData) {
-// 	console.error('Error fetching user data:', userError);
-// 	return fail(500, { error: 'Failed to fetch user data' });
-// }
-
-// const artistProfiles: ArtistRaw[] = await Promise.all(
-// 	connectedArtistsData.map((artist) => {
-// 		return fetch(`/api/artists/${artist.artist_id}`)
-// 			.then((res) => res.json())
-// 			.catch((error) => {
-// 				console.error(`Error fetching artist ${artist.artist_id}:`, error);
-// 				return null;
-// 			});
-// 	})
-// );
-
 export const actions: Actions = {
   uploadTrack: async ({ request }) => {
     try {

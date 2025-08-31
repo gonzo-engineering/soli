@@ -1,18 +1,20 @@
-import { TABLES } from '$lib/global/config';
 import type { Actions } from '@sveltejs/kit';
-import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
+import type { ArtistRaw } from '../../../../../shared/types';
+import { API_BASE } from '$lib/global/config';
 
 // TODO: Explore static generation where possible to
 // improve performance and keep requests to a minimum.
 // May entail splitting the API into its own thing.
 
 export const load = async ({ params, fetch }) => {
-	const matchingArtist: ArtistRaw = await fetch(`/api/artists/${params.slug}`).then((res) => {
-		if (!res.ok) {
-			throw new Error(`Failed to fetch artist with slug: ${params.slug}`);
+	const matchingArtist: ArtistRaw = await fetch(`${API_BASE}/artists/${params.slug}`).then(
+		(res) => {
+			if (!res.ok) {
+				throw new Error(`Failed to fetch artist with slug: ${params.slug}`);
+			}
+			return res.json();
 		}
-		return res.json();
-	});
+	);
 
 	if (!matchingArtist) {
 		return {
@@ -21,9 +23,12 @@ export const load = async ({ params, fetch }) => {
 		};
 	}
 
-	const allReleases: ReleaseHydrated[] = await fetch(`/api/releases`).then((res) => res.json());
-
-	const artistReleases = allReleases.filter((release) => release.artist_id === matchingArtist.id);
+	const artistReleases = await fetch(`${API_BASE}/artists/${params.slug}/releases`).then((res) => {
+		if (!res.ok) {
+			throw new Error(`Failed to fetch releases for artist with slug: ${params.slug}`);
+		}
+		return res.json();
+	});
 
 	return {
 		artist: matchingArtist,
@@ -32,29 +37,20 @@ export const load = async ({ params, fetch }) => {
 };
 
 export const actions: Actions = {
-	toggleFollowedArtist: async ({ request, locals: { supabase, safeGetSession } }) => {
+	toggleFollowedArtist: async ({ request, fetch, locals: { safeGetSession } }) => {
 		const { session } = await safeGetSession();
 		if (session) {
 			const formData = await request.formData();
 			const artistID = formData.get('artistID');
-			if (artistID) {
-				const { data: existingFollowedArtist } = await supabase
-					.from(TABLES.followedArtists)
-					.select('*')
-					.eq('user_id', session.user.id)
-					.eq('artist_id', artistID)
-					.single();
-
-				if (existingFollowedArtist) {
-					await supabase.from(TABLES.followedArtists).delete().eq('artist_id', artistID);
-					console.log(`Artist removed from followed artists: ${artistID}`);
-				} else {
-					await supabase.from(TABLES.followedArtists).insert({
-						user_id: session.user.id,
-						artist_id: artistID
-					});
-					console.log(`Artist added to followed artists: ${artistID}`);
-				}
+			const addOrRemove = formData.get('addOrRemove');
+			if (artistID && addOrRemove) {
+				await fetch(`${API_BASE}/users/${session.user.id}/following`, {
+					method: addOrRemove === 'remove' ? 'DELETE' : 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ artistId: artistID })
+				});
 			}
 		}
 	}

@@ -1,30 +1,24 @@
-import { TABLES } from '$lib/global/config';
 import type { Actions } from '@sveltejs/kit';
+import { API_BASE } from '$lib/global/config';
 
 export const actions: Actions = {
-	toggleLikedTrack: async ({ request, locals: { supabase, safeGetSession } }) => {
+	toggleLikedTrack: async ({ request, fetch, locals: { safeGetSession } }) => {
 		const { session } = await safeGetSession();
 		if (session) {
 			const formData = await request.formData();
 			const trackId = formData.get('trackId');
-			if (trackId) {
-				const { data: existingLikedTrack } = await supabase
-					.from(TABLES.likedTracks)
-					.select('*')
-					.eq('user_id', session.user.id)
-					.eq('track_id', trackId)
-					.single();
-
-				if (existingLikedTrack) {
-					await supabase.from(TABLES.likedTracks).delete().eq('track_id', trackId);
-					console.log(`Track removed from liked tracks: ${trackId}`);
-				} else {
-					await supabase.from(TABLES.likedTracks).insert({
-						user_id: session.user.id,
-						track_id: trackId
-					});
-					console.log(`Track added to liked tracks: ${trackId}`);
-				}
+			const addOrRemove = formData.get('addOrRemove');
+			if (trackId && addOrRemove) {
+				await fetch(`${API_BASE}/users/${session.user.id}/likes`, {
+					method: addOrRemove === 'remove' ? 'DELETE' : 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ trackId })
+				});
+				console.log(
+					`Track ${addOrRemove === 'remove' ? 'removed' : 'added'} to liked tracks: ${trackId}`
+				);
 			}
 		}
 	}

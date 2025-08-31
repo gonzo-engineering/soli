@@ -57,6 +57,11 @@
 			</div>
 			<form action="?/toggleFollowedArtist" method="POST" use:enhance={handleUpload}>
 				<input type="hidden" name="artistID" value={data.artist.id} />
+				<input
+					type="hidden"
+					name="addOrRemove"
+					value={data.followedArtists.includes(data.artist.id) ? 'remove' : 'add'}
+				/>
 				<button type="submit"
 					>{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}</button
 				>

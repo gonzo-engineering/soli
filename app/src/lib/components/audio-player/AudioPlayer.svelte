@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setActiveSong, userState } from '$lib/global/state.svelte.js';
-	import type { ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
+	import type { LikedTrackObject, ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 
 	let {
@@ -16,10 +16,7 @@
 		track: TrackRaw;
 		release: ReleaseHydrated;
 		songUrl: string;
-		likedTracks: {
-			track: TrackRaw;
-			release: ReleaseHydrated | null;
-		}[];
+		likedTracks: LikedTrackObject[];
 	} = $props();
 </script>
 

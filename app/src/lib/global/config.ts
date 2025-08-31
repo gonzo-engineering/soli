@@ -1,30 +1,9 @@
-export const DOMAIN = 'https://soli.network';
-
-export const REVENUE_SPLIT = {
-	artists: 0.9,
-	platform: 0.1
-};
+import { dev } from '$app/environment';
+import { API_DOMAIN, API_LOCAL_PORT } from '../../../../shared/config';
 
 export const PUBLIC_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 export const PUBLIC_SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const TABLES = {
-	users: 'users',
-	artists: 'artists',
-	artistMembers: 'artist_members',
-	releasesHydrated: 'hydrated_releases',
-	streams: 'streams',
-	betaUsers: 'beta-users',
-	likedTracks: 'liked_tracks',
-	followedArtists: 'followed_artists'
-};
+export const PUBLIC_PATH_ROOTS = ['/login', '/auth', '/about', '/contact', '/privacy', '/terms'];
 
-export const PUBLIC_PATH_ROOTS = [
-	'/login',
-	'/auth',
-	'/about',
-	'/contact',
-	'/privacy',
-	'/terms',
-	'/api/checkout'
-];
+export const API_BASE = dev ? `http://localhost:${API_LOCAL_PORT}` : API_DOMAIN;
