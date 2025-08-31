@@ -17,7 +17,6 @@ export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) 
 export const actions: Actions = {
 	default: async (event) => {
 		const {
-			// url,
 			request,
 			locals: { supabase }
 		} = event;
