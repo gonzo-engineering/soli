@@ -1,8 +1,4 @@
 import type { ReleaseHydrated, TrackRaw } from '../../../../shared/types';
-import { createClient } from '@supabase/supabase-js';
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL, TABLES } from './config';
-
-const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
 interface UserState {
 	activeSong: TrackRaw | null;
@@ -26,19 +22,17 @@ export const userState: UserState = $state({
 
 const logStream = async (userId: string, artistId: string, trackId: string, tokensUsed: number) => {
 	console.log(`Logging stream for '${trackId}' by user ${userId}`);
-	const { error } = await supabase
-		.from(TABLES.streams)
-		.insert({
-			user_id: userId,
-			artist_id: artistId,
-			track_id: trackId,
-			tokens_used: tokensUsed
-		})
-		.select();
-	if (error) {
-		console.error('Error logging stream:', error);
-	} else {
+	const { status } = await fetch('/api/streams', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ userId, artistId, trackId, tokensUsed })
+	});
+	if (status === 200) {
 		console.log('Stream logged successfully');
+	} else {
+		console.error('Error logging stream:', status);
 	}
 };
 
