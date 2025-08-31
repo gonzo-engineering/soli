@@ -46,14 +46,7 @@ export const load: LayoutServerLoad = async ({
 			likedTrack.release = release;
 		}
 		likedTracks = likedTracks.filter((t) => t.release);
-
-		const followedArtistIDs = await supabase
-			.from(TABLES.followedArtists)
-			.select('artist_id')
-			.eq('user_id', session.user.id);
-		if (followedArtistIDs.data) {
-			followedIDs = followedArtistIDs.data.map((a) => a.artist_id);
-		}
+		followedIDs = await fetch(`/api/users/${session.user.id}/following`).then((res) => res.json());
 	}
 
 	return {
