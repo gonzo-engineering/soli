@@ -5,6 +5,7 @@
 	import { prettifyBalance, prettifyPennies } from '$lib/utils/index.js';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import ContentBlock from '$lib/components/ContentBlock.svelte';
+	import { API_BASE } from '$lib/global/config';
 
 	let { data, form } = $props();
 
@@ -34,7 +35,7 @@
 	};
 
 	const checkout = async () => {
-		const data = await fetch('/api/checkout', {
+		const data = await fetch(`${API_BASE}/checkout`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
