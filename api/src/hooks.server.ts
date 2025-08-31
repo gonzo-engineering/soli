@@ -7,15 +7,16 @@ const domainsWithAccessToAPI = [APP_DOMAIN, DASHBOARD_DOMAIN, 'https://checkout.
 export const handle: Handle = async ({ resolve, event }) => {
 	const origin = event.request.headers.get('origin');
 
-	if ((origin === null || !domainsWithAccessToAPI.includes(origin)) && !dev) {
-		return new Response('Unauthorized', { status: 401 });
-	}
-
 	if (!origin) {
 		return new Response('Unauthorized', { status: 401 });
 	}
 
+	if (!domainsWithAccessToAPI.includes(origin) && !dev) {
+		return new Response('Unauthorized', { status: 401 });
+	}
+
 	const response = await resolve(event);
+	response.headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 	response.headers.append('Access-Control-Allow-Origin', origin);
 	return response;
 };
