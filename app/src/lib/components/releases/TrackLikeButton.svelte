@@ -23,6 +23,11 @@
 
 <form method="post" action="/likes?/toggleLikedTrack" use:enhance={handleLikedTrackChange}>
 	<input type="hidden" name="trackId" value={trackID} />
+	<input
+		type="hidden"
+		name="addOrRemove"
+		value={likedTracks.some((t) => t.track.id === trackID) ? 'remove' : 'add'}
+	/>
 	<button
 		type="submit"
 		name="action"
