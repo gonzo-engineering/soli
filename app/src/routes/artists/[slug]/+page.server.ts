@@ -1,5 +1,5 @@
 import type { Actions } from '@sveltejs/kit';
-import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
+import type { ArtistRaw } from '../../../../../shared/types';
 
 // TODO: Explore static generation where possible to
 // improve performance and keep requests to a minimum.
@@ -20,9 +20,12 @@ export const load = async ({ params, fetch }) => {
 		};
 	}
 
-	const allReleases: ReleaseHydrated[] = await fetch(`/api/releases`).then((res) => res.json());
-
-	const artistReleases = allReleases.filter((release) => release.artist_id === matchingArtist.id);
+	const artistReleases = await fetch(`/api/artists/${params.slug}/releases`).then((res) => {
+		if (!res.ok) {
+			throw new Error(`Failed to fetch releases for artist with slug: ${params.slug}`);
+		}
+		return res.json();
+	});
 
 	return {
 		artist: matchingArtist,
