@@ -3,7 +3,7 @@ import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import type { LikedTrackObject } from '../../../../../../shared/types';
 
-export async function GET({ params, fetch }) {
+export async function GET({ params }) {
 	const maybeUserID = params.slug;
 
 	const { data: likedTrackIDs, error: likedTrackIDsError } = await supabase
@@ -40,7 +40,11 @@ export async function GET({ params, fetch }) {
 			console.error('Error fetching release ID:', releaseIDError);
 			continue;
 		}
-		const release = await fetch(`/releases/${releaseID.release_id}`).then((res) => res.json());
+		const { data: release } = await supabase
+			.from(TABLES.releasesHydrated)
+			.select('*')
+			.eq('id', releaseID.release_id)
+			.single();
 		likedTracks.push({ track: likedTrack, release });
 	}
 
