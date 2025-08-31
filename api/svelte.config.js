@@ -1,6 +1,5 @@
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import { APP_DOMAIN, DASHBOARD_DOMAIN } from '../shared/config'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -15,7 +14,7 @@ const config = {
 		adapter: adapter(),
 		csrf: {
 			checkOrigin: false,
-			trustedOrigins: [APP_DOMAIN, DASHBOARD_DOMAIN, 'https://checkout.stripe.com']
+			trustedOrigins: ['https://soli.network', 'https://dashboard.soli.network', 'https://checkout.stripe.com']
 		}
 	}
 };
