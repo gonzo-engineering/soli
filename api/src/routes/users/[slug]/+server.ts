@@ -3,18 +3,19 @@ import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import type { UserProfile } from '../../../../../shared/types';
 
+const getUser = async (id: string): Promise<UserProfile | null> => {
+	const { data } = await supabase
+		.from(TABLES.users)
+		.select(`first_name, tokens_balance, pay_per_stream`)
+		.eq('id', id)
+		.single();
+	return data;
+};
+
 export async function GET({ params }) {
 	const maybeUserID = params.slug;
 
-	const {
-		data: profile
-	}: {
-		data: UserProfile | null;
-	} = await supabase
-		.from(TABLES.users)
-		.select(`first_name, tokens_balance, pay_per_stream`)
-		.eq('id', maybeUserID)
-		.single();
+	const profile = await getUser(maybeUserID);
 
 	if (!profile) {
 		return json({ error: 'User not found' }, { status: 404 });
@@ -23,12 +24,10 @@ export async function GET({ params }) {
 	return json(profile);
 }
 
-export async function PATCH({ request, params, fetch }) {
+export async function PATCH({ request, params }) {
 	const maybeUserID = params.slug;
 
-	const profile: UserProfile | null = await fetch(`/users/${maybeUserID}`).then((res) =>
-		res.json()
-	);
+	const profile = await getUser(maybeUserID);
 
 	if (!profile) {
 		return json({ error: 'User not found' }, { status: 404 });
