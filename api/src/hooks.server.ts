@@ -23,7 +23,7 @@ export const handle: Handle = async ({ resolve, event }) => {
 
 	if ((origin === null || !domainsWithAccessToAPI.includes(origin)) && !dev) {
 		console.error(`Unauthorized access attempt from origin: ${origin}`);
-		return new Response(`Domain '${origin}' is not allowed to access this API`, { status: 401 });
+		return new Response('Unauthorised', { status: 401 });
 	}
 
 	const response = await resolve(event);
