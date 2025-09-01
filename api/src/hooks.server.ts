@@ -4,23 +4,17 @@ import { APP_DOMAIN, DASHBOARD_DOMAIN } from '../../shared/config';
 
 const domainsWithAccessToAPI = [APP_DOMAIN, DASHBOARD_DOMAIN, 'https://checkout.stripe.com'];
 
+const appendHeaders = (response: Response, origin: string | null) => {
+	response.headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+	response.headers.append('Access-Control-Allow-Headers', '*');
+	response.headers.append('Access-Control-Allow-Origin', origin ? origin : '*');
+	return response;
+};
+
 export const handle: Handle = async ({ resolve, event }) => {
 	const origin = event.request.headers.get('origin');
-	const requestBody = await event.request.json();
 
-	const isStripeCheckout = requestBody.type !== 'checkout.session.completed';
-
-	const appendHeaders = (response: Response, origin: string | null) => {
-		response.headers.append(
-			'Access-Control-Allow-Methods',
-			'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-		);
-		response.headers.append('Access-Control-Allow-Headers', '*');
-		response.headers.append('Access-Control-Allow-Origin', origin ? origin : '*');
-		return response;
-	};
-
-	if (isStripeCheckout) {
+	if (event.url.pathname === '/checkout/success') {
 		const response = await resolve(event);
 		appendHeaders(response, origin);
 		return response;
