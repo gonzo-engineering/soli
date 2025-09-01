@@ -8,7 +8,8 @@ export const handle: Handle = async ({ resolve, event }) => {
 	const origin = event.request.headers.get('origin');
 
 	if ((origin === null || !domainsWithAccessToAPI.includes(origin)) && !dev) {
-		return new Response('Unauthorized', { status: 401 });
+		console.error(`Unauthorized access attempt from origin: ${origin}`);
+		return new Response(`Domain ${origin} is not allowed to access this API`, { status: 401 });
 	}
 
 	const response = await resolve(event);
