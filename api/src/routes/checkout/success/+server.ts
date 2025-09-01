@@ -29,11 +29,12 @@ export const POST: RequestHandler = async ({ request }) => {
 	const userId: string = stripeSession.metadata.userId;
 	const topUpAmount: number = stripeSession.amount_total;
 	const topUpTokens = Math.round(topUpAmount * REVENUE_SPLIT.artists);
+	const newBalance = parseInt(stripeSession.metadata.balance) + topUpTokens;
 
 	const { error } = await supabase
 		.from(TABLES.users)
 		.update({
-			tokens_balance: stripeSession.metadata.balance + topUpTokens,
+			tokens_balance: newBalance,
 			updated_at: new Date()
 		})
 		.eq('id', userId)
