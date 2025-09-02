@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { setActiveSong, userState } from '$lib/global/state.svelte.js';
+	import { makeImageLink } from '$lib/utils';
 	import type { LikedTrackObject, ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 
@@ -18,6 +19,21 @@
 		songUrl: string;
 		likedTracks: LikedTrackObject[];
 	} = $props();
+
+	if ('mediaSession' in navigator) {
+		navigator.mediaSession.metadata = new MediaMetadata({
+			title: track.title,
+			artist: release.artist_name,
+			album: release.title,
+			artwork: [
+				{
+					src: makeImageLink(release.artwork_ipfs_cid, 512),
+					sizes: '512x512',
+					type: 'image/png'
+				}
+			]
+		});
+	}
 </script>
 
 <div class="audio-player">
