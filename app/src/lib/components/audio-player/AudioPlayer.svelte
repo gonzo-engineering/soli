@@ -20,18 +20,20 @@
 		likedTracks: LikedTrackObject[];
 	} = $props();
 
-	if ('mediaSession' in navigator) {
-		navigator.mediaSession.metadata = new MediaMetadata({
-			title: track.title,
-			artist: release.artist_name,
-			album: release.title,
-			artwork: [96, 128, 192, 256, 384, 512].map((size) => ({
-				src: makeImageLink(release.artwork_ipfs_cid, size),
-				sizes: `${size}x${size}`,
-				type: 'image/png'
-			}))
-		});
-	}
+	$effect(() => {
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata({
+				title: track.title,
+				artist: release.artist_name,
+				album: release.title,
+				artwork: [96, 128, 192, 256, 384, 512].map((size) => ({
+					src: makeImageLink(release.artwork_ipfs_cid, size),
+					sizes: `${size}x${size}`,
+					type: 'image/png'
+				}))
+			});
+		}
+	});
 </script>
 
 <div class="audio-player">
