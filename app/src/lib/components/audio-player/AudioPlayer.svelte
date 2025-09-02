@@ -25,13 +25,11 @@
 			title: track.title,
 			artist: release.artist_name,
 			album: release.title,
-			artwork: [
-				{
-					src: makeImageLink(release.artwork_ipfs_cid, 512),
-					sizes: '512x512',
-					type: 'image/png'
-				}
-			]
+			artwork: [96, 128, 192, 256, 384, 512].map((size) => ({
+				src: makeImageLink(release.artwork_ipfs_cid, size),
+				sizes: `${size}x${size}`,
+				type: 'image/png'
+			}))
 		});
 	}
 </script>
