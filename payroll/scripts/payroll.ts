@@ -93,7 +93,7 @@ const artistEarningsWithNames = artistIds.map((artistId) => {
 
 // Send a payout to each artist
 export const stripe = new Stripe(STRIPE_KEY, {
-  apiVersion: "2025-06-30.basil",
+  apiVersion: "2025-08-27.basil",
 });
 
 const prettifyPennies = (pence: number) => {
