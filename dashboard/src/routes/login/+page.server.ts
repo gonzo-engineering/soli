@@ -1,5 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
+import { TABLES } from "../../../../shared/config";
 
 export const load: PageServerLoad = async ({
   url,
@@ -15,15 +16,14 @@ export const load: PageServerLoad = async ({
 };
 
 export const actions: Actions = {
-  default: async (event) => {
+  sendCode: async (event) => {
     const {
-      url,
       request,
       locals: { supabase },
     } = event;
     const formData = await request.formData();
     const email = formData.get("email") as string;
-    const validEmail = /^[\w-\.+]+@([\w-]+\.)+[\w-]{2,8}$/.test(email);
+    const validEmail = /^[\w-.+]+@([\w-]+\.)+[\w-]{2,8}$/.test(email);
 
     if (!validEmail) {
       return fail(400, {
@@ -33,7 +33,7 @@ export const actions: Actions = {
     }
 
     const { error: betaUserError } = await supabase
-      .from("beta-users")
+      .from(TABLES.betaUsers)
       .select("email")
       .eq("email", email)
       .single();
@@ -63,8 +63,40 @@ export const actions: Actions = {
 
     return {
       success: true,
-      message:
-        "Please check your email for a magic link to log into the website.",
+      message: `A 6-digit code was sent to ${email}`,
+      email,
     };
+  },
+  verifyCode: async (event) => {
+    const {
+      request,
+      locals: { supabase },
+    } = event;
+    const formData = await request.formData();
+    const email = formData.get("email") as string;
+    const code = formData.get("code") as string;
+
+    if (!email || !code) {
+      return fail(400, {
+        errors: { email: "Please enter a valid email and code" },
+        email,
+      });
+    }
+
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token: code,
+      type: "email",
+    });
+
+    if (error) {
+      return fail(400, {
+        success: false,
+        email,
+        message: "Invalid or expired code",
+      });
+    }
+
+    throw redirect(303, "/");
   },
 };

@@ -5,7 +5,6 @@
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
   import { type SubmitFunction } from "@sveltejs/kit";
-  import { dev } from "$app/environment";
   import { enhance } from "$app/forms";
 
   let { children, data } = $props();
@@ -40,7 +39,7 @@
 </script>
 
 <div class="dashboard-container">
-  {#if data.session || dev}
+  {#if data.session}
     <div class="side-panel">
       <h1>Soli • Dashboard</h1>
       <hr />
