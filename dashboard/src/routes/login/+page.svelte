@@ -1,25 +1,16 @@
 <script lang="ts">
+  import type { SubmitFunction } from "@sveltejs/kit";
   import { enhance } from "$app/forms";
-  import type { ActionData, SubmitFunction } from "./$types.js";
+  import type { ActionData } from "./$types";
 
-  export let form: ActionData;
+  let { form }: { form?: ActionData } = $props();
 
-  let loading = false;
-  import { redirect } from "@sveltejs/kit";
-  import type { PageServerLoad } from "./$types";
+  let stage: "enterEmail" | "enterCode" = $derived(
+    form?.success ? "enterCode" : "enterEmail"
+  );
 
-  export const load: PageServerLoad = async ({
-    url,
-    locals: { safeGetSession },
-  }) => {
-    const { session } = await safeGetSession();
+  let loading = $state(false);
 
-    if (session) {
-      redirect(303, "/");
-    }
-
-    return { url: url.origin };
-  };
   const handleSubmit: SubmitFunction = () => {
     loading = true;
     return async ({ update }) => {
@@ -30,42 +21,57 @@
 </script>
 
 <svelte:head>
-  <title>Login • Soli Dashboard</title>
+  <title>Login • Soli</title>
 </svelte:head>
 
-<form method="POST" use:enhance={handleSubmit}>
-  <div class="wrapper">
-    <h2>Log in</h2>
-    <div class="description">
-      If you're part of the experiment, you can sign in via magic link with your
-      email below.
-    </div>
-    {#if form?.message !== undefined}
-      <div class="success {form?.success ? '' : 'fail'}">
-        {form?.message}
-      </div>
-    {/if}
+<div class="wrapper">
+  <h2>Log in</h2>
+  {#if stage === "enterEmail"}
+    <div>Enter your email to receive a one-time code.</div>
+  {:else if stage === "enterCode" && form?.email}
     <div>
+      A 6-digit code was sent to <strong>{form.email}</strong>. Please enter it
+      below to log in.
+    </div>
+  {/if}
+
+  {#if form?.success === false && form?.message}
+    <div style="color: red;">{form.message}</div>
+  {/if}
+
+  {#if stage === "enterEmail"}
+    <form method="POST" action="?/sendCode" use:enhance={handleSubmit}>
       <input
         id="email"
         name="email"
         type="email"
-        placeholder="Your email"
-        value={form?.email ?? ""}
+        placeholder="you@example.com"
+        required
       />
-    </div>
-    {#if form?.errors?.email}
-      <span>
-        {form?.errors?.email}
-      </span>
-    {/if}
-    <div>
-      <button>
-        {loading ? "Loading" : "Send magic link"}
+      <button type="submit" disabled={loading}>
+        {loading ? "Sending…" : "Send code"}
       </button>
-    </div>
-  </div>
-</form>
+    </form>
+  {/if}
+
+  {#if stage === "enterCode" && form?.email}
+    <form method="POST" action="?/verifyCode" use:enhance={handleSubmit}>
+      <input type="hidden" name="email" value={form.email} />
+      <input
+        id="code"
+        name="code"
+        type="text"
+        inputmode="numeric"
+        maxlength="6"
+        placeholder="123456"
+        required
+      />
+      <button type="submit" disabled={loading}>
+        {loading ? "Verifying…" : "Verify code"}
+      </button>
+    </form>
+  {/if}
+</div>
 
 <style>
   .wrapper {
@@ -74,18 +80,16 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    line-height: 1.1;
   }
   h2 {
     margin: 0;
     line-height: 1;
   }
-  .description {
-    line-height: 1.3;
-    margin-bottom: 0;
-  }
   input,
   button {
     border-radius: 0.5rem;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
+    margin: 0 0.5rem 0 0 0;
   }
 </style>

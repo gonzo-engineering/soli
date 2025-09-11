@@ -10,7 +10,6 @@ import type {
 import { sortReleasesByDate } from "../../../shared/utils";
 import type { LayoutServerLoad } from "./$types";
 import { POWER_USER_ID } from "$lib/config";
-import { dev } from "$app/environment";
 
 export const load: LayoutServerLoad = async ({
   locals: { safeGetSession },
@@ -18,9 +17,22 @@ export const load: LayoutServerLoad = async ({
 }) => {
   const { session, user } = await safeGetSession();
 
-  const userID = dev ? POWER_USER_ID : session?.user.id;
+  if (!session) {
+    return {
+      session,
+      user,
+      cookies: cookies.getAll(),
+      artists: [],
+      releasesRaw: [],
+      releasesHydrated: [],
+      songs: [],
+      streams: [],
+    };
+  }
 
-  if (!session && !dev) {
+  const userID = session?.user.id;
+
+  if (!userID) {
     return {
       session,
       user,

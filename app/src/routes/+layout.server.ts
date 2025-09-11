@@ -11,7 +11,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 
 	const userId = session?.user.id;
 
-	if (session) {
+	if (session && userId) {
 		profileData = await fetch(`${API_BASE}/users/${userId}`).then((res) => res.json());
 		likedTracks = await fetch(`${API_BASE}/users/${userId}/likes`).then((res) => res.json());
 		followedIDs = await fetch(`${API_BASE}/users/${userId}/following`).then((res) => res.json());
