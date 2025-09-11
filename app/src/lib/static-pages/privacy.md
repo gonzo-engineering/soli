@@ -6,7 +6,6 @@ parentSection: null
 
 We care about your privacy. No really, we do. Here’s how we handle your data:
 
-
 ### What Soli Collects
 
 - Your email address (for login)
@@ -25,11 +24,9 @@ We store data securely using trusted services like [Supabase](http://supabase.co
 
 All payment processing is handled securely by Stripe. We never see your card details.
 
-
 ### Cookies
 
 We use minimal cookies to keep you logged in. No tracking cookies.
-
 
 ### Your Rights
 

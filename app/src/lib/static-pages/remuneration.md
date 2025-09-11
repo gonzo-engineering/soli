@@ -4,7 +4,7 @@ description: How artists are paid on Soli.
 parentSection: about
 ---
 
-Payments to artists are transparent and direct, as they should be. 
+Payments to artists are transparent and direct, as they should be.
 
 A person buys tokens - which each token equivalent to one pence - and sets their preferred stream payout rate. **Three tokens per stream is the default**, though you can go as low as one and as high as five.
 
@@ -18,4 +18,4 @@ If an artist gets 10,000 streams at an average of three tokens (i.e. 3p) per str
 
 The only deduction for artists is when they withdraw the money, for which [Stripe](https://stripe.com) charges a processing fee of 1.5% plus 20p.
 
-That's it. No mystery. No bullshit. 
+That's it. No mystery. No bullshit.
