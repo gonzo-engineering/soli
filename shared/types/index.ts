@@ -33,6 +33,7 @@ export interface ReleaseHydrated {
   artist_id: string;
   artist_name: string;
   tags: string[];
+  genres: string[];
   tracks: TrackRaw[];
 }
 
@@ -46,6 +47,7 @@ export interface ReleaseRaw {
   artwork_ipfs_cid: string;
   release_date: string;
   tags: string[];
+  genres: string[];
   ipfs_manifest_cid?: string;
   created_at: string;
   updated_at: string;

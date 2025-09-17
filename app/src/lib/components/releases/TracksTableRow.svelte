@@ -1,5 +1,10 @@
 <script lang="ts">
-	import type { ReleaseHydrated, TrackRaw, UserProfile } from '../../../../../shared/types';
+	import type {
+		LikedTrackObject,
+		ReleaseHydrated,
+		TrackRaw,
+		UserProfile
+	} from '../../../../../shared/types';
 	import { prettifyDuration } from '../../../../../shared/utils';
 	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
@@ -19,10 +24,7 @@
 		release: ReleaseHydrated;
 		profileData: UserProfile;
 		session: Session;
-		likedTracks: {
-			track: TrackRaw;
-			release: ReleaseHydrated | null;
-		}[];
+		likedTracks: LikedTrackObject[];
 		showReleaseAndArtist: boolean;
 	} = $props();
 </script>
@@ -44,6 +46,9 @@
 </tr>
 
 <style>
+	tr {
+		line-height: 1.1;
+	}
 	tr:not(:last-child) {
 		border-bottom: 1px solid gray;
 	}

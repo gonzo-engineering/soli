@@ -48,9 +48,9 @@
       required={false}
     />
     <label for="artistBio">Bio</label>
-    <textarea name="artistBio" placeholder="Bio" required={false}>
-      {activeArtist.bio}
-    </textarea>
+    <textarea name="artistBio" placeholder="Bio" required={false}
+      >{activeArtist.bio}</textarea
+    >
     <label for="artistWebsite">Website</label>
     <input
       type="text"
@@ -80,6 +80,9 @@
     gap: 0.5rem;
     width: 100%;
     max-width: 600px;
+  }
+  textarea {
+    min-height: 200px;
   }
   img {
     max-width: 300px;

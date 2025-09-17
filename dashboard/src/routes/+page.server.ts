@@ -73,7 +73,7 @@ export const actions: Actions = {
       const artistId = formData.get("artistID") as string;
       const releaseType = formData.get("releaseType") as string;
       const releaseDate = formData.get("releaseDate") as string;
-      const releaseTags = formData.get("releaseTags") as string;
+      const releaseGenres = formData.get("releaseGenres") as string;
 
       if (!releaseName || !artistId) {
         return fail(400, {
@@ -103,8 +103,8 @@ export const actions: Actions = {
         artist_id: artistId,
         artwork_ipfs_cid: upload.cid,
         release_date: new Date(releaseDate).toISOString().split("T")[0],
-        tags: releaseTags
-          ? releaseTags.split(",").map((tag) => tag.trim())
+        genres: releaseGenres
+          ? releaseGenres.split(",").map((genre) => genre.trim())
           : [],
       });
 
@@ -197,8 +197,8 @@ export const actions: Actions = {
       const { error } = await supabase
         .from("artists")
         .update({
-          bio: artistBio,
-          website_url: artistWebsite,
+          bio: artistBio?.trim(),
+          website_url: artistWebsite?.trim(),
           image_ipfs_cid: imageCid,
         })
         .eq("id", artistId);
