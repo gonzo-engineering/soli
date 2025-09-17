@@ -82,8 +82,8 @@
 			).toLocaleDateString()}
 		</div>
 
-		{#each release.tags as tag}
-			<div class="tag">{tag}</div>
+		{#each release.genres as genre}
+			<div class="genre">{genre}</div>
 		{/each}
 	</div>
 </div>
@@ -107,7 +107,7 @@
 		background-color: lightgray;
 		box-shadow: var(--box-shadow);
 	}
-	.tag {
+	.genre {
 		display: inline-block;
 		background-color: lightgray;
 		color: #333;

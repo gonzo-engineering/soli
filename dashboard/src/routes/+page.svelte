@@ -192,8 +192,8 @@
               />
               <input
                 type="text"
-                name="releaseTags"
-                placeholder="Tags (comma-separated)"
+                name="releaseGenres"
+                placeholder="Genres (comma-separated)"
                 required
               />
               <button disabled={uploading} type="submit">
