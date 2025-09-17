@@ -197,8 +197,8 @@ export const actions: Actions = {
       const { error } = await supabase
         .from("artists")
         .update({
-          bio: artistBio,
-          website_url: artistWebsite,
+          bio: artistBio?.trim(),
+          website_url: artistWebsite?.trim(),
           image_ipfs_cid: imageCid,
         })
         .eq("id", artistId);
