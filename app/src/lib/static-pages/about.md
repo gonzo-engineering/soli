@@ -17,3 +17,4 @@ How hard can it be?
 - [Terms of Service](/terms-of-service)
 - [Pledge to Artists](/about/pledge)
 - [How remuneration works](/about/remuneration)
+- [Joining the beta](/about/info-for-artists)
