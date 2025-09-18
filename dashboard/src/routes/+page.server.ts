@@ -1,6 +1,6 @@
 import { fail, json, redirect, type Actions } from "@sveltejs/kit";
 import { pinata } from "$lib/server/pinata";
-import { supabase } from "$lib/server/stripe";
+import { supabase } from "$lib/server/supabase";
 import { parseFile } from "music-metadata";
 import fs from "fs/promises";
 

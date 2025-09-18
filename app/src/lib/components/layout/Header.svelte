@@ -3,6 +3,10 @@
 	import Cross from '../icons/Cross.svelte';
 	import Search from '../icons/Search.svelte';
 	import ButtonWrapper from './ButtonWrapper.svelte';
+	import { API_BASE } from '$lib/global/config';
+	import { page } from '$app/state';
+	import type { SearchResult } from '../../../../../shared/types';
+	import SearchResults from '../search/SearchResults.svelte';
 
 	let {
 		menuIsOpen = $bindable()
@@ -11,13 +15,40 @@
 	} = $props();
 
 	let searchIsOpen = $state(false);
+	let searchQuery = $state('');
+	let searchResults: SearchResult[] = $state([]);
+
+	// Reset search when page changes
+	$effect(() => {
+		if (page.url) {
+			searchIsOpen = false;
+			searchQuery = '';
+			searchResults = [];
+		}
+	});
+
+	const performSearch = async (query: string) => {
+		if (query.length < 3) {
+			return;
+		}
+		try {
+			const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+			if (response.ok) {
+				const data = await response.json();
+				searchResults = data.results;
+			} else {
+				console.error('Search request failed');
+			}
+		} catch (error) {
+			console.error('Error performing search:', error);
+		}
+	};
 </script>
 
 <header>
-	<!-- <ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
+	<ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
 		<Search />
-	</ButtonWrapper> -->
-	<div style="width: 30px;"></div>
+	</ButtonWrapper>
 	<a href="/">
 		<img src="/full-logo-white.png" class="icon dark" alt="Soli emblem" />
 		<img src="/full-logo-black.png" class="icon light" alt="Soli emblem" />
@@ -31,11 +62,17 @@
 	</ButtonWrapper>
 </header>
 
-<!-- {#if searchIsOpen}
+{#if searchIsOpen}
 	<div class="search-container">
-		<input type="text" placeholder="Search..." />
+		<input
+			type="text"
+			placeholder="Search for artists, releases, tracks..."
+			bind:value={searchQuery}
+			onkeydown={(e) => e.key === 'Enter' && performSearch(searchQuery)}
+		/>
+		<SearchResults {searchResults} query={searchQuery} />
 	</div>
-{/if} -->
+{/if}
 
 <style>
 	header {

@@ -1,5 +1,5 @@
 import { fail } from "@sveltejs/kit";
-import { supabase } from "$lib/server/stripe";
+import { supabase } from "$lib/server/supabase";
 import type {
   ArtistRaw,
   ReleaseHydrated,
