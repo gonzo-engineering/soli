@@ -2,7 +2,6 @@
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
-	import { sortReleasesByDate } from '../../../../../shared/utils';
 	import { enhance } from '$app/forms';
 
 	let {
@@ -10,13 +9,16 @@
 	}: { data: { artist: ArtistRaw; releases: ReleaseHydrated[]; followedArtists: string[] } } =
 		$props();
 
-	const { name, bio, website_url, image_ipfs_cid } = data.artist;
+	const { name, bio, website_url, image_ipfs_cid } = $derived(data.artist);
+	const releases = $derived(data.releases);
 
-	const releasesSorted = sortReleasesByDate(data.releases);
+	const filterReleasesByType = (type: 'album' | 'ep' | 'single', releases: ReleaseHydrated[]) => {
+		return releases.filter((release) => release.release_type === type);
+	};
 
-	const lps = releasesSorted.filter((release) => release.release_type === 'album');
-	const eps = releasesSorted.filter((release) => release.release_type === 'ep');
-	const singles = releasesSorted.filter((release) => release.release_type === 'single');
+	const lps = $derived(filterReleasesByType('album', releases));
+	const eps = $derived(filterReleasesByType('ep', releases));
+	const singles = $derived(filterReleasesByType('single', releases));
 
 	function handleUpload() {
 		return async ({ update }: { update: () => Promise<void> }) => {

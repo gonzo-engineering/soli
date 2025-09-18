@@ -4,7 +4,7 @@
 	import ArtistCard from '../ArtistCard.svelte';
 	import ReleaseCard from '../ReleaseCard.svelte';
 
-	let { searchResults, query }: { searchResults: SearchResult[], query: string } = $props();
+	let { searchResults, query }: { searchResults: SearchResult[]; query: string } = $props();
 
 	let searchResultsArtists: SearchResult[] = $derived(
 		searchResults.filter((result) => result.type === 'artist')
@@ -58,13 +58,13 @@
 </div>
 
 <style>
-    h3 {
-        margin-bottom: 1rem;
-    }
+	h3 {
+		margin-bottom: 1rem;
+	}
 	.search-results {
 		margin: 1rem;
 	}
-    .search-results-section {
-        margin-bottom: 1.5rem;
-    }
+	.search-results-section {
+		margin-bottom: 1.5rem;
+	}
 </style>

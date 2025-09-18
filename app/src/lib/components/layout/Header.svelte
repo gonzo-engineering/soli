@@ -9,8 +9,10 @@
 	import SearchResults from '../search/SearchResults.svelte';
 
 	let {
+		userIsLoggedIn,
 		menuIsOpen = $bindable()
 	}: {
+		userIsLoggedIn: boolean;
 		menuIsOpen: boolean;
 	} = $props();
 
@@ -46,9 +48,13 @@
 </script>
 
 <header>
-	<ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
-		<Search />
-	</ButtonWrapper>
+	{#if userIsLoggedIn}
+		<ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
+			<Search />
+		</ButtonWrapper>
+	{:else}
+		<div style="width: 30px;"></div>
+	{/if}
 	<a href="/">
 		<img src="/full-logo-white.png" class="icon dark" alt="Soli emblem" />
 		<img src="/full-logo-black.png" class="icon light" alt="Soli emblem" />

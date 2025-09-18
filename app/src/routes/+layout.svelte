@@ -11,7 +11,7 @@
 
 	let { children, data } = $props();
 
-	let { supabase, session } = $state(data);
+	let { supabase, session } = $derived(data);
 
 	let menuIsOpen = $state(false);
 
@@ -40,7 +40,7 @@
 
 {#if menuIsOpen}
 	<div class="menu">
-		<Header bind:menuIsOpen />
+		<Header bind:menuIsOpen userIsLoggedIn={session ? true : false} />
 		<nav>
 			<ul>
 				{#if session}
@@ -54,7 +54,7 @@
 		</nav>
 	</div>
 {:else}
-	<Header bind:menuIsOpen />
+	<Header bind:menuIsOpen userIsLoggedIn={session ? true : false} />
 {/if}
 
 <main>

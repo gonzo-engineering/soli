@@ -1,6 +1,7 @@
 import type { Actions } from '@sveltejs/kit';
 import type { ArtistRaw } from '../../../../../shared/types';
 import { API_BASE } from '$lib/global/config';
+import { sortReleasesByDate } from '../../../../../shared/utils';
 
 // TODO: Explore static generation where possible to
 // improve performance and keep requests to a minimum.
@@ -32,7 +33,7 @@ export const load = async ({ params, fetch }) => {
 
 	return {
 		artist: matchingArtist,
-		releases: artistReleases
+		releases: sortReleasesByDate(artistReleases)
 	};
 };
 

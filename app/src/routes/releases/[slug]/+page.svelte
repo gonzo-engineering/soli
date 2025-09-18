@@ -12,14 +12,13 @@
 	}: {
 		data: {
 			release: ReleaseHydrated;
+			session: Session;
 			profileData: UserProfile;
 			likedTracks: LikedTrackObject[];
-			session: Session;
 		};
 	} = $props();
 
-	const release = data.release;
-	const releaseType = release.release_type;
+	let release = $derived(data.release);
 </script>
 
 <svelte:head>
@@ -62,7 +61,7 @@
 		}}
 	>
 		<div class="play-full-release-button">
-			Play full {releaseType === 'ep' ? 'EP' : releaseType}
+			Play full {release.release_type === 'ep' ? 'EP' : release.release_type}
 		</div>
 	</ButtonWrapper>
 
@@ -77,7 +76,7 @@
 
 	<div>
 		<div>
-			{formatReleaseType(releaseType)} released {new Date(
+			{formatReleaseType(release.release_type)} released {new Date(
 				release.release_date
 			).toLocaleDateString()}
 		</div>
