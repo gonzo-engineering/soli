@@ -6,6 +6,7 @@
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import { formatReleaseType } from '../../../../../shared/utils';
+	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
 
 	let {
 		data
@@ -80,10 +81,7 @@
 				release.release_date
 			).toLocaleDateString()}
 		</div>
-
-		{#each release.genres as genre}
-			<div class="genre">{genre}</div>
-		{/each}
+		<TagsGrid slugs={release.genres ?? []} type="genres" />
 	</div>
 </div>
 
@@ -105,15 +103,6 @@
 		aspect-ratio: 1/1;
 		background-color: lightgray;
 		box-shadow: var(--box-shadow);
-	}
-	.genre {
-		display: inline-block;
-		background-color: lightgray;
-		color: #333;
-		padding: 0 0.5rem;
-		margin: 0.5rem 0;
-		border-radius: 4px;
-		width: fit-content;
 	}
 	.play-full-release-button {
 		background-color: var(--color-accent);

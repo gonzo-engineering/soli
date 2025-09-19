@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ArtistCardGrid from '$lib/components/ArtistCardGrid.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
+	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -11,6 +12,9 @@
 
 	const followedArtists = data.artists.filter((artist) => data.followedArtists.includes(artist.id));
 	const otherArtists = data.artists.filter((artist) => !data.followedArtists.includes(artist.id));
+
+	const genres = data.releases.flatMap((release) => release.genres || []);
+	const uniqueGenres = Array.from(new Set(genres));
 </script>
 
 <svelte:head>
@@ -40,6 +44,11 @@
 			<ArtistCardGrid artists={otherArtists} />
 		</div>
 	{/if}
+</section>
+
+<section>
+	<a href="/genres"><h2>Genres</h2></a>
+	<TagsGrid slugs={uniqueGenres} type="genres" />
 </section>
 
 <style>
