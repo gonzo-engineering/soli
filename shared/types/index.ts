@@ -32,8 +32,8 @@ export interface ReleaseHydrated {
   release_date: string;
   artist_id: string;
   artist_name: string;
-  tags: string[];
-  genres: string[];
+  tags?: string[];
+  genres?: string[];
   tracks: TrackRaw[];
 }
 
