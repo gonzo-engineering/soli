@@ -3,6 +3,7 @@ import { pinata } from "$lib/server/pinata";
 import { supabase } from "$lib/server/supabase";
 import { parseFile } from "music-metadata";
 import fs from "fs/promises";
+import { API_BASE } from "$lib/config";
 
 export const actions: Actions = {
   uploadTrack: async ({ request }) => {
@@ -194,16 +195,20 @@ export const actions: Actions = {
         imageCid = upload.cid;
       }
 
-      const { error } = await supabase
-        .from("artists")
-        .update({
+      const response = await fetch(`${API_BASE}/artists/${artistId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           bio: artistBio?.trim(),
           website_url: artistWebsite?.trim(),
           image_ipfs_cid: imageCid,
-        })
-        .eq("id", artistId);
+        }),
+      });
 
-      if (error) {
+      if (!response.ok) {
+        const error = await response.json();
         console.error("Error updating artist details:", error);
         return fail(500, {
           error: true,

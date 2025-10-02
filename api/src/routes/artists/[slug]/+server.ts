@@ -21,3 +21,17 @@ export async function GET({ params }) {
 
 	return json(data);
 }
+
+export async function PATCH({ request, params }) {
+	const artistId = params.slug;
+	const body: Partial<ArtistRaw> = await request.json();
+
+	const { data, error } = await supabase.from(TABLES.artists).update(body).eq('id', artistId);
+
+	if (error) {
+		console.error('Error updating artist data:', error);
+		return json({ error: 'Failed to update artist data' }, { status: 500 });
+	}
+
+	return json(data);
+}

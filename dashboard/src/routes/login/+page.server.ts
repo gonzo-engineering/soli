@@ -46,29 +46,6 @@ export const actions: Actions = {
       });
     }
 
-    const { error: artistMembersError, data: artistsLinkedToUser } =
-      await supabase
-        .from(TABLES.artistMembers)
-        .select("user_id")
-        .eq("user_id", email);
-
-    if (artistMembersError) {
-      console.error("Error checking user artist links:", artistMembersError);
-      return fail(500, {
-        success: false,
-        email,
-        message: "There was an issue, Please contact support.",
-      });
-    }
-
-    if (artistsLinkedToUser && artistsLinkedToUser.length === 0) {
-      return fail(400, {
-        success: false,
-        email,
-        message: "No artists are linked to this account.",
-      });
-    }
-
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
@@ -80,7 +57,7 @@ export const actions: Actions = {
       return fail(400, {
         success: false,
         email,
-        message: `There was an issue, Please contact support.`,
+        message: `There was an issue. ${error.message}.`,
       });
     }
 
