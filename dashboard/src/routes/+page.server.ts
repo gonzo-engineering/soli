@@ -98,19 +98,25 @@ export const actions: Actions = {
         });
       }
 
-      const { error } = await supabase.from("releases").insert({
-        title: releaseName,
-        release_type: releaseType,
-        artist_id: artistId,
-        artwork_ipfs_cid: upload.cid,
-        release_date: new Date(releaseDate).toISOString().split("T")[0],
-        genres: releaseGenres
-          ? releaseGenres.split(",").map((genre) => genre.trim())
-          : [],
+      const response = await fetch(`${API_BASE}/releases`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: releaseName,
+          release_type: releaseType,
+          artist_id: artistId,
+          artwork_ipfs_cid: upload.cid,
+          release_date: new Date(releaseDate).toISOString().split("T")[0],
+          genres: releaseGenres
+            ? releaseGenres.split(",").map((genre) => genre.trim())
+            : [],
+        }),
       });
 
-      if (error) {
-        console.error("Error inserting release into Supabase:", error);
+      if (!response.ok) {
+        console.error("Error inserting release into Supabase:", response);
         return fail(500, {
           error: true,
           message: "Failed to save release data",

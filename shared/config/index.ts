@@ -18,6 +18,7 @@ export const TABLES = {
   artistMembers: "artist_members",
   tracks: "tracks",
   releaseTracks: "release_tracks",
+  releases: "releases",
   releasesHydrated: "hydrated_releases",
   streams: "streams",
   betaUsers: "beta-users",
