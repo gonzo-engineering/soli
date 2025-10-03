@@ -157,7 +157,7 @@ export const actions: Actions = {
       return json({ error: "Internal Server Error" }, { status: 500 });
     }
   },
-  updateArtistDetails: async ({ request }) => {
+  updateArtistDetails: async ({ request, fetch }) => {
     try {
       const formData = await request.formData();
       const artistId = formData.get("artistID") as string;
