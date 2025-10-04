@@ -3,7 +3,23 @@ import { pinata } from "$lib/server/pinata";
 import { supabase } from "$lib/server/supabase";
 import { parseFile } from "music-metadata";
 import fs from "fs/promises";
-import { API_BASE } from "$lib/config";
+import { API_BASE, PINATA_ARTWORK_GROUP } from "$lib/config";
+
+const getAudioFileDuration = async (file: File) => {
+  // Write to temporary file system
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+  const tempPath = `/tmp/${file.name}`;
+
+  await fs.writeFile(tempPath, buffer);
+
+  const metadata = await parseFile(tempPath);
+  const duration = Math.round(metadata.format.duration || 0);
+
+  await fs.unlink(tempPath); // Clean up temporary file
+
+  return duration;
+};
 
 export const actions: Actions = {
   uploadTrack: async ({ request }) => {
@@ -28,23 +44,11 @@ export const actions: Actions = {
         });
       }
 
-      // Write to temporary file system
-      const bytes = await uploadedFile.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const tempPath = `/tmp/${uploadedFile.name}`;
-
-      await fs.writeFile(tempPath, buffer);
-
-      const metadata = await parseFile(tempPath);
-      const duration = Math.round(metadata.format.duration || 0);
-
-      await fs.unlink(tempPath); // Clean up temporary file
-
-      const pinataFileName = `${artistName} - ${uploadedFileTitle}`;
+      const duration = getAudioFileDuration(uploadedFile);
 
       const upload = await pinata.upload.private
         .file(uploadedFile)
-        .name(pinataFileName)
+        .name(`${artistName} - ${uploadedFileTitle}`)
         .group(artistGroup);
 
       const { error } = await supabase.from("tracks").insert({
@@ -59,11 +63,13 @@ export const actions: Actions = {
         return fail(500, { error: true, message: "Failed to save track data" });
       }
 
-      const url = await pinata.gateways.public.convert(upload.cid);
-      return { url, filename: uploadedFile.name, status: 200 };
+      return {
+        message: `File '${uploadedFile.name} was uploaded successfully`,
+        status: 200,
+      };
     } catch (error) {
       console.log(error);
-      return json({ error: "Internal Server Error" }, { status: 500 });
+      return json({ error: "Internal Server Error", status: 500 });
     }
   },
   addRelease: async ({ request }) => {
@@ -87,8 +93,7 @@ export const actions: Actions = {
       const upload = await pinata.upload.public
         .file(releaseArtwork)
         .name(pinataFileName)
-        // TODO: Move this to environment variable
-        .group("f4ffc1db-8d43-4fee-890b-950b692b8ca1");
+        .group(PINATA_ARTWORK_GROUP);
 
       if (!upload || !upload.cid) {
         console.error("Error uploading artwork to Pinata:", upload);
