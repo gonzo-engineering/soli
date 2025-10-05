@@ -118,7 +118,7 @@
               action="?/uploadTrack"
               use:enhance={handleUpload}
             >
-              <input type="file" id="file" name="fileToUpload" accept=".mp3" />
+              <input type="file" id="file" name="file" accept=".mp3" />
               <label for="file">Choose an MP3 file</label>
               <input type="text" name="title" placeholder="Title" required />
               <input
@@ -130,7 +130,7 @@
               />
               <input
                 type="text"
-                name="artistID"
+                name="artistId"
                 value={activeArtist.id}
                 class="hidden"
                 required
@@ -167,7 +167,7 @@
               <label for="releaseArtwork">Choose release artwork</label>
               <input
                 type="text"
-                name="releaseTitle"
+                name="releaseName"
                 placeholder="Release Title"
                 required
               />
@@ -179,7 +179,7 @@
               </select>
               <input
                 type="text"
-                name="artistID"
+                name="artistId"
                 value={activeArtist.id}
                 class="hidden"
                 required

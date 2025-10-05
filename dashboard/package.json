@@ -23,7 +23,6 @@
 	"dependencies": {
 		"@supabase/ssr": "^0.7.0",
 		"@supabase/supabase-js": "^2.57.4",
-		"music-metadata": "^11.8.3",
 		"pinata": "^2.5.0"
 	}
 }
