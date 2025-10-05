@@ -66,3 +66,24 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ error: 'Upload failed' }, { status: 500 });
 	}
 };
+
+export const PATCH: RequestHandler = async ({ request }) => {
+	const { releaseId, trackId, trackNumber } = await request.json();
+
+	if (!releaseId || !trackId || trackNumber == null) {
+		return json({ error: 'Missing required fields' }, { status: 400 });
+	}
+
+	const { error } = await supabase.from('release_tracks').insert({
+		release_id: releaseId,
+		track_id: trackId,
+		track_number: parseInt(trackNumber)
+	});
+
+	if (error) {
+		console.error('Error inserting track into release:', error);
+		return json({ error: 'Failed to add track to release' }, { status: 500 });
+	}
+
+	return json({ success: true });
+};

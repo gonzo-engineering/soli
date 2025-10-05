@@ -58,21 +58,20 @@ export const actions: Actions = {
       const trackId = formData.get("trackID") as string;
       const trackNumber = formData.get("trackNumber") as string;
 
-      if (!releaseId || !trackId) {
-        return fail(400, {
-          error: true,
-          message: "Release ID and track ID are required",
-        });
-      }
-
-      const { error } = await supabase.from("release_tracks").insert({
-        release_id: releaseId,
-        track_id: trackId,
-        track_number: parseInt(trackNumber) || 0, // Default to 0 if not provided
+      const response = await fetch(`${API_BASE}/tracks`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          releaseId,
+          trackId,
+          trackNumber,
+        }),
       });
 
-      if (error) {
-        console.error("Error inserting track into release:", error);
+      if (!response.ok) {
+        console.error("Error adding track to release:", response);
         return fail(500, {
           error: true,
           message: "Failed to add track to release",
