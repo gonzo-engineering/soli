@@ -2,6 +2,7 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 import { supabase } from '$lib/server/supabase';
 import { pinata } from '$lib/server/pinata';
 import { TABLES } from '../../../../shared/config';
+import { formFieldNames } from '../../../../shared/types/forms';
 import { parseFile } from 'music-metadata';
 import fs from 'fs/promises';
 
@@ -25,11 +26,11 @@ export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const formData = await request.formData();
 
-		const file = formData.get('file') as File;
-		const artistId = formData.get('artistId') as string;
-		const title = formData.get('title') as string;
-		const artistName = formData.get('artistName') as string;
-		const artistGroup = formData.get('artistGroup') as string;
+		const file = formData.get(formFieldNames.track.file) as File;
+		const artistId = formData.get(formFieldNames.track.artistID) as string;
+		const title = formData.get(formFieldNames.track.title) as string;
+		const artistName = formData.get(formFieldNames.track.artistName) as string;
+		const artistGroup = formData.get(formFieldNames.track.artistGroup) as string;
 
 		if (!file || !artistId || !title) {
 			return json({ error: 'Missing required fields' }, { status: 400 });
@@ -74,7 +75,7 @@ export const PATCH: RequestHandler = async ({ request }) => {
 		return json({ error: 'Missing required fields' }, { status: 400 });
 	}
 
-	const { error } = await supabase.from('release_tracks').insert({
+	const { error } = await supabase.from(TABLES.releaseTracks).insert({
 		release_id: releaseId,
 		track_id: trackId,
 		track_number: parseInt(trackNumber)

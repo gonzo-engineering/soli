@@ -1,6 +1,5 @@
 import { fail, json, redirect, type Actions } from "@sveltejs/kit";
 import { pinata } from "$lib/server/pinata";
-import { supabase } from "$lib/server/supabase";
 import { API_BASE, PINATA_ARTIST_IMAGES_GROUP } from "$lib/config";
 
 export const actions: Actions = {
