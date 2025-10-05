@@ -1,116 +1,43 @@
 import { fail, json, redirect, type Actions } from "@sveltejs/kit";
 import { pinata } from "$lib/server/pinata";
-import { supabase } from "$lib/server/supabase";
-import { parseFile } from "music-metadata";
-import fs from "fs/promises";
-import { API_BASE } from "$lib/config";
+import { API_BASE, PINATA_ARTIST_IMAGES_GROUP } from "$lib/config";
 
 export const actions: Actions = {
   uploadTrack: async ({ request }) => {
     try {
       const formData = await request.formData();
-      const uploadedFile = formData?.get("fileToUpload") as File;
-      const uploadedFileTitle = formData?.get("title") as string;
-      const artistName = formData?.get("artistName") as string;
-      const artistId = formData?.get("artistID") as string;
-      const artistGroup = formData?.get("artistGroup") as string;
 
-      if (!uploadedFile.name || uploadedFile.size === 0) {
-        return fail(400, {
-          error: true,
-          message: "You must provide a file to upload",
-        });
-      }
-      if (!artistName || !artistId || !artistGroup) {
-        return fail(400, {
-          error: true,
-          message: "Artist name, ID, and group are required",
-        });
-      }
-
-      // Write to temporary file system
-      const bytes = await uploadedFile.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const tempPath = `/tmp/${uploadedFile.name}`;
-
-      await fs.writeFile(tempPath, buffer);
-
-      const metadata = await parseFile(tempPath);
-      const duration = Math.round(metadata.format.duration || 0);
-
-      await fs.unlink(tempPath); // Clean up temporary file
-
-      const pinataFileName = `${artistName} - ${uploadedFileTitle}`;
-
-      const upload = await pinata.upload.private
-        .file(uploadedFile)
-        .name(pinataFileName)
-        .group(artistGroup);
-
-      const { error } = await supabase.from("tracks").insert({
-        title: uploadedFileTitle,
-        ipfs_cid: upload.cid,
-        artist_id: artistId,
-        duration_seconds: duration,
+      const res = await fetch(`${API_BASE}/tracks`, {
+        method: "POST",
+        body: formData,
       });
 
-      if (error) {
-        console.error("Error inserting track into Supabase:", error);
+      const result = await res.json();
+
+      if (result.error) {
+        console.error("Error inserting track into Supabase:", result.error);
         return fail(500, { error: true, message: "Failed to save track data" });
       }
-
-      const url = await pinata.gateways.public.convert(upload.cid);
-      return { url, filename: uploadedFile.name, status: 200 };
+      return {
+        message: `File was uploaded successfully`,
+        status: 200,
+      };
     } catch (error) {
       console.log(error);
-      return json({ error: "Internal Server Error" }, { status: 500 });
+      return json({ error: "Internal Server Error", status: 500 });
     }
   },
   addRelease: async ({ request }) => {
     try {
       const formData = await request.formData();
-      const releaseArtwork = formData.get("releaseArtwork") as File;
-      const releaseName = formData.get("releaseTitle") as string;
-      const artistId = formData.get("artistID") as string;
-      const releaseType = formData.get("releaseType") as string;
-      const releaseDate = formData.get("releaseDate") as string;
-      const releaseGenres = formData.get("releaseGenres") as string;
 
-      if (!releaseName || !artistId) {
-        return fail(400, {
-          error: true,
-          message: "Release name, artist ID, and group are required",
-        });
-      }
-
-      const pinataFileName = `'${releaseName}' cover art`;
-      const upload = await pinata.upload.public
-        .file(releaseArtwork)
-        .name(pinataFileName)
-        // TODO: Move this to environment variable
-        .group("f4ffc1db-8d43-4fee-890b-950b692b8ca1");
-
-      if (!upload || !upload.cid) {
-        console.error("Error uploading artwork to Pinata:", upload);
-        return fail(500, {
-          error: true,
-          message: "Failed to upload artwork to Pinata",
-        });
-      }
-
-      const { error } = await supabase.from("releases").insert({
-        title: releaseName,
-        release_type: releaseType,
-        artist_id: artistId,
-        artwork_ipfs_cid: upload.cid,
-        release_date: new Date(releaseDate).toISOString().split("T")[0],
-        genres: releaseGenres
-          ? releaseGenres.split(",").map((genre) => genre.trim())
-          : [],
+      const response = await fetch(`${API_BASE}/releases`, {
+        method: "POST",
+        body: formData,
       });
 
-      if (error) {
-        console.error("Error inserting release into Supabase:", error);
+      if (!response.ok) {
+        console.error("Error inserting release into Supabase:", response);
         return fail(500, {
           error: true,
           message: "Failed to save release data",
@@ -130,21 +57,20 @@ export const actions: Actions = {
       const trackId = formData.get("trackID") as string;
       const trackNumber = formData.get("trackNumber") as string;
 
-      if (!releaseId || !trackId) {
-        return fail(400, {
-          error: true,
-          message: "Release ID and track ID are required",
-        });
-      }
-
-      const { error } = await supabase.from("release_tracks").insert({
-        release_id: releaseId,
-        track_id: trackId,
-        track_number: parseInt(trackNumber) || 0, // Default to 0 if not provided
+      const response = await fetch(`${API_BASE}/tracks`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          releaseId,
+          trackId,
+          trackNumber,
+        }),
       });
 
-      if (error) {
-        console.error("Error inserting track into release:", error);
+      if (!response.ok) {
+        console.error("Error adding track to release:", response);
         return fail(500, {
           error: true,
           message: "Failed to add track to release",
@@ -182,7 +108,7 @@ export const actions: Actions = {
         const upload = await pinata.upload.public
           .file(artistImage)
           .name(pinataFileName)
-          .group("49d68c8c-764d-467d-b74c-9f64e8bc9647");
+          .group(PINATA_ARTIST_IMAGES_GROUP);
 
         if (!upload || !upload.cid) {
           console.error("Error uploading artist image to Pinata:", upload);

@@ -3,10 +3,6 @@ import type { ArtistRaw } from '../../../../../shared/types';
 import { API_BASE } from '$lib/global/config';
 import { sortReleasesByDate } from '../../../../../shared/utils';
 
-// TODO: Explore static generation where possible to
-// improve performance and keep requests to a minimum.
-// May entail splitting the API into its own thing.
-
 export const load = async ({ params, fetch }) => {
 	const matchingArtist: ArtistRaw = await fetch(`${API_BASE}/artists/${params.slug}`).then(
 		(res) => {

@@ -8,6 +8,7 @@
     StreamLog,
     TrackRaw,
   } from "../../../shared/types";
+  import { formFieldNames } from "../../../shared/types/forms";
   import { dashboardState } from "$lib/state.svelte";
   import Card from "$lib/components/Card.svelte";
   import ReleaseInfo from "$lib/components/ReleaseInfo.svelte";
@@ -118,26 +119,36 @@
               action="?/uploadTrack"
               use:enhance={handleUpload}
             >
-              <input type="file" id="file" name="fileToUpload" accept=".mp3" />
+              <input
+                type="file"
+                id="file"
+                name={formFieldNames.track.file}
+                accept=".mp3"
+              />
               <label for="file">Choose an MP3 file</label>
-              <input type="text" name="title" placeholder="Title" required />
               <input
                 type="text"
-                name="artistName"
+                name={formFieldNames.track.title}
+                placeholder="Title"
+                required
+              />
+              <input
+                type="text"
+                name={formFieldNames.track.artistName}
                 value={activeArtist.name}
                 class="hidden"
                 required
               />
               <input
                 type="text"
-                name="artistID"
+                name={formFieldNames.track.artistID}
                 value={activeArtist.id}
                 class="hidden"
                 required
               />
               <input
                 type="text"
-                name="artistGroup"
+                name={formFieldNames.track.artistGroup}
                 value={activeArtist.pinata_group_id}
                 class="hidden"
                 required
@@ -167,7 +178,7 @@
               <label for="releaseArtwork">Choose release artwork</label>
               <input
                 type="text"
-                name="releaseTitle"
+                name="releaseName"
                 placeholder="Release Title"
                 required
               />
@@ -179,7 +190,7 @@
               </select>
               <input
                 type="text"
-                name="artistID"
+                name="artistId"
                 value={activeArtist.id}
                 class="hidden"
                 required

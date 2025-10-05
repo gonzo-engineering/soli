@@ -11,6 +11,7 @@
 
 	const { name, bio, website_url, image_ipfs_cid } = $derived(data.artist);
 	const releases = $derived(data.releases);
+	let updatingFollow = $state(false);
 
 	const filterReleasesByType = (type: 'album' | 'ep' | 'single', releases: ReleaseHydrated[]) => {
 		return releases.filter((release) => release.release_type === type);
@@ -20,9 +21,11 @@
 	const eps = $derived(filterReleasesByType('ep', releases));
 	const singles = $derived(filterReleasesByType('single', releases));
 
-	function handleUpload() {
+	function handleUpdate() {
+		updatingFollow = true;
 		return async ({ update }: { update: () => Promise<void> }) => {
 			await update();
+			updatingFollow = false;
 		};
 	}
 </script>
@@ -57,7 +60,7 @@
 				You are {data.followedArtists.includes(data.artist.id) ? 'following' : 'not following'} this
 				artist.
 			</div>
-			<form action="?/toggleFollowedArtist" method="POST" use:enhance={handleUpload}>
+			<form action="?/toggleFollowedArtist" method="POST" use:enhance={handleUpdate}>
 				<input type="hidden" name="artistID" value={data.artist.id} />
 				<input
 					type="hidden"
@@ -65,7 +68,11 @@
 					value={data.followedArtists.includes(data.artist.id) ? 'remove' : 'add'}
 				/>
 				<button type="submit"
-					>{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}</button
+					>{updatingFollow
+						? 'Updating...'
+						: data.followedArtists.includes(data.artist.id)
+							? 'Unfollow'
+							: 'Follow'}</button
 				>
 			</form>
 		</div>
