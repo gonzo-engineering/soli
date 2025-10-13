@@ -36,6 +36,11 @@
 <svelte:head>
 	<meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)" />
 	<meta name="theme-color" content="#f0f0f0" media="(prefers-color-scheme: light)" />
+	<script
+		data-goatcounter="https://soli.goatcounter.com/count"
+		async
+		src="//gc.zgo.at/count.js"
+	></script>
 </svelte:head>
 
 {#if menuIsOpen}
