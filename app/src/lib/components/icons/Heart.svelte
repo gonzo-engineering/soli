@@ -20,5 +20,7 @@
 	svg {
 		width: 1em;
 		height: 1em;
+		display: inline-block;
+		vertical-align: middle;
 	}
 </style>

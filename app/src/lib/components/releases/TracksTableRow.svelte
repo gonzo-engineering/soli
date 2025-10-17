@@ -9,6 +9,7 @@
 	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
+	import ThreeDots from '../icons/ThreeDots.svelte';
 
 	const {
 		i = undefined,
@@ -42,6 +43,9 @@
 	</td>
 	<td>
 		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'light'} />
+	</td>
+	<td>
+		<ThreeDots />
 	</td>
 </tr>
 

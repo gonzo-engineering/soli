@@ -21,7 +21,11 @@
 	};
 </script>
 
-<form method="post" action="/likes?/toggleLikedTrack" use:enhance={handleLikedTrackChange}>
+<form
+	method="post"
+	action="/listener/liked-tracks?/toggleLikedTrack"
+	use:enhance={handleLikedTrackChange}
+>
 	<input type="hidden" name="trackId" value={trackID} />
 	<input
 		type="hidden"
@@ -49,7 +53,6 @@
 	}
 	form {
 		display: flex;
-		justify-content: flex-end;
 	}
 	button {
 		background: none;
