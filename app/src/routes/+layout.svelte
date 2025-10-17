@@ -39,9 +39,9 @@
 		{
 			section: 'Your Library',
 			links: [
-				{ href: '/listener/collections', label: 'Collections' },
-				{ href: '/listener/mixtapes', label: 'Mixtapes' },
-				{ href: '/listener/liked-tracks', label: 'Liked tracks' }
+				{ href: '/me/collections', label: 'Collections' },
+				{ href: '/me/mixtapes', label: 'Mixtapes' },
+				{ href: '/me/liked-tracks', label: 'Liked tracks' }
 			]
 		},
 		{

@@ -23,7 +23,7 @@
 
 <form
 	method="post"
-	action="/listener/liked-tracks?/toggleLikedTrack"
+	action="/me/liked-tracks?/toggleLikedTrack"
 	use:enhance={handleLikedTrackChange}
 >
 	<input type="hidden" name="trackId" value={trackID} />
