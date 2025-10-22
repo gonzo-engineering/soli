@@ -1,4 +1,5 @@
 <script lang="ts">
+	import TracksTable from '$lib/components/releases/TracksTable.svelte';
 	import { makeMixtape } from '$lib/remote-functions/mixtapes.remote';
 
 	let { data } = $props();
@@ -7,8 +8,8 @@
 </script>
 
 <svelte:head>
-    <title>Your mixtapes · Soli</title>
-    <meta name="description" content="Browse your mixtapes on Soli." />
+	<title>Your mixtapes · Soli</title>
+	<meta name="description" content="Browse your mixtapes on Soli." />
 </svelte:head>
 
 <h2>Your mixtapes</h2>
@@ -20,15 +21,13 @@
 			{#if mixtape.description}
 				<div>{mixtape.description}</div>
 			{/if}
-			{#if mixtape.tracks.length > 0}
-				{#each mixtape.tracks as track, i}
-					<div>
-						{i + 1}. {track.title} by <a href="/artists/{track.artist.id}">{track.artist.name}</a>
-					</div>
-				{/each}
-			{:else}
-				<div>This mixtape has no tracks yet.</div>
-			{/if}
+			<TracksTable
+				tracksAndTheirReleases={mixtape.tracks.map((track) => ({
+					track,
+					release: { ...track.release, artist_id: track.artist.id, artist_name: track.artist.name }
+				}))}
+				showReleaseAndArtist={true}
+			/>
 		</div>
 	</div>
 {/each}

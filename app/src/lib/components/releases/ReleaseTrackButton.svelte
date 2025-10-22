@@ -1,21 +1,16 @@
 <script lang="ts">
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
-	import type { ReleaseHydrated, UserProfile, TrackRaw } from '../../../../../shared/types';
-	import type { Session } from '@supabase/supabase-js';
+	import type { ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
 	import Pause from '../icons/Pause.svelte';
 	import Play from '../icons/Play.svelte';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 
 	let {
 		track,
-		release,
-		profileData,
-		session
+		release
 	}: {
 		track: TrackRaw;
 		release: ReleaseHydrated;
-		profileData: UserProfile;
-		session: Session;
 	} = $props();
 </script>
 
@@ -25,13 +20,7 @@
 			if (track.ipfs_cid == userState.activeSong?.ipfs_cid) {
 				userState.activeSongIsPaused = !userState.activeSongIsPaused;
 			} else {
-				setActiveSong(
-					track,
-					release,
-					session.user.id,
-					userState.liveBalance ?? profileData.tokens_balance,
-					profileData.pay_per_stream
-				);
+				setActiveSong(track, release, userState.id, userState.liveBalance, userState.payPerStream);
 				userState.autoPlay = false;
 			}
 		}}

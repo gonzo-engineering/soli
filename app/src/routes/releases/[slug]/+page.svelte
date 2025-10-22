@@ -8,7 +8,7 @@
 	} from '../../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
 	import type { Session } from '@supabase/supabase-js';
-	import ReleaseTracks from '$lib/components/releases/TracksTable.svelte';
+	import TracksTable from '$lib/components/releases/TracksTable.svelte';
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import { formatReleaseType } from '../../../../../shared/utils';
@@ -88,12 +88,11 @@
 		</div>
 	</ButtonWrapper>
 
-	<ReleaseTracks
-		{release}
-		profileData={data.profileData}
-		likedTracks={data.likedTracks}
-		mixtapes={data.mixtapes}
-		session={data.session}
+	<TracksTable
+		tracksAndTheirReleases={release.tracks.map((track) => ({
+			track,
+			release
+		}))}
 	/>
 
 	<hr />

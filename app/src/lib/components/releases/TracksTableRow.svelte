@@ -1,36 +1,22 @@
 <script lang="ts">
-	import type {
-		LikedTrackObject,
-		Mixtape,
-		ReleaseHydrated,
-		TrackRaw,
-		UserProfile
-	} from '../../../../../shared/types';
+	import type { ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
 	import { prettifyDuration } from '../../../../../shared/utils';
-	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
 	import ThreeDots from '../icons/ThreeDots.svelte';
 	import PopupWrapper from '../layout/PopupWrapper.svelte';
 	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
+	import { userState } from '$lib/global/state.svelte';
 
 	const {
 		i = undefined,
 		track,
 		release,
-		profileData,
-		session,
-		likedTracks,
-		mixtapes,
 		showReleaseAndArtist = false
 	}: {
 		i?: number;
 		track: TrackRaw;
 		release: ReleaseHydrated;
-		profileData: UserProfile;
-		session: Session;
-		likedTracks: LikedTrackObject[];
-		mixtapes: Mixtape[];
 		showReleaseAndArtist: boolean;
 	} = $props();
 
@@ -46,10 +32,14 @@
 	{/if}
 	<td>{prettifyDuration(track.duration_seconds)}</td>
 	<td class="play-button-container">
-		<ReleaseTrackButton {track} {release} {profileData} {session} />
+		<ReleaseTrackButton {track} {release} />
 	</td>
 	<td>
-		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'light'} />
+		<TrackLikeButton
+			trackID={track.id}
+			likedTracks={userState.music.likedTracks}
+			lightOrDark={'light'}
+		/>
 	</td>
 	<td>
 		<div onclick={() => (popupMenuOpen = !popupMenuOpen)}><ThreeDots /></div>
@@ -65,7 +55,7 @@
 					>Add to mixtape:
 					<select {...addTrackToMixtape.fields.mixtapeId.as('select')}>
 						<option value="" disabled selected>Select a mixtape</option>
-						{#each mixtapes as mixtape}
+						{#each userState.music.mixtapes as mixtape}
 							<option value={mixtape.id}>{mixtape.name}</option>
 						{/each}
 					</select>

@@ -84,22 +84,32 @@ export interface Collection {
 
 export interface Mixtape {
   id: string;
-  user_id: string;
+  user_id: string | null;
   name: string;
-  description?: string;
+  description: string | null;
   is_public: boolean;
   created_at: string;
   updated_at: string;
-  tracks?: {
+  tracks: HydratedTrack[];
+}
+
+export interface HydratedTrack {
+  id: string;
+  title: string;
+  ipfs_cid: string;
+  duration_seconds: number | null;
+  added_at: string;
+  artist: {
     id: string;
-    title: string;
-    ipfs_cid: string;
-    duration_seconds: number;
-    artist: {
-      id: string;
-      name: string;
-      image_ipfs_cid?: string;
-    };
-    added_at: string;
-  }[];
+    name: string;
+    image_ipfs_cid: string | null;
+  } | null;
+  release: ParentRelease | null;
+}
+
+export interface ParentRelease {
+  id: string;
+  title: string;
+  artwork_ipfs_cid: string | null;
+  release_date: string | null;
 }

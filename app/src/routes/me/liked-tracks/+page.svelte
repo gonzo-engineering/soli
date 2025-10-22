@@ -26,15 +26,7 @@
 		</thead>
 		<tbody>
 			{#each data.likedTracks as { track, release }}
-				<TracksTableRow
-					{track}
-					{release}
-					session={data.session}
-					profileData={data.profileData}
-					likedTracks={data.likedTracks}
-					mixtapes={data.mixtapes}
-					showReleaseAndArtist={true}
-				/>
+				<TracksTableRow {track} {release} showReleaseAndArtist={true} />
 			{/each}
 		</tbody>
 	</table>

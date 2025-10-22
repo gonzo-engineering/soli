@@ -1,24 +1,39 @@
-import type { ReleaseHydrated, TrackRaw } from '../../../../shared/types';
+import type {
+	LikedTrackObject,
+	Mixtape,
+	ReleaseHydrated,
+	TrackRaw
+} from '../../../../shared/types';
 import { API_BASE } from './config';
 
 interface UserState {
+	id: string;
 	activeSong: TrackRaw | null;
 	activeSongRelease: ReleaseHydrated | null;
 	activeSongUrl: string | null;
 	activeSongIsPaused: boolean;
 	autoPlay: boolean;
-	liveBalance: number | null;
+	liveBalance: number;
 	payPerStream: number;
+	music: {
+		likedTracks: LikedTrackObject[];
+		mixtapes: Mixtape[];
+	};
 }
 
 export const userState: UserState = $state({
+	id: '',
 	activeSong: null,
 	activeSongRelease: null,
 	activeSongUrl: null,
 	activeSongIsPaused: false,
 	autoPlay: false,
 	liveBalance: 0,
-	payPerStream: 3
+	payPerStream: 3,
+	music: {
+		likedTracks: [],
+		mixtapes: []
+	}
 });
 
 const logStream = async (userId: string, artistId: string, trackId: string, tokensUsed: number) => {
