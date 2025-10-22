@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>Your Collections · Soli</title>
+	<title>Your collections · Soli</title>
 	<meta name="description" content="Browse your collections on Soli." />
 </svelte:head>
 
@@ -24,7 +24,6 @@
 		{#if data.user}
 			<form {...deleteCollection.for(collection.id)}>
 				<input {...deleteCollection.fields.collectionId.as('hidden')} value={collection.id} />
-				<input {...deleteCollection.fields.userId.as('hidden')} value={data.user.id} />
 				<button type="submit">Delete collection</button>
 			</form>
 		{/if}
@@ -35,7 +34,6 @@
 	<h3>Create a new collection</h3>
 
 	<form {...makeCollection}>
-		<input {...makeCollection.fields.userId.as('hidden')} value={data.user.id} />
 		<label>
 			Name
 			<input {...makeCollection.fields.name.as('text')} />

@@ -4,13 +4,11 @@ import * as z from 'zod';
 import { requireAuth } from './auth-check';
 
 const MakeCollectionForm = z.object({
-	userId: z.string(),
 	name: z.string().min(3).max(100),
 	description: z.string().max(500).optional()
 });
 
 const DeleteCollectionForm = z.object({
-	userId: z.string(),
 	collectionId: z.string()
 });
 

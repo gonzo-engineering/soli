@@ -81,3 +81,25 @@ export interface Collection {
   created_at: string;
   releases?: ReleaseHydrated[];
 }
+
+export interface Mixtape {
+  id: string;
+  user_id: string;
+  name: string;
+  description?: string;
+  is_public: boolean;
+  created_at: string;
+  updated_at: string;
+  tracks?: {
+    id: string;
+    title: string;
+    ipfs_cid: string;
+    duration_seconds: number;
+    artist: {
+      id: string;
+      name: string;
+      image_ipfs_cid?: string;
+    };
+    added_at: string;
+  }[];
+}

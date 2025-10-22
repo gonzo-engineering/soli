@@ -4,12 +4,10 @@
 
 	let {
 		release,
-		collections,
-		collectionMenuOpen = $bindable()
+		collections
 	}: {
 		release: ReleaseHydrated;
 		collections: Collection[];
-		collectionMenuOpen: boolean;
 	} = $props();
 </script>
 
@@ -37,23 +35,9 @@
 			</form>
 		</div>
 	{/each}
-	<button onclick={() => (collectionMenuOpen = false)}>Close</button>
 </div>
 
 <style>
-	.add-to-collection-popup {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		border: 1px solid gray;
-		padding: 1rem;
-		border-radius: 4px;
-		background-color: var(--color-background);
-		box-shadow: var(--box-shadow);
-		width: 90%;
-		max-width: 400px;
-	}
 	.collection-name {
 		display: inline-block;
 	}

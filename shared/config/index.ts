@@ -27,4 +27,7 @@ export const TABLES = {
   collections: "collections",
   collectionReleases: "collection_releases",
   collectionsHydrated: "collections_hydrated",
+  mixtapes: "mixtapes",
+  mixtapeTracks: "mixtape_tracks",
+  mixtapesHydrated: "mixtapes_hydrated",
 };

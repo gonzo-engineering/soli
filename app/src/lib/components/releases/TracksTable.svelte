@@ -1,5 +1,10 @@
 <script lang="ts">
-	import type { LikedTrackObject, ReleaseHydrated, UserProfile } from '../../../../../shared/types';
+	import type {
+		LikedTrackObject,
+		Mixtape,
+		ReleaseHydrated,
+		UserProfile
+	} from '../../../../../shared/types';
 	import type { Session } from '@supabase/supabase-js';
 	import TrackTableRow from './TracksTableRow.svelte';
 
@@ -7,12 +12,14 @@
 		release,
 		profileData,
 		likedTracks,
+		mixtapes,
 		session,
 		showReleaseAndArtist = false
 	}: {
 		release: ReleaseHydrated;
 		profileData: UserProfile;
 		likedTracks: LikedTrackObject[];
+		mixtapes: Mixtape[];
 		session: Session;
 		showReleaseAndArtist?: boolean;
 	} = $props();
@@ -42,6 +49,7 @@
 				{profileData}
 				{session}
 				{likedTracks}
+				{mixtapes}
 				{showReleaseAndArtist}
 			/>
 		{/each}

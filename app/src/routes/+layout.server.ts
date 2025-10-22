@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from './$types';
-import type { Collection, LikedTrackObject, UserProfile } from '../../../shared/types';
+import type { Collection, LikedTrackObject, Mixtape, UserProfile } from '../../../shared/types';
 import { API_BASE } from '$lib/global/config';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies, fetch }) => {
@@ -9,6 +9,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 	let collections: Collection[] = [];
 	let likedTracks: LikedTrackObject[] = [];
 	let followedIDs: string[] = [];
+	let mixtapes: Mixtape[] = [];
 
 	const userId = session?.user.id;
 
@@ -17,6 +18,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 		collections = await fetch(`${API_BASE}/users/${userId}/collections`).then((res) => res.json());
 		likedTracks = await fetch(`${API_BASE}/users/${userId}/likes`).then((res) => res.json());
 		followedIDs = await fetch(`${API_BASE}/users/${userId}/following`).then((res) => res.json());
+		mixtapes = await fetch(`${API_BASE}/users/${userId}/mixtapes`).then((res) => res.json());
 	}
 
 	return {
@@ -25,6 +27,7 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 		profileData,
 		collections,
 		likedTracks,
+		mixtapes,
 		followedArtists: followedIDs,
 		cookies: cookies.getAll()
 	};

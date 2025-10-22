@@ -2,6 +2,7 @@
 	import type {
 		Collection,
 		LikedTrackObject,
+		Mixtape,
 		ReleaseHydrated,
 		UserProfile
 	} from '../../../../../shared/types';
@@ -13,7 +14,8 @@
 	import { formatReleaseType } from '../../../../../shared/utils';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
 	import Albums from '$lib/components/icons/Albums.svelte';
-	import ReleaseCollectionsPopup from '$lib/components/releases/ReleaseCollectionsPopup.svelte';
+	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
+	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
 
 	let {
 		data
@@ -24,11 +26,12 @@
 			profileData: UserProfile;
 			collections: Collection[];
 			likedTracks: LikedTrackObject[];
+			mixtapes: Mixtape[];
 		};
 	} = $props();
 
 	let release = $derived(data.release);
-	let collectionMenuOpen = $state(false);
+	let popupMenuOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -47,18 +50,19 @@
 	<div class="release-header">
 		<div>
 			<h2>{release.title}</h2>
-
 			<div>
 				<a href={`/artists/${release.artist_id}`}>{release.artist_name}</a>
 			</div>
 		</div>
-		<ButtonWrapper onClickFunction={() => (collectionMenuOpen = !collectionMenuOpen)}>
+		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
 			<Albums />
 		</ButtonWrapper>
 	</div>
 
-	{#if collectionMenuOpen}
-		<ReleaseCollectionsPopup {release} collections={data.collections} bind:collectionMenuOpen />
+	{#if popupMenuOpen}
+		<PopupWrapper bind:popupMenuOpen>
+			<ReleaseCollectionsMenu {release} collections={data.collections} />
+		</PopupWrapper>
 	{/if}
 
 	<img
@@ -88,6 +92,7 @@
 		{release}
 		profileData={data.profileData}
 		likedTracks={data.likedTracks}
+		mixtapes={data.mixtapes}
 		session={data.session}
 	/>
 

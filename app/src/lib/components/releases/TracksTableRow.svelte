@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type {
 		LikedTrackObject,
+		Mixtape,
 		ReleaseHydrated,
 		TrackRaw,
 		UserProfile
@@ -10,6 +11,8 @@
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
 	import ThreeDots from '../icons/ThreeDots.svelte';
+	import PopupWrapper from '../layout/PopupWrapper.svelte';
+	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
 
 	const {
 		i = undefined,
@@ -18,6 +21,7 @@
 		profileData,
 		session,
 		likedTracks,
+		mixtapes,
 		showReleaseAndArtist = false
 	}: {
 		i?: number;
@@ -26,8 +30,11 @@
 		profileData: UserProfile;
 		session: Session;
 		likedTracks: LikedTrackObject[];
+		mixtapes: Mixtape[];
 		showReleaseAndArtist: boolean;
 	} = $props();
+
+	let popupMenuOpen = $state(false);
 </script>
 
 <tr>
@@ -45,9 +52,30 @@
 		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'light'} />
 	</td>
 	<td>
-		<ThreeDots />
+		<div onclick={() => (popupMenuOpen = !popupMenuOpen)}><ThreeDots /></div>
 	</td>
 </tr>
+
+{#if popupMenuOpen}
+	<PopupWrapper bind:popupMenuOpen>
+		<div>
+			<h3>Track options for "{track.title}"</h3>
+			<form {...addTrackToMixtape}>
+				<label
+					>Add to mixtape:
+					<select {...addTrackToMixtape.fields.mixtapeId.as('select')}>
+						<option value="" disabled selected>Select a mixtape</option>
+						{#each mixtapes as mixtape}
+							<option value={mixtape.id}>{mixtape.name}</option>
+						{/each}
+					</select>
+				</label>
+				<input {...addTrackToMixtape.fields.trackId.as('hidden')} value={track.id} />
+				<button type="submit">Add</button>
+			</form>
+		</div>
+	</PopupWrapper>
+{/if}
 
 <style>
 	tr {

@@ -48,6 +48,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		profileData: data.profileData,
 		collections: data.collections,
 		followedArtists: data.followedArtists,
-		likedTracks: data.likedTracks
+		likedTracks: data.likedTracks,
+		mixtapes: data.mixtapes
 	};
 };

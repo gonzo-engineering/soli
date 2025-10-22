@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Your likes · Soli</title>
+	<title>Your liked tracks · Soli</title>
 	<meta name="description" content="Browse your liked tracks on Soli." />
 </svelte:head>
 
@@ -32,6 +32,7 @@
 					session={data.session}
 					profileData={data.profileData}
 					likedTracks={data.likedTracks}
+					mixtapes={data.mixtapes}
 					showReleaseAndArtist={true}
 				/>
 			{/each}
