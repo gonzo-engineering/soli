@@ -8,6 +8,26 @@ const ToggleLikedTrackForm = z.object({
 	addOrRemove: z.enum(['add', 'remove'])
 });
 
+const ToggleFollowedArtistForm = z.object({
+	artistID: z.string(),
+	addOrRemove: z.enum(['add', 'remove'])
+});
+
+export const toggleFollowedArtist = form(
+	ToggleFollowedArtistForm,
+	async ({ artistID, addOrRemove }) => {
+		const userId = requireAuth().id;
+
+		await fetch(`${API_BASE}/users/${userId}/following`, {
+			method: addOrRemove === 'remove' ? 'DELETE' : 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ artistId: artistID })
+		});
+	}
+);
+
 export const toggleLikedTrack = form(ToggleLikedTrackForm, async ({ trackId, addOrRemove }) => {
 	const userId = requireAuth().id;
 

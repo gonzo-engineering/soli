@@ -2,7 +2,7 @@
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
-	import { enhance } from '$app/forms';
+	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
 
 	let {
 		data
@@ -60,20 +60,15 @@
 				You are {data.followedArtists.includes(data.artist.id) ? 'following' : 'not following'} this
 				artist.
 			</div>
-			<form action="?/toggleFollowedArtist" method="POST" use:enhance={handleUpdate}>
-				<input type="hidden" name="artistID" value={data.artist.id} />
+			<form {...toggleFollowedArtist}>
+				<input {...toggleFollowedArtist.fields.artistID.as('hidden')} value={data.artist.id} />
 				<input
-					type="hidden"
-					name="addOrRemove"
+					{...toggleFollowedArtist.fields.addOrRemove.as('hidden')}
 					value={data.followedArtists.includes(data.artist.id) ? 'remove' : 'add'}
 				/>
-				<button type="submit"
-					>{updatingFollow
-						? 'Updating...'
-						: data.followedArtists.includes(data.artist.id)
-							? 'Unfollow'
-							: 'Follow'}</button
-				>
+				<button type="submit">
+					{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}
+				</button>
 			</form>
 		</div>
 	</div>
