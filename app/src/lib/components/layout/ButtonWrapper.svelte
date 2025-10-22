@@ -5,7 +5,7 @@
 
 <div
 	class="button-wrapper"
-	onclick={onClickFunction}
+	onclick={() => onClickFunction()}
 	onkeydown={(e) => {
 		if (e.key === 'Enter' || e.key === ' ') {
 			onClickFunction;

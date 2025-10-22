@@ -24,4 +24,7 @@ export const TABLES = {
   betaUsers: "beta-users",
   likedTracks: "liked_tracks",
   followedArtists: "followed_artists",
+  collections: "collections",
+  collectionReleases: "collection_releases",
+  collectionsHydrated: "collections_hydrated",
 };

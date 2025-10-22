@@ -1,0 +1,38 @@
+import { supabase } from '$lib/server/supabase';
+import { json } from '@sveltejs/kit';
+import { TABLES } from '../../../../../shared/config';
+
+export async function PATCH({ request, params }) {
+	const collectionId = params.slug;
+	const { releaseId, add } = await request.json();
+
+	if (!releaseId) {
+		return json({ error: 'Missing release ID' }, { status: 400 });
+	}
+
+	if (!add) {
+		const { error } = await supabase
+			.from(TABLES.collectionReleases)
+			.delete()
+			.eq('collection_id', collectionId)
+			.eq('release_id', releaseId);
+
+		if (error) {
+			console.error('Error removing release from collection:', error);
+			return json({ error: 'Failed to remove release from collection' }, { status: 500 });
+		}
+
+		return json({ success: true });
+	}
+
+	const { error } = await supabase
+		.from(TABLES.collectionReleases)
+		.insert({ collection_id: collectionId, release_id: releaseId });
+
+	if (error) {
+		console.error('Error adding release to collection:', error);
+		return json({ error: 'Failed to add release to collection' }, { status: 500 });
+	}
+
+	return json({ success: true });
+}

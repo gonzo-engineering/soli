@@ -68,8 +68,16 @@ export interface LikedTrackObject {
 }
 
 export interface SearchResult {
-		type: 'artist' | 'release' | 'track';
-		id: string;
-		name: string;
-		image_cid?: string;
-	}
+  type: "artist" | "release" | "track";
+  id: string;
+  name: string;
+  image_cid?: string;
+}
+
+export interface Collection {
+  id: string;
+  name: string;
+  description?: string;
+  created_at: string;
+  releases: ReleaseHydrated[];
+}
