@@ -13,7 +13,6 @@
 	import { formatReleaseType } from '../../../../../shared/utils';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
 	import Albums from '$lib/components/icons/Albums.svelte';
-	import { addOrRemoveRelease } from '$lib/remote-functions/collections.remote';
 	import ReleaseCollectionsPopup from '$lib/components/releases/ReleaseCollectionsPopup.svelte';
 
 	let {
@@ -59,11 +58,7 @@
 	</div>
 
 	{#if collectionMenuOpen}
-		<ReleaseCollectionsPopup
-			{release}
-			collections={data.collections}
-			bind:collectionMenuOpen
-		/>
+		<ReleaseCollectionsPopup {release} collections={data.collections} bind:collectionMenuOpen />
 	{/if}
 
 	<img

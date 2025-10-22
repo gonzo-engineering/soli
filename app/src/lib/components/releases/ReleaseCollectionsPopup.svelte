@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { addOrRemoveRelease } from '$lib/remote-functions/collections.remote';
+	import { addOrRemoveReleaseFromCollection } from '$lib/remote-functions/collections.remote';
 	import type { ReleaseHydrated, Collection } from '../../../../../shared/types';
 
 	let {
@@ -18,11 +18,17 @@
 	{#each collections as collection}
 		<div class="collection-toggle">
 			<div class="collection-name">{collection.name}</div>
-			<form {...addOrRemoveRelease.for(collection.id)}>
-				<input {...addOrRemoveRelease.fields.releaseId.as('hidden')} value={release.id} />
-				<input {...addOrRemoveRelease.fields.collectionId.as('hidden')} value={collection.id} />
+			<form {...addOrRemoveReleaseFromCollection.for(collection.id)}>
 				<input
-					{...addOrRemoveRelease.fields.addOrRemove.as('hidden')}
+					{...addOrRemoveReleaseFromCollection.fields.releaseId.as('hidden')}
+					value={release.id}
+				/>
+				<input
+					{...addOrRemoveReleaseFromCollection.fields.collectionId.as('hidden')}
+					value={collection.id}
+				/>
+				<input
+					{...addOrRemoveReleaseFromCollection.fields.addOrRemove.as('hidden')}
 					value={collection.releases?.some((r) => r.id === release.id) ? 'remove' : 'add'}
 				/>
 				<button type="submit">

@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { LikedTrackObject } from '../../../../../shared/types';
-	import { enhance } from '$app/forms';
 	import Heart from '../icons/Heart.svelte';
+	import { toggleLikedTrack } from '$lib/remote-functions/tracks.remote';
 
 	let {
 		trackID,
@@ -14,31 +13,17 @@
 		lightOrDark: 'light' | 'dark';
 	} = $props();
 
-	const handleLikedTrackChange: SubmitFunction = () => {
-		return async ({ update }) => {
-			update();
-		};
-	};
+	// Prevents duplicate form IDs for kindred TrackLikeButton components on the same page
+	const trackRandomKey = Math.random().toString(36).substring(2, 15);
 </script>
 
-<form
-	method="post"
-	action="/me/liked-tracks?/toggleLikedTrack"
-	use:enhance={handleLikedTrackChange}
->
-	<input type="hidden" name="trackId" value={trackID} />
+<form {...toggleLikedTrack.for(trackRandomKey)}>
+	<input {...toggleLikedTrack.fields.trackId.as('hidden')} value={trackID} />
 	<input
-		type="hidden"
-		name="addOrRemove"
+		{...toggleLikedTrack.fields.addOrRemove.as('hidden')}
 		value={likedTracks.some((t) => t.track.id === trackID) ? 'remove' : 'add'}
 	/>
-	<button
-		type="submit"
-		name="action"
-		value="toggleLikedTrack"
-		aria-label="Remove from likes tracks"
-		class={lightOrDark}
-	>
+	<button type="submit" class={lightOrDark}>
 		{#if likedTracks.some((t) => t.track.id === trackID)}
 			<Heart filled />
 		{:else}
