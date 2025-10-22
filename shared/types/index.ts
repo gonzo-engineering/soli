@@ -79,5 +79,5 @@ export interface Collection {
   name: string;
   description?: string;
   created_at: string;
-  releases: ReleaseHydrated[];
+  releases?: ReleaseHydrated[];
 }

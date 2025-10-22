@@ -12,8 +12,8 @@
 
 <style>
 	svg {
-		width: 3em;
-		height: 3em;
+		width: 2em;
+		height: 2em;
 		display: inline-block;
 		vertical-align: middle;
 	}

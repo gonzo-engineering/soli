@@ -1,15 +1,8 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { SubmitFunction } from '@sveltejs/kit';
+	import { makeCollection, deleteCollection } from '$lib/remote-functions/collections.remote';
 
 	let { data } = $props();
-
-	const handleAddingCollection: SubmitFunction = () => {
-		return async ({ update }) => {
-			update();
-		};
-	};
 </script>
 
 <svelte:head>
@@ -28,16 +21,32 @@
 			{/if}
 		</div>
 		<ReleaseCardGrid releases={collection.releases} />
+		{#if data.user}
+			<form {...deleteCollection.for(collection.id)}>
+				<input {...deleteCollection.fields.collectionId.as('hidden')} value={collection.id} />
+				<input {...deleteCollection.fields.userId.as('hidden')} value={data.user.id} />
+				<button type="submit">Delete collection</button>
+			</form>
+		{/if}
 	</div>
 {/each}
 
-<h3>Create a new collection</h3>
+{#if data.user}
+	<h3>Create a new collection</h3>
 
-<form method="post" action="/me/collections?/createCollection" use:enhance={handleAddingCollection}>
-	<label for="collection-name">New Collection Name:</label>
-	<input type="text" id="collection-name" name="collectionName" />
-	<button type="submit" name="action" value="createCollection">Create Collection</button>
-</form>
+	<form {...makeCollection}>
+		<input {...makeCollection.fields.userId.as('hidden')} value={data.user.id} />
+		<label>
+			Name
+			<input {...makeCollection.fields.name.as('text')} />
+		</label>
+		<label>
+			Description
+			<input {...makeCollection.fields.description.as('text')} />
+		</label>
+		<button type="submit">Create</button>
+	</form>
+{/if}
 
 <style>
 	h3 {
@@ -48,5 +57,13 @@
 	}
 	.collection-details {
 		margin-bottom: 1rem;
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	button {
+		width: fit-content;
 	}
 </style>

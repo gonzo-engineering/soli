@@ -4,13 +4,13 @@ import { TABLES } from '../../../../../shared/config';
 
 export async function PATCH({ request, params }) {
 	const collectionId = params.slug;
-	const { releaseId, add } = await request.json();
+	const { releaseId, addOrRemove } = await request.json();
 
 	if (!releaseId) {
 		return json({ error: 'Missing release ID' }, { status: 400 });
 	}
 
-	if (!add) {
+	if (addOrRemove === 'remove') {
 		const { error } = await supabase
 			.from(TABLES.collectionReleases)
 			.delete()
@@ -36,3 +36,21 @@ export async function PATCH({ request, params }) {
 
 	return json({ success: true });
 }
+
+export async function DELETE({ request, params }) {
+	const collectionId = params.slug;
+	const { userId} = await request.json();
+
+	const { error } = await supabase
+		.from(TABLES.collections)
+		.delete()
+		.eq('id', collectionId)
+		.eq('user_id', userId);
+
+	if (error) {
+		console.error('Error deleting collection:', error);
+		return json({ error: 'Failed to delete collection' }, { status: 500 });
+	}
+
+	return json({ success: true });
+};

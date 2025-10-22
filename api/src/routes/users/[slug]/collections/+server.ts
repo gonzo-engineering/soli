@@ -16,21 +16,3 @@ export async function GET({ params }) {
 
 	return json(collections);
 }
-
-export async function POST({ params, request }) {
-	const userId = params.slug;
-
-	const { name } = await request.json();
-
-	if (!name) {
-		return json({ error: 'Missing collection name' }, { status: 400 });
-	}
-
-	const { error } = await supabase.from(TABLES.collections).insert({ user_id: userId, name });
-
-	if (error) {
-		return json({ error: 'Failed to create collection' }, { status: 500 });
-	}
-
-	return json({ success: true });
-}
