@@ -39,6 +39,8 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 	if (data.profileData) {
 		userState.liveBalance = data.profileData.tokens_balance;
 		userState.payPerStream = data.profileData.pay_per_stream;
+		userState.music.likedTracks = data.likedTracks;
+		userState.music.mixtapes = data.mixtapes;
 	}
 
 	return {
@@ -46,7 +48,9 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		session,
 		user,
 		profileData: data.profileData,
+		collections: data.collections,
 		followedArtists: data.followedArtists,
-		likedTracks: data.likedTracks
+		likedTracks: data.likedTracks,
+		mixtapes: data.mixtapes
 	};
 };

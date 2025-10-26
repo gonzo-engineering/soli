@@ -9,9 +9,17 @@ const config = {
 	preprocess: [vitePreprocess, mdsvex({ extensions: ['.md'] })],
 
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+		experimental: {
+			remoteFunctions: true
+		}
 	},
-	extensions: ['.svelte', '.md']
+	extensions: ['.svelte', '.md'],
+	compilerOptions: {
+		experimental: {
+			async: true
+		}
+	}
 };
 
 export default config;

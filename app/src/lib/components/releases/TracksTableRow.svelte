@@ -1,49 +1,74 @@
 <script lang="ts">
-	import type {
-		LikedTrackObject,
-		ReleaseHydrated,
-		TrackRaw,
-		UserProfile
-	} from '../../../../../shared/types';
+	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
 	import { prettifyDuration } from '../../../../../shared/utils';
-	import type { Session } from '@supabase/supabase-js';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
+	import ThreeDots from '../icons/ThreeDots.svelte';
+	import PopupWrapper from '../layout/PopupWrapper.svelte';
+	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
+	import { userState } from '$lib/global/state.svelte';
+	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 
 	const {
 		i = undefined,
 		track,
-		release,
-		profileData,
-		session,
-		likedTracks,
 		showReleaseAndArtist = false
 	}: {
 		i?: number;
-		track: TrackRaw;
-		release: ReleaseHydrated;
-		profileData: UserProfile;
-		session: Session;
-		likedTracks: LikedTrackObject[];
+		track: TrackHydrated;
 		showReleaseAndArtist: boolean;
 	} = $props();
+
+	let popupMenuOpen = $state(false);
 </script>
 
 <tr>
 	<td>{i || ''}</td>
 	<td>{track.title}</td>
 	{#if showReleaseAndArtist}
-		<td class="hide-on-mobile"><a href={`/releases/${release.id}`}>{release.title}</a></td>
-		<td><a href={`/artists/${release.artist_id}`}>{release.artist_name}</a></td>
+		<td class="hide-on-mobile"
+			><a href={`/releases/${track.release.id}`}>{track.release.title}</a></td
+		>
+		<td><a href={`/artists/${track.artist.id}`}>{track.artist.name}</a></td>
 	{/if}
 	<td>{prettifyDuration(track.duration_seconds)}</td>
 	<td class="play-button-container">
-		<ReleaseTrackButton {track} {release} {profileData} {session} />
+		<ReleaseTrackButton {track} release={track.release} />
 	</td>
 	<td>
-		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'light'} />
+		<TrackLikeButton
+			trackID={track.id}
+			likedTracks={userState.music.likedTracks}
+			lightOrDark={'light'}
+		/>
+	</td>
+	<td>
+		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+			<ThreeDots />
+		</ButtonWrapper>
 	</td>
 </tr>
+
+{#if popupMenuOpen}
+	<PopupWrapper bind:popupMenuOpen>
+		<div>
+			<h3>Track options for "{track.title}"</h3>
+			<form {...addTrackToMixtape}>
+				<label
+					>Add to mixtape:
+					<select {...addTrackToMixtape.fields.mixtapeId.as('select')}>
+						<option value="" disabled selected>Select a mixtape</option>
+						{#each userState.music.mixtapes as mixtape}
+							<option value={mixtape.id}>{mixtape.name}</option>
+						{/each}
+					</select>
+				</label>
+				<input {...addTrackToMixtape.fields.trackId.as('hidden')} value={track.id} />
+				<button type="submit">Add</button>
+			</form>
+		</div>
+	</PopupWrapper>
+{/if}
 
 <style>
 	tr {

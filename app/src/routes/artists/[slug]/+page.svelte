@@ -1,12 +1,14 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
+	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
 	import { makeImageLink } from '$lib/utils';
-	import { enhance } from '$app/forms';
+	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
+	import SectionLink from '$lib/components/layout/SectionLink.svelte';
+	import type { Artist } from '../../../../../shared/types/core';
 
 	let {
 		data
-	}: { data: { artist: ArtistRaw; releases: ReleaseHydrated[]; followedArtists: string[] } } =
+	}: { data: { artist: Artist; releases: ReleaseHydrated[]; followedArtists: string[] } } =
 		$props();
 
 	const { name, bio, website_url, image_ipfs_cid } = $derived(data.artist);
@@ -35,9 +37,7 @@
 	<meta name="description" content={`The artist page for ${name}.`} />
 </svelte:head>
 
-<div class="section-link">
-	> <a href="/artists">Artists</a>
-</div>
+<SectionLink link="/artists" label="Artists" />
 
 <div class="container">
 	<div class="artist-summary-card">
@@ -60,20 +60,15 @@
 				You are {data.followedArtists.includes(data.artist.id) ? 'following' : 'not following'} this
 				artist.
 			</div>
-			<form action="?/toggleFollowedArtist" method="POST" use:enhance={handleUpdate}>
-				<input type="hidden" name="artistID" value={data.artist.id} />
+			<form {...toggleFollowedArtist}>
+				<input {...toggleFollowedArtist.fields.artistID.as('hidden')} value={data.artist.id} />
 				<input
-					type="hidden"
-					name="addOrRemove"
+					{...toggleFollowedArtist.fields.addOrRemove.as('hidden')}
 					value={data.followedArtists.includes(data.artist.id) ? 'remove' : 'add'}
 				/>
-				<button type="submit"
-					>{updatingFollow
-						? 'Updating...'
-						: data.followedArtists.includes(data.artist.id)
-							? 'Unfollow'
-							: 'Follow'}</button
-				>
+				<button type="submit">
+					{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}
+				</button>
 			</form>
 		</div>
 	</div>
@@ -131,9 +126,6 @@
 </div>
 
 <style>
-	.section-link {
-		margin-bottom: 1rem;
-	}
 	.container {
 		display: flex;
 		flex-direction: column;

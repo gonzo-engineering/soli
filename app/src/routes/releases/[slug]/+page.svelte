@@ -1,12 +1,22 @@
 <script lang="ts">
-	import type { LikedTrackObject, ReleaseHydrated, UserProfile } from '../../../../../shared/types';
+	import type { Mixtape } from '../../../../../shared/types/core';
 	import { makeImageLink } from '$lib/utils';
 	import type { Session } from '@supabase/supabase-js';
-	import ReleaseTracks from '$lib/components/releases/TracksTable.svelte';
+	import TracksTable from '$lib/components/releases/TracksTable.svelte';
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import { formatReleaseType } from '../../../../../shared/utils';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
+	import Albums from '$lib/components/icons/Albums.svelte';
+	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
+	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
+	import SectionLink from '$lib/components/layout/SectionLink.svelte';
+	import type { User } from '../../../../../shared/types/core';
+	import type {
+		CollectionHydrated,
+		TrackHydrated,
+		ReleaseHydrated
+	} from '../../../../../shared/types/hydrated';
 
 	let {
 		data
@@ -14,38 +24,49 @@
 		data: {
 			release: ReleaseHydrated;
 			session: Session;
-			profileData: UserProfile;
-			likedTracks: LikedTrackObject[];
+			profileData: User;
+			collections: CollectionHydrated[];
+			likedTracks: TrackHydrated[];
+			mixtapes: Mixtape[];
 		};
 	} = $props();
 
 	let release = $derived(data.release);
+	let popupMenuOpen = $state(false);
 </script>
 
 <svelte:head>
-	<title>{release.title} · {release.artist_name} · Soli</title>
+	<title>{release.title} · {release.artist.name} · Soli</title>
 	<meta
 		name="description"
 		content={`The release page for '${release.title}' by ${release.title}.`}
 	/>
 </svelte:head>
 
-<div class="section-link">
-	> <a href="/releases">Releases</a>
-</div>
+<SectionLink link="/releases" label="Releases" />
 
 <div class="release-summary-card">
-	<div>
-		<h2>{release.title}</h2>
-
+	<div class="release-header">
 		<div>
-			<a href={`/artists/${release.artist_id}`}>{release.artist_name}</a>
+			<h2>{release.title}</h2>
+			<div>
+				<a href={`/artists/${release.artist_id}`}>{release.artist.name}</a>
+			</div>
 		</div>
+		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+			<Albums />
+		</ButtonWrapper>
 	</div>
+
+	{#if popupMenuOpen}
+		<PopupWrapper bind:popupMenuOpen>
+			<ReleaseCollectionsMenu {release} collections={data.collections} />
+		</PopupWrapper>
+	{/if}
 
 	<img
 		src={makeImageLink(release.artwork_ipfs_cid, 500)}
-		alt={`Cover art for '${release.title}' by ${release.artist_name}'`}
+		alt={`Cover art for '${release.title}' by ${release.artist.name}'`}
 		class="cover-art"
 	/>
 
@@ -66,11 +87,12 @@
 		</div>
 	</ButtonWrapper>
 
-	<ReleaseTracks
-		{release}
-		profileData={data.profileData}
-		likedTracks={data.likedTracks}
-		session={data.session}
+	<TracksTable
+		tracks={release.tracks.map((track) => ({
+			...track,
+			release,
+			artist: release.artist
+		}))}
 	/>
 
 	<hr />
@@ -86,14 +108,17 @@
 </div>
 
 <style>
-	.section-link {
-		margin-bottom: 1rem;
-	}
 	.release-summary-card {
 		max-width: 600px;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+	}
+	.release-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 	}
 	h2 {
 		margin: 0;
@@ -110,5 +135,7 @@
 		width: 100%;
 		border-radius: 4px;
 		text-align: center;
+		font-weight: 400;
+		padding: 0.5rem 1rem;
 	}
 </style>

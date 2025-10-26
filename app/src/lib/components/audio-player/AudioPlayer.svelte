@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { setActiveSong, userState } from '$lib/global/state.svelte.js';
 	import { makeImageLink } from '$lib/utils';
-	import type { LikedTrackObject, ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
+	import type { Track } from '../../../../../shared/types/core';
+	import type { ReleaseHydrated, TrackHydrated } from '../../../../../shared/types/hydrated';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 
 	let {
@@ -14,17 +15,17 @@
 	}: {
 		userId: string;
 		userPayPerStream: number;
-		track: TrackRaw;
+		track: Track;
 		release: ReleaseHydrated;
 		songUrl: string;
-		likedTracks: LikedTrackObject[];
+		likedTracks: TrackHydrated[];
 	} = $props();
 
 	$effect(() => {
 		if ('mediaSession' in navigator) {
 			navigator.mediaSession.metadata = new MediaMetadata({
 				title: track.title,
-				artist: release.artist_name,
+				artist: release.artist.name,
 				album: release.title,
 				artwork: [96, 128, 192, 256, 384, 512].map((size) => ({
 					src: makeImageLink(release.artwork_ipfs_cid, size),
@@ -37,8 +38,11 @@
 </script>
 
 <div class="audio-player">
-	<div>
-		“{track.title}” by <a href={`/artists/${release.artist_id}`}>{release.artist_name}</a>
+	<div class="now-playing-info">
+		<div>
+			“{track.title}” by <a href={`/artists/${release.artist_id}`}>{release.artist.name}</a>
+		</div>
+		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'dark'} />
 	</div>
 	<audio
 		src={songUrl}
@@ -66,7 +70,6 @@
 		autoplay
 		controlsList="nodownload noplaybackrate"
 	></audio>
-	<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'dark'} />
 </div>
 
 <style>
@@ -87,13 +90,16 @@
 	a {
 		color: black;
 	}
+	.now-playing-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.5rem;
+	}
 	@media (min-width: 600px) {
 		.audio-player {
 			flex-direction: row;
 			gap: 2rem;
 		}
-	}
-	.like-button-wrapper {
-		color: #333;
 	}
 </style>

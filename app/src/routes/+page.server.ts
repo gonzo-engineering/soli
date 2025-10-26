@@ -1,0 +1,1 @@
+// I don't like this but SvelteKit requires a +page.server.ts file for hooks to work

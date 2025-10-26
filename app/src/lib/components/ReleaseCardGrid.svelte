@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ReleaseHydrated } from '../../../../shared/types';
+	import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
 	import { makeImageLink } from '$lib/utils';
 	import ReleaseCard from './ReleaseCard.svelte';
 
@@ -17,7 +17,7 @@
 		<ReleaseCard
 			link={`/releases/${release.id}`}
 			name={release.title}
-			artist={release.artist_name}
+			artist={release.artist?.name}
 			coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
 			hideArtist={hideArtistName}
 		/>

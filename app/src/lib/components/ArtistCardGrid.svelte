@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { ArtistRaw } from '../../../../shared/types';
 	import { makeImageLink } from '$lib/utils';
+	import type { Artist } from '../../../../shared/types/core';
 	import ArtistCard from './ArtistCard.svelte';
 
 	let {
 		artists
 	}: {
-		artists: ArtistRaw[];
+		artists: Artist[];
 	} = $props();
 </script>
 

@@ -1,9 +1,9 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { makeImageLink } from "$lib/utils";
-  import type { ArtistRaw } from "../../../../shared/types";
+  import type { Artist } from "../../../../shared/types/core";
 
-  let { activeArtist }: { activeArtist: ArtistRaw } = $props();
+  let { activeArtist }: { activeArtist: Artist } = $props();
   let uploading = $state(false);
 
   function handleUpload() {

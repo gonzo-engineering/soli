@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SectionLink from '$lib/components/layout/SectionLink.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 
 	let { data } = $props();
@@ -13,17 +14,9 @@
 	<meta name="description" content="Browse releases with the genres '{data.genre}' on Soli." />
 </svelte:head>
 
-<div class="section-link">
-	> <a href="/genres">Genres</a>
-</div>
+<SectionLink link="/genres" label="Genres" />
 
 <h2>{capitaliseFirstLetter(data.genre!)}</h2>
 {#if data.genreReleases}
 	<ReleaseCardGrid releases={data.genreReleases} />
 {/if}
-
-<style>
-	.section-link {
-		margin-bottom: 1rem;
-	}
-</style>
