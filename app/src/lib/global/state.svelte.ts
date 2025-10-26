@@ -1,6 +1,7 @@
+import { getTrackUrl, logStream } from '$lib/remote-functions/listening.remote';
+import { updateUserTokensBalance } from '$lib/remote-functions/user.remote';
 import type { Mixtape, Release, Track } from '../../../../shared/types/core';
 import type { TrackHydrated } from '../../../../shared/types/hydrated';
-import { API_BASE } from './config';
 
 interface UserState {
 	id: string;
@@ -18,6 +19,7 @@ interface UserState {
 }
 
 export const userState: UserState = $state({
+	// TODO: Make this less dumb
 	id: '',
 	activeSong: null,
 	activeSongRelease: null,
@@ -32,46 +34,6 @@ export const userState: UserState = $state({
 	}
 });
 
-const logStream = async (userId: string, artistId: string, trackId: string, tokensUsed: number) => {
-	console.log(`Logging stream for '${trackId}' by user ${userId}`);
-	const { status } = await fetch(`${API_BASE}/streams`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ userId, artistId, trackId, tokensUsed })
-	});
-	if (status === 200) {
-		console.log('Stream logged successfully');
-	} else {
-		console.error('Error logging stream:', status);
-	}
-};
-
-export const updateUserTokensBalance = async (
-	userId: string,
-	tokens: number,
-	addOrSubtract: 'add' | 'subtract'
-) => {
-	const balanceChange = addOrSubtract === 'add' ? tokens : -tokens;
-	const response = await fetch(`${API_BASE}/users/${userId}`, {
-		method: 'PATCH',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ balanceChange })
-	});
-
-	if (!response.ok) {
-		console.error('Error updating user balance:', response.statusText);
-	}
-	const data = await response.json();
-	if (userState.liveBalance !== null) {
-		userState.liveBalance += balanceChange;
-	}
-	return { data, error: response.ok ? null : new Error(response.statusText) };
-};
-
 export const setActiveSong = async (
 	song: Track,
 	release: Release,
@@ -83,7 +45,7 @@ export const setActiveSong = async (
 		throw new Error('Not enough balance to play this song');
 	}
 
-	const songUrl = await fetch(`${API_BASE}/links/${song.ipfs_cid}`).then((res) => res.text());
+	const songUrl = await getTrackUrl(song.ipfs_cid);
 
 	userState.activeSong = song;
 	userState.activeSongRelease = release;
@@ -92,7 +54,13 @@ export const setActiveSong = async (
 	// TODO: Improve this to use a more accurate timer
 	// Deduct the pay per stream after 30 of playtime
 	setTimeout(() => {
-		updateUserTokensBalance(userId, userPayPerStream, 'subtract');
-		logStream(userId, release.artist_id, song.id, userPayPerStream);
-	}, 30000);
+		updateUserTokensBalance({ userId, tokens: userPayPerStream, addOrSubtract: 'subtract' });
+		userState.liveBalance -= userPayPerStream;
+		logStream({
+			userId,
+			artistId: release.artist_id,
+			trackId: song.id,
+			tokensUsed: userPayPerStream
+		});
+	}, 10000);
 };
