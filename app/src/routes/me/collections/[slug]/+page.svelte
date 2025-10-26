@@ -27,7 +27,7 @@
 </div>
 
 <form {...deleteCollection.for(id)}>
-	<input {...deleteCollection.fields.collectionId.as('hidden')} value={id} />
+	<input {...deleteCollection.fields.collectionId.as('hidden', id)} />
 	<button type="submit">Delete collection</button>
 </form>
 

@@ -63,7 +63,7 @@
 						{/each}
 					</select>
 				</label>
-				<input {...addTrackToMixtape.fields.trackId.as('hidden')} value={track.id} />
+				<input {...addTrackToMixtape.fields.trackId.as('hidden', track.id)} />
 				<button type="submit">Add</button>
 			</form>
 		</div>

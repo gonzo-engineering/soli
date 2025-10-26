@@ -27,7 +27,7 @@
 </div>
 
 <form {...deleteMixtape.for(id)}>
-	<input {...deleteMixtape.fields.mixtapeId.as('hidden')} value={id} />
+	<input {...deleteMixtape.fields.mixtapeId.as('hidden', id)} />
 	<button type="submit">Delete mixtape</button>
 </form>
 

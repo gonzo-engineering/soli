@@ -19,8 +19,8 @@
 </script>
 
 <form {...toggleLikedTrack.for(trackRandomKey)}>
-	<input {...toggleLikedTrack.fields.trackId.as('hidden')} value={trackID} />
-	<input {...toggleLikedTrack.fields.addOrRemove.as('hidden')} value={isLiked ? 'remove' : 'add'} />
+	<input {...toggleLikedTrack.fields.trackId.as('hidden', trackID)} />
+	<input {...toggleLikedTrack.fields.addOrRemove.as('hidden', isLiked ? 'remove' : 'add')} />
 	<button type="submit" class={lightOrDark}>
 		<Heart filled={isLiked} />
 	</button>
