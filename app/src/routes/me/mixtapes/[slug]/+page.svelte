@@ -1,12 +1,29 @@
 <script lang="ts">
 	import SectionLink from '$lib/components/layout/SectionLink.svelte';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
-	import { deleteMixtape, getMixtape } from '$lib/remote-functions/mixtapes.remote';
+	import { deleteMixtape } from '$lib/remote-functions/mixtapes.remote';
+	import type { Session } from '@supabase/supabase-js';
+	import type { Mixtape, User } from '../../../../../../shared/types/core';
+	import type {
+		CollectionHydrated,
+		MixtapeHydrated,
+		TrackHydrated
+	} from '../../../../../../shared/types/hydrated';
 
-	let { params } = $props();
+	let {
+		data
+	}: {
+		data: {
+			mixtape: MixtapeHydrated;
+			session: Session;
+			profileData: User;
+			collections: CollectionHydrated[];
+			likedTracks: TrackHydrated[];
+			mixtapes: Mixtape[];
+		};
+	} = $props();
 
-	let mixtapePromise = $derived(getMixtape(params.slug));
-	let { id, name, description, tracks } = $derived(await mixtapePromise);
+	let { id, name, description, tracks } = $derived(data.mixtape);
 </script>
 
 <svelte:head>
