@@ -17,17 +17,15 @@
 		<div class="collection-toggle">
 			<div class="collection-name">{collection.name}</div>
 			<form {...addOrRemoveReleaseFromCollection.for(collection.id)}>
+				<input {...addOrRemoveReleaseFromCollection.fields.releaseId.as('hidden', release.id)} />
 				<input
-					{...addOrRemoveReleaseFromCollection.fields.releaseId.as('hidden')}
-					value={release.id}
+					{...addOrRemoveReleaseFromCollection.fields.collectionId.as('hidden', collection.id)}
 				/>
 				<input
-					{...addOrRemoveReleaseFromCollection.fields.collectionId.as('hidden')}
-					value={collection.id}
-				/>
-				<input
-					{...addOrRemoveReleaseFromCollection.fields.addOrRemove.as('hidden')}
-					value={collection.releases?.some((r) => r.id === release.id) ? 'remove' : 'add'}
+					{...addOrRemoveReleaseFromCollection.fields.addOrRemove.as(
+						'hidden',
+						collection.releases?.some((r) => r.id === release.id) ? 'remove' : 'add'
+					)}
 				/>
 				<button type="submit">
 					{collection.releases?.some((r) => r.id === release.id) ? 'Remove' : 'Add'}

@@ -61,10 +61,12 @@
 				artist.
 			</div>
 			<form {...toggleFollowedArtist}>
-				<input {...toggleFollowedArtist.fields.artistID.as('hidden')} value={data.artist.id} />
+				<input {...toggleFollowedArtist.fields.artistID.as('hidden', data.artist.id)} />
 				<input
-					{...toggleFollowedArtist.fields.addOrRemove.as('hidden')}
-					value={data.followedArtists.includes(data.artist.id) ? 'remove' : 'add'}
+					{...toggleFollowedArtist.fields.addOrRemove.as(
+						'hidden',
+						data.followedArtists.includes(data.artist.id) ? 'remove' : 'add'
+					)}
 				/>
 				<button type="submit">
 					{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}
