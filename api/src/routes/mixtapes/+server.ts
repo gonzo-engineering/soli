@@ -11,7 +11,7 @@ export async function POST({ request }) {
 	}
 
 	const { error } = await supabase
-		.from(TABLES.mixtapesRich)
+		.from(TABLES.mixtapes)
 		.insert({ user_id: userId, name, description });
 
 	if (error) {

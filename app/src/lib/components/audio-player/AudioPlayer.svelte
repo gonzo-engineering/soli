@@ -38,8 +38,11 @@
 </script>
 
 <div class="audio-player">
-	<div>
-		“{track.title}” by <a href={`/artists/${release.artist_id}`}>{release.artist.name}</a>
+	<div class="now-playing-info">
+		<div>
+			“{track.title}” by <a href={`/artists/${release.artist_id}`}>{release.artist.name}</a>
+		</div>
+		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'dark'} />
 	</div>
 	<audio
 		src={songUrl}
@@ -67,7 +70,6 @@
 		autoplay
 		controlsList="nodownload noplaybackrate"
 	></audio>
-	<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'dark'} />
 </div>
 
 <style>
@@ -87,6 +89,12 @@
 	}
 	a {
 		color: black;
+	}
+	.now-playing-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.5rem;
 	}
 	@media (min-width: 600px) {
 		.audio-player {

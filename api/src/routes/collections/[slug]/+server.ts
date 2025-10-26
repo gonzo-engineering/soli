@@ -1,21 +1,12 @@
-import { supabase } from '$lib/server/supabase';
+import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../../shared/config';
 
 export async function GET({ params }) {
-	const collectionId = params.slug;
-	const { data: collection, error } = await supabase
-		.from(TABLES.collectionsRich)
-		.select('*')
-		.eq('id', collectionId)
-		.single();
-
-	if (error) {
-		console.error('Error fetching collection:', error);
-		return json({ error: 'Failed to fetch collection' }, { status: 500 });
-	}
-
-	return json(collection);
+	return handlePostgrestQuery(
+		async () => supabase.from(TABLES.collectionsRich).select('*').eq('id', params.slug).single(),
+		{ errorMessage: 'Failed to fetch collection' }
+	);
 }
 
 export async function PATCH({ request, params }) {

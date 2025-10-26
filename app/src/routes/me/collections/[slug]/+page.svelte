@@ -16,14 +16,29 @@
 
 <SectionLink link="/me/collections" label="Your collections" />
 
-<h2>{name}</h2>
+<div class="collection">
+	<div class="collection-details">
+		<h2>{name}</h2>
+		{#if description}
+			<div>{description}</div>
+		{/if}
+	</div>
+	<ReleaseCardGrid {releases} />
+</div>
 
-{#if description}
-    <div>{description}</div>
-{/if}
-
-<ReleaseCardGrid {releases} />
 <form {...deleteCollection.for(id)}>
 	<input {...deleteCollection.fields.collectionId.as('hidden')} value={id} />
 	<button type="submit">Delete collection</button>
 </form>
+
+<style>
+	h2 {
+		margin-bottom: 0.5rem;
+	}
+	.collection {
+		margin-bottom: 2rem;
+	}
+	.collection-details {
+		margin-bottom: 2rem;
+	}
+</style>

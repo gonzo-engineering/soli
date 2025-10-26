@@ -1,12 +1,12 @@
 <script lang="ts">
 	import SectionLink from '$lib/components/layout/SectionLink.svelte';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
-	import { getMixtape } from '$lib/remote-functions/mixtapes.remote';
+	import { deleteMixtape, getMixtape } from '$lib/remote-functions/mixtapes.remote';
 
 	let { params } = $props();
 
 	let mixtapePromise = $derived(getMixtape(params.slug));
-	let { name, description, tracks } = $derived(await mixtapePromise);
+	let { id, name, description, tracks } = $derived(await mixtapePromise);
 </script>
 
 <svelte:head>
@@ -26,7 +26,15 @@
 	<TracksTable {tracks} showReleaseAndArtist />
 </div>
 
+<form {...deleteMixtape.for(id)}>
+	<input {...deleteMixtape.fields.mixtapeId.as('hidden')} value={id} />
+	<button type="submit">Delete mixtape</button>
+</form>
+
 <style>
+	h2 {
+		margin-bottom: 0.5rem;
+	}
 	.mixtape {
 		margin-bottom: 2rem;
 	}

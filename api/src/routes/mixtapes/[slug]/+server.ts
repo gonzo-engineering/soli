@@ -1,6 +1,13 @@
-import { supabase } from '$lib/server/supabase';
+import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../../shared/config';
+
+export async function GET({ params }) {
+	return handlePostgrestQuery(
+		async () => supabase.from(TABLES.mixtapesRich).select('*').eq('id', params.slug).single(),
+		{ errorMessage: 'Failed to fetch mixtape' }
+	);
+}
 
 export async function PATCH({ request, params }) {
 	const mixtapeId = params.slug;
@@ -21,18 +28,20 @@ export async function PATCH({ request, params }) {
 	return json({ success: true });
 }
 
-export async function GET({ params }) {
+export const DELETE = async ({ request, params }) => {
 	const mixtapeId = params.slug;
-	const { data: mixtape, error } = await supabase
-		.from(TABLES.mixtapesRich)
-		.select('*')
+	const { userId } = await request.json();
+
+	const { error } = await supabase
+		.from(TABLES.mixtapes)
+		.delete()
 		.eq('id', mixtapeId)
-		.single();
+		.eq('user_id', userId);
 
 	if (error) {
-		console.error('Error fetching mixtape tracks:', error);
-		return json({ error: 'Failed to fetch mixtape tracks' }, { status: 500 });
+		console.error('Error deleting mixtape:', error);
+		return json({ error: 'Failed to delete mixtape' }, { status: 500 });
 	}
 
-	return json(mixtape);
-}
+	return json({ success: true });
+};
