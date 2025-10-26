@@ -1,12 +1,25 @@
 <script lang="ts">
 	import SectionLink from '$lib/components/layout/SectionLink.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import { deleteCollection, getCollection } from '$lib/remote-functions/collections.remote';
+	import { deleteCollection } from '$lib/remote-functions/collections.remote';
+	import type { Mixtape, User } from '../../../../../../shared/types/core';
+	import type { CollectionHydrated, TrackHydrated } from '../../../../../../shared/types/hydrated';
+	import type { Session } from '@supabase/supabase-js';
 
-	let { params } = $props();
+	let {
+		data
+	}: {
+		data: {
+			collection: CollectionHydrated;
+			session: Session;
+			profileData: User;
+			collections: CollectionHydrated[];
+			likedTracks: TrackHydrated[];
+			mixtapes: Mixtape[];
+		};
+	} = $props();
 
-	let collectionPromise = $derived(getCollection(params.slug));
-	let { id, name, description, releases } = $derived(await collectionPromise);
+	let { id, name, description, releases } = $derived(data.collection);
 </script>
 
 <svelte:head>

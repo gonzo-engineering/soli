@@ -1,8 +1,7 @@
-import { dev } from '$app/environment';
 import type { Handle } from '@sveltejs/kit';
-import { APP_DOMAIN, DASHBOARD_DOMAIN } from '../../shared/config';
+import { APP_BASE, DASHBOARD_BASE } from '$lib/server/config';
 
-const domainsWithAccessToAPI = [APP_DOMAIN, DASHBOARD_DOMAIN, 'https://checkout.stripe.com'];
+const domainsWithAccessToAPI = [APP_BASE, DASHBOARD_BASE, 'https://checkout.stripe.com'];
 const publicEndpoints = ['/', '/checkout/success'];
 
 const appendHeaders = (response: Response, origin: string | null) => {
@@ -21,7 +20,7 @@ export const handle: Handle = async ({ resolve, event }) => {
 		return response;
 	}
 
-	if ((origin === null || !domainsWithAccessToAPI.includes(origin)) && !dev) {
+	if (!origin || !domainsWithAccessToAPI.includes(origin)) {
 		console.error(`Unauthorized access attempt from origin: ${origin}`);
 		return new Response('Unauthorised', { status: 401 });
 	}
