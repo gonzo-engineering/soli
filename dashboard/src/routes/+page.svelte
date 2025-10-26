@@ -2,12 +2,8 @@
   import { enhance } from "$app/forms";
   import type { GroupListResponse } from "pinata";
   import type {
-    ArtistRaw,
-    ReleaseHydrated,
-    ReleaseRaw,
     StreamLog,
-    TrackRaw,
-  } from "../../../shared/types";
+  } from "../../../shared/types/core";
   import { formFieldNames } from "../../../shared/types/forms";
   import { dashboardState } from "$lib/state.svelte";
   import Card from "$lib/components/Card.svelte";
@@ -15,6 +11,8 @@
   import { PUBLIC_GATEWAY_URL } from "$env/static/public";
   import ProfileSummary from "$lib/components/ProfileSummary.svelte";
   import { prettifyDuration } from "../../../shared/utils";
+  import type { Artist, Release, Track } from "../../../shared/types/core";
+  import type { ReleaseHydrated } from "../../../shared/types/hydrated";
 
   let {
     form,
@@ -23,16 +21,16 @@
     form: any;
     data: {
       groups: GroupListResponse;
-      artists: ArtistRaw[];
-      songs: TrackRaw[];
-      releasesRaw: ReleaseRaw[];
+      artists: Artist[];
+      songs: Track[];
+      releasesRaw: Release[];
       releasesHydrated: ReleaseHydrated[];
       streams: StreamLog[];
     };
   } = $props();
 
   let uploading = $state(false);
-  let activeArtist: ArtistRaw | null = $derived(dashboardState.activeArtist);
+  let activeArtist: Artist | null = $derived(dashboardState.activeArtist);
   let activeArtistSongs = $derived(
     data.songs.filter((song) => song.artist_id === activeArtist?.id)
   );

@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { userState } from '$lib/global/state.svelte.js';
 	import { REVENUE_SPLIT } from '../../../../shared/config';
-	import { prettifyBalance, prettifyPennies } from '$lib/utils/index.js';
+	import { prettifyBalance, prettifyPennies } from '$lib/utils/index';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import ContentBlock from '$lib/components/ContentBlock.svelte';
 	import { API_BASE } from '$lib/global/config';

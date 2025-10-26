@@ -1,11 +1,5 @@
 <script lang="ts">
-	import type {
-		Collection,
-		LikedTrackObject,
-		Mixtape,
-		ReleaseHydrated,
-		UserProfile
-	} from '../../../../../shared/types';
+	import type { Mixtape } from '../../../../../shared/types/core';
 	import { makeImageLink } from '$lib/utils';
 	import type { Session } from '@supabase/supabase-js';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
@@ -16,6 +10,13 @@
 	import Albums from '$lib/components/icons/Albums.svelte';
 	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
+	import SectionLink from '$lib/components/layout/SectionLink.svelte';
+	import type { User } from '../../../../../shared/types/core';
+	import type {
+		CollectionHydrated,
+		TrackHydrated,
+		ReleaseHydrated
+	} from '../../../../../shared/types/hydrated';
 
 	let {
 		data
@@ -23,9 +24,9 @@
 		data: {
 			release: ReleaseHydrated;
 			session: Session;
-			profileData: UserProfile;
-			collections: Collection[];
-			likedTracks: LikedTrackObject[];
+			profileData: User;
+			collections: CollectionHydrated[];
+			likedTracks: TrackHydrated[];
 			mixtapes: Mixtape[];
 		};
 	} = $props();
@@ -35,23 +36,21 @@
 </script>
 
 <svelte:head>
-	<title>{release.title} · {release.artist_name} · Soli</title>
+	<title>{release.title} · {release.artist.name} · Soli</title>
 	<meta
 		name="description"
 		content={`The release page for '${release.title}' by ${release.title}.`}
 	/>
 </svelte:head>
 
-<div class="section-link">
-	> <a href="/releases">Releases</a>
-</div>
+<SectionLink link="/releases" label="Releases" />
 
 <div class="release-summary-card">
 	<div class="release-header">
 		<div>
 			<h2>{release.title}</h2>
 			<div>
-				<a href={`/artists/${release.artist_id}`}>{release.artist_name}</a>
+				<a href={`/artists/${release.artist_id}`}>{release.artist.name}</a>
 			</div>
 		</div>
 		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
@@ -67,7 +66,7 @@
 
 	<img
 		src={makeImageLink(release.artwork_ipfs_cid, 500)}
-		alt={`Cover art for '${release.title}' by ${release.artist_name}'`}
+		alt={`Cover art for '${release.title}' by ${release.artist.name}'`}
 		class="cover-art"
 	/>
 
@@ -89,9 +88,10 @@
 	</ButtonWrapper>
 
 	<TracksTable
-		tracksAndTheirReleases={release.tracks.map((track) => ({
-			track,
-			release
+		tracks={release.tracks.map((track) => ({
+			...track,
+			release,
+			artist: release.artist
 		}))}
 	/>
 
@@ -108,9 +108,6 @@
 </div>
 
 <style>
-	.section-link {
-		margin-bottom: 1rem;
-	}
 	.release-summary-card {
 		max-width: 600px;
 		display: flex;

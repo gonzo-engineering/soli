@@ -1,7 +1,7 @@
-import type { ArtistRaw } from "../../../shared/types";
+import type { Artist } from "../../../shared/types/core";
 
 export const dashboardState: {
-  activeArtist: ArtistRaw | null;
+  activeArtist: Artist | null;
   activeSection: DashboardSectionId;
 } = $state({
   activeArtist: null,

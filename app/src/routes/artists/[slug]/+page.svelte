@@ -1,12 +1,14 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { ArtistRaw, ReleaseHydrated } from '../../../../../shared/types';
+	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
 	import { makeImageLink } from '$lib/utils';
 	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
+	import SectionLink from '$lib/components/layout/SectionLink.svelte';
+	import type { Artist } from '../../../../../shared/types/core';
 
 	let {
 		data
-	}: { data: { artist: ArtistRaw; releases: ReleaseHydrated[]; followedArtists: string[] } } =
+	}: { data: { artist: Artist; releases: ReleaseHydrated[]; followedArtists: string[] } } =
 		$props();
 
 	const { name, bio, website_url, image_ipfs_cid } = $derived(data.artist);
@@ -35,9 +37,7 @@
 	<meta name="description" content={`The artist page for ${name}.`} />
 </svelte:head>
 
-<div class="section-link">
-	> <a href="/artists">Artists</a>
-</div>
+<SectionLink link="/artists" label="Artists" />
 
 <div class="container">
 	<div class="artist-summary-card">
@@ -126,9 +126,6 @@
 </div>
 
 <style>
-	.section-link {
-		margin-bottom: 1rem;
-	}
 	.container {
 		display: flex;
 		flex-direction: column;

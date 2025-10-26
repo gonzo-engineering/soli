@@ -1,16 +1,14 @@
-import type { ArtistRaw } from '../../../../../shared/types';
 import { API_BASE } from '$lib/global/config';
+import type { Artist } from '../../../../../shared/types/core';
 import { sortReleasesByDate } from '../../../../../shared/utils';
 
 export const load = async ({ params, fetch }) => {
-	const matchingArtist: ArtistRaw = await fetch(`${API_BASE}/artists/${params.slug}`).then(
-		(res) => {
-			if (!res.ok) {
-				throw new Error(`Failed to fetch artist with slug: ${params.slug}`);
-			}
-			return res.json();
+	const matchingArtist: Artist = await fetch(`${API_BASE}/artists/${params.slug}`).then((res) => {
+		if (!res.ok) {
+			throw new Error(`Failed to fetch artist with slug: ${params.slug}`);
 		}
-	);
+		return res.json();
+	});
 
 	if (!matchingArtist) {
 		return {

@@ -1,8 +1,11 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import { makeCollection, deleteCollection } from '$lib/remote-functions/collections.remote';
+	import type { CollectionHydrated } from '../../../../../shared/types/hydrated';
 
 	let { data } = $props();
+
+	const collections: CollectionHydrated[] = data.collections;
 </script>
 
 <svelte:head>
@@ -12,22 +15,16 @@
 
 <h2>Your collections</h2>
 
-{#each data.collections as collection}
-	<div class="collection">
+{#each collections as collection}
+	<a href="/me/collections/{collection.id}" class="collection">
 		<div class="collection-details">
 			<h3>{collection.name}</h3>
 			{#if collection.description}
 				<div>{collection.description}</div>
 			{/if}
+			<div>{collection.releases.length} releases</div>
 		</div>
-		<ReleaseCardGrid releases={collection.releases} />
-		{#if data.user}
-			<form {...deleteCollection.for(collection.id)}>
-				<input {...deleteCollection.fields.collectionId.as('hidden')} value={collection.id} />
-				<button type="submit">Delete collection</button>
-			</form>
-		{/if}
-	</div>
+	</a>
 {/each}
 
 {#if data.user}

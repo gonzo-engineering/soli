@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { makeImageLink } from '$lib/utils';
-	import type { SearchResult } from '../../../../../shared/types';
+	import type { SearchResult } from '../../../../../shared/types/core';
 	import ArtistCard from '../ArtistCard.svelte';
 	import ReleaseCard from '../ReleaseCard.svelte';
 

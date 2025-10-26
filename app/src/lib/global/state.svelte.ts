@@ -1,22 +1,18 @@
-import type {
-	LikedTrackObject,
-	Mixtape,
-	ReleaseHydrated,
-	TrackRaw
-} from '../../../../shared/types';
+import type { Mixtape, Release, Track } from '../../../../shared/types/core';
+import type { TrackHydrated } from '../../../../shared/types/hydrated';
 import { API_BASE } from './config';
 
 interface UserState {
 	id: string;
-	activeSong: TrackRaw | null;
-	activeSongRelease: ReleaseHydrated | null;
+	activeSong: Track | null;
+	activeSongRelease: Release | null;
 	activeSongUrl: string | null;
 	activeSongIsPaused: boolean;
 	autoPlay: boolean;
 	liveBalance: number;
 	payPerStream: number;
 	music: {
-		likedTracks: LikedTrackObject[];
+		likedTracks: TrackHydrated[];
 		mixtapes: Mixtape[];
 	};
 }
@@ -77,8 +73,8 @@ export const updateUserTokensBalance = async (
 };
 
 export const setActiveSong = async (
-	song: TrackRaw,
-	release: ReleaseHydrated,
+	song: Track,
+	release: Release,
 	userId: string,
 	userBalance: number,
 	userPayPerStream: number

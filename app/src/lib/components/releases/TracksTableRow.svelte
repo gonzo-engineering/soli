@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
+	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
 	import { prettifyDuration } from '../../../../../shared/utils';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
@@ -7,16 +7,15 @@
 	import PopupWrapper from '../layout/PopupWrapper.svelte';
 	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
 	import { userState } from '$lib/global/state.svelte';
+	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 
 	const {
 		i = undefined,
 		track,
-		release,
 		showReleaseAndArtist = false
 	}: {
 		i?: number;
-		track: TrackRaw;
-		release: ReleaseHydrated;
+		track: TrackHydrated;
 		showReleaseAndArtist: boolean;
 	} = $props();
 
@@ -27,12 +26,14 @@
 	<td>{i || ''}</td>
 	<td>{track.title}</td>
 	{#if showReleaseAndArtist}
-		<td class="hide-on-mobile"><a href={`/releases/${release.id}`}>{release.title}</a></td>
-		<td><a href={`/artists/${release.artist_id}`}>{release.artist_name}</a></td>
+		<td class="hide-on-mobile"
+			><a href={`/releases/${track.release.id}`}>{track.release.title}</a></td
+		>
+		<td><a href={`/artists/${track.artist.id}`}>{track.artist.name}</a></td>
 	{/if}
 	<td>{prettifyDuration(track.duration_seconds)}</td>
 	<td class="play-button-container">
-		<ReleaseTrackButton {track} {release} />
+		<ReleaseTrackButton {track} release={track.release} />
 	</td>
 	<td>
 		<TrackLikeButton
@@ -42,7 +43,9 @@
 		/>
 	</td>
 	<td>
-		<div onclick={() => (popupMenuOpen = !popupMenuOpen)}><ThreeDots /></div>
+		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+			<ThreeDots />
+		</ButtonWrapper>
 	</td>
 </tr>
 

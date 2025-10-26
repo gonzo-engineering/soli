@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
+	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
 	import TrackTableRow from './TracksTableRow.svelte';
 
 	const {
-		tracksAndTheirReleases,
+		tracks,
 		showReleaseAndArtist = false
 	}: {
-		tracksAndTheirReleases: { track: TrackRaw; release: ReleaseHydrated }[];
+		tracks: TrackHydrated[];
 		showReleaseAndArtist?: boolean;
 	} = $props();
 </script>
@@ -17,7 +17,7 @@
 			<th>#</th>
 			<th>Track</th>
 			{#if showReleaseAndArtist}
-				<th>Release</th>
+				<th class="hide-on-mobile">Release</th>
 				<th>Artist</th>
 			{/if}
 			<th>Duration</th>
@@ -27,8 +27,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each tracksAndTheirReleases as { track, release }, i}
-			<TrackTableRow i={i + 1} {track} {release} {showReleaseAndArtist} />
+		{#each tracks as track, i}
+			<TrackTableRow i={i + 1} {track} {showReleaseAndArtist} />
 		{/each}
 	</tbody>
 </table>
@@ -41,5 +41,13 @@
 	}
 	th {
 		font-weight: 500;
+	}
+	.hide-on-mobile {
+		display: none;
+	}
+	@media (min-width: 640px) {
+		.hide-on-mobile {
+			display: table-cell;
+		}
 	}
 </style>

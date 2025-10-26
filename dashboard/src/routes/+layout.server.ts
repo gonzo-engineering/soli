@@ -1,15 +1,13 @@
 import { fail } from "@sveltejs/kit";
 import { supabase } from "$lib/server/supabase";
 import type {
-  ArtistRaw,
-  ReleaseHydrated,
-  ReleaseRaw,
   StreamLog,
-  TrackRaw,
-} from "../../../shared/types";
+} from "../../../shared/types/core";
 import { sortReleasesByDate } from "../../../shared/utils";
 import type { LayoutServerLoad } from "./$types";
 import { POWER_USER_ID } from "$lib/config";
+import type { Artist, Release, Track } from "../../../shared/types/core";
+import type { ReleaseHydrated } from "../../../shared/types/hydrated";
 
 export const load: LayoutServerLoad = async ({
   locals: { safeGetSession },
@@ -67,7 +65,7 @@ export const load: LayoutServerLoad = async ({
     data: connectedArtists,
     error: artistsError,
   }: {
-    data: ArtistRaw[] | null;
+    data: Artist[] | null;
     error: Error | null;
   } =
     userID === POWER_USER_ID
@@ -89,7 +87,7 @@ export const load: LayoutServerLoad = async ({
     data: songs,
     error: songsError,
   }: {
-    data: TrackRaw[] | null;
+    data: Track[] | null;
     error: Error | null;
   } = await supabase.from("tracks").select("*");
 
@@ -97,7 +95,7 @@ export const load: LayoutServerLoad = async ({
     data: releasesRaw,
     error: releasesError,
   }: {
-    data: ReleaseRaw[] | null; // Adjust type as needed
+    data: Release[] | null;
     error: Error | null;
   } = await supabase.from("releases").select("*");
   if (releasesError || !releasesRaw) {

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { LikedTrackObject } from '../../../../../shared/types';
 	import Heart from '../icons/Heart.svelte';
 	import { toggleLikedTrack } from '$lib/remote-functions/user.remote';
+	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
 
 	let {
 		trackID,
@@ -9,13 +9,13 @@
 		lightOrDark
 	}: {
 		trackID: string;
-		likedTracks: LikedTrackObject[];
+		likedTracks: TrackHydrated[];
 		lightOrDark: 'light' | 'dark';
 	} = $props();
 
 	// Prevents duplicate form IDs for kindred TrackLikeButton components on the same page
 	const trackRandomKey = Math.random().toString(36).substring(2, 15);
-	const isLiked = $derived(likedTracks.some((t) => t.track.id === trackID));
+	const isLiked = $derived(likedTracks.some((t) => t.id === trackID));
 </script>
 
 <form {...toggleLikedTrack.for(trackRandomKey)}>

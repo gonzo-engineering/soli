@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { addOrRemoveReleaseFromCollection } from '$lib/remote-functions/collections.remote';
-	import type { ReleaseHydrated, Collection } from '../../../../../shared/types';
+	import type { CollectionHydrated, ReleaseHydrated } from '../../../../../shared/types/hydrated';
 
 	let {
 		release,
 		collections
 	}: {
 		release: ReleaseHydrated;
-		collections: Collection[];
+		collections: CollectionHydrated[];
 	} = $props();
 </script>
 

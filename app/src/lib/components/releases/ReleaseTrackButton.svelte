@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setActiveSong, userState } from '$lib/global/state.svelte';
-	import type { ReleaseHydrated, TrackRaw } from '../../../../../shared/types';
+	import type { Release, Track } from '../../../../../shared/types/core';
 	import Pause from '../icons/Pause.svelte';
 	import Play from '../icons/Play.svelte';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
@@ -9,8 +9,8 @@
 		track,
 		release
 	}: {
-		track: TrackRaw;
-		release: ReleaseHydrated;
+		track: Track;
+		release: Release;
 	} = $props();
 </script>
 

@@ -5,7 +5,7 @@ import { TABLES } from '../../../../../../shared/config';
 export async function GET({ params }) {
 	const userId = params.slug;
 	const { data: mixtapes, error } = await supabase
-		.from(TABLES.mixtapesHydrated)
+		.from(TABLES.mixtapesRich)
 		.select('*')
 		.eq('user_id', userId);
 

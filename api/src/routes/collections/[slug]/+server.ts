@@ -2,6 +2,22 @@ import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../../shared/config';
 
+export async function GET({ params }) {
+	const collectionId = params.slug;
+	const { data: collection, error } = await supabase
+		.from(TABLES.collectionsRich)
+		.select('*')
+		.eq('id', collectionId)
+		.single();
+
+	if (error) {
+		console.error('Error fetching collection:', error);
+		return json({ error: 'Failed to fetch collection' }, { status: 500 });
+	}
+
+	return json(collection);
+}
+
 export async function PATCH({ request, params }) {
 	const collectionId = params.slug;
 	const { releaseId, addOrRemove } = await request.json();
@@ -39,7 +55,7 @@ export async function PATCH({ request, params }) {
 
 export async function DELETE({ request, params }) {
 	const collectionId = params.slug;
-	const { userId} = await request.json();
+	const { userId } = await request.json();
 
 	const { error } = await supabase
 		.from(TABLES.collections)
@@ -53,4 +69,4 @@ export async function DELETE({ request, params }) {
 	}
 
 	return json({ success: true });
-};
+}

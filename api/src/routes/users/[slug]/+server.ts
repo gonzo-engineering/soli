@@ -1,9 +1,9 @@
 import { TABLES } from '../../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
-import type { UserProfile } from '../../../../../shared/types';
+import type { User } from '../../../../../shared/types/core';
 
-const getUser = async (id: string): Promise<UserProfile | null> => {
+const getUser = async (id: string): Promise<User | null> => {
 	const { data } = await supabase
 		.from(TABLES.users)
 		.select(`first_name, tokens_balance, pay_per_stream`)

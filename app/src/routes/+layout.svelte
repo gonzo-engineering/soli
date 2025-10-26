@@ -11,10 +11,16 @@
 	import Vinyl from '$lib/components/icons/Vinyl.svelte';
 	import Cassette from '$lib/components/icons/Cassette.svelte';
 	import Heart from '$lib/components/icons/Heart.svelte';
+	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
 
 	let { children, data } = $props();
 
 	let { supabase, session } = $derived(data);
+
+	let hydratedReleasePromise = $derived(
+		userState.activeSongRelease?.id ? getHydratedRelease(userState.activeSongRelease?.id) : null
+	);
+	let hydratedRelease = $derived(await hydratedReleasePromise);
 
 	let menuIsOpen = $state(false);
 
@@ -105,12 +111,12 @@
 
 <Footer />
 
-{#if userState.activeSong && userState.activeSongRelease && userState.liveBalance && userState.activeSongUrl && data.session?.user.id && data.profileData?.pay_per_stream}
+{#if userState.activeSong && userState.activeSongRelease && userState.liveBalance && userState.activeSongUrl && data.session?.user.id && data.profileData?.pay_per_stream && hydratedRelease}
 	<AudioPlayer
 		userId={data.session?.user.id}
 		userPayPerStream={data.profileData?.pay_per_stream}
 		track={userState.activeSong}
-		release={userState.activeSongRelease}
+		release={hydratedRelease}
 		songUrl={userState.activeSongUrl}
 		likedTracks={data.likedTracks}
 	/>

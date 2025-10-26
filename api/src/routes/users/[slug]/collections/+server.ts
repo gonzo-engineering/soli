@@ -1,11 +1,11 @@
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
-import { TABLES } from '../../../../../../shared/config';
+import { TABLES } from '../../../../../../shared/config/index';
 
 export async function GET({ params }) {
 	const userId = params.slug;
 	const { data: collections, error } = await supabase
-		.from(TABLES.collectionsHydrated)
+		.from(TABLES.collectionsRich)
 		.select('*')
 		.eq('user_id', userId);
 

@@ -1,4 +1,4 @@
-import type { ReleaseHydrated } from "../types";
+import type { ReleaseHydrated } from "../types/hydrated";
 
 export const formatReleaseType = (type: string) => {
   switch (type) {

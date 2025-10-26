@@ -1,7 +1,8 @@
-import { form } from '$app/server';
+import { form, query } from '$app/server';
 import { API_BASE } from '$lib/global/config';
 import * as z from 'zod';
 import { requireAuth } from './auth-check';
+import { redirect } from '@sveltejs/kit';
 
 const MakeCollectionForm = z.object({
 	name: z.string().min(3).max(100),
@@ -52,3 +53,10 @@ export const addOrRemoveReleaseFromCollection = form(
 		});
 	}
 );
+
+export const getCollection = query(z.string(), async (collectionId: string) => {
+	const response = await fetch(`${API_BASE}/collections/${collectionId}`);
+	if (!response.ok) throw redirect(302, '/me/collections');
+	const collection = await response.json();
+	return collection;
+});

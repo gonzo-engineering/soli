@@ -1,13 +1,14 @@
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { TABLES } from '../../../../shared/config';
 import { sortReleasesByDate } from '../../../../shared/utils';
-import type { ReleaseHydrated, ReleaseRaw } from '../../../../shared/types';
+import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
 import { pinata } from '$lib/server/pinata';
 import { json } from '@sveltejs/kit';
+import type { Release } from '../../../../shared/types/core';
 
 export async function GET() {
 	return handlePostgrestQuery<ReleaseHydrated[]>(
-		async () => await supabase.from(TABLES.releasesHydrated).select(),
+		async () => await supabase.from(TABLES.releasesRich).select(),
 		{
 			errorMessage: 'Failed to fetch artist data',
 			transform: sortReleasesByDate
@@ -31,7 +32,7 @@ export async function POST({ request }) {
 			.name(`'${releaseName}' cover art`)
 			.group(import.meta.env.PINATA_ARTWORK_GROUP);
 
-		return handlePostgrestQuery<ReleaseRaw>(
+		return handlePostgrestQuery<Release>(
 			async () =>
 				await supabase
 					.from(TABLES.releases)

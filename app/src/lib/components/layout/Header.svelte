@@ -5,7 +5,7 @@
 	import ButtonWrapper from './ButtonWrapper.svelte';
 	import { API_BASE } from '$lib/global/config';
 	import { page } from '$app/state';
-	import type { SearchResult } from '../../../../../shared/types';
+	import type { SearchResult } from '../../../../../shared/types/core';
 	import SearchResults from '../search/SearchResults.svelte';
 
 	let {
