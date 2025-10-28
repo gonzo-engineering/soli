@@ -1,15 +1,20 @@
 <script lang="ts">
-	import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
 	import { makeImageLink } from '$lib/utils';
 	import ReleaseCard from './ReleaseCard.svelte';
+	import type { Release } from '../../../../shared/types/core';
+	import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
 
 	let {
 		releases,
-		hideArtistName = false
+		showArtistName = false
 	}: {
-		releases: ReleaseHydrated[];
-		hideArtistName?: boolean;
+		releases: (Release | ReleaseHydrated)[];
+		showArtistName?: boolean;
 	} = $props();
+
+	const isHydrated = (release: Release | ReleaseHydrated): release is ReleaseHydrated => {
+		return (release as ReleaseHydrated).artist !== undefined;
+	};
 </script>
 
 <div class="releases-grid">
@@ -17,9 +22,8 @@
 		<ReleaseCard
 			link={`/releases/${release.id}`}
 			name={release.title}
-			artist={release.artist?.name}
+			artist={isHydrated(release) && showArtistName ? release.artist.name : undefined}
 			coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
-			hideArtist={hideArtistName}
 		/>
 	{/each}
 </div>

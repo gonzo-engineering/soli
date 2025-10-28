@@ -36,7 +36,7 @@
 			<div>{description}</div>
 		{/if}
 	</div>
-	<ReleaseCardGrid {releases} />
+	<ReleaseCardGrid {releases} showArtistName />
 </div>
 
 <form {...deleteCollection.for(id)}>

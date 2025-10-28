@@ -1,35 +1,29 @@
 <script lang="ts">
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
+	import type { ArtistHydrated } from '../../../../../shared/types/hydrated';
 	import { makeImageLink } from '$lib/utils';
 	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
 	import SectionLink from '$lib/components/layout/SectionLink.svelte';
-	import type { Artist } from '../../../../../shared/types/core';
+	import type { Release } from '../../../../../shared/types/core';
 
-	let {
-		data
-	}: { data: { artist: Artist; releases: ReleaseHydrated[]; followedArtists: string[] } } =
-		$props();
+	let { data }: { data: { artist: ArtistHydrated; followedArtists: string[] } } = $props();
+
+	const sortReleasesByDate = (releases: Release[]) => {
+		return releases.sort((a, b) => {
+			return new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
+		});
+	};
 
 	const { name, bio, website_url, image_ipfs_cid } = $derived(data.artist);
-	const releases = $derived(data.releases);
-	let updatingFollow = $state(false);
+	const releases = $derived(sortReleasesByDate(data.artist.releases));
 
-	const filterReleasesByType = (type: 'album' | 'ep' | 'single', releases: ReleaseHydrated[]) => {
+	const filterReleasesByType = (type: 'album' | 'ep' | 'single', releases: Release[]) => {
 		return releases.filter((release) => release.release_type === type);
 	};
 
 	const lps = $derived(filterReleasesByType('album', releases));
 	const eps = $derived(filterReleasesByType('ep', releases));
 	const singles = $derived(filterReleasesByType('single', releases));
-
-	function handleUpdate() {
-		updatingFollow = true;
-		return async ({ update }: { update: () => Promise<void> }) => {
-			await update();
-			updatingFollow = false;
-		};
-	}
 </script>
 
 <svelte:head>
@@ -90,7 +84,6 @@
 							artistName: name
 						};
 					})}
-					hideArtistName
 				/>
 			</div>
 		{/if}
@@ -105,7 +98,6 @@
 							artistName: name
 						};
 					})}
-					hideArtistName
 				/>
 			</div>
 		{/if}
@@ -120,7 +112,6 @@
 							artistName: name
 						};
 					})}
-					hideArtistName
 				/>
 			</div>
 		{/if}
