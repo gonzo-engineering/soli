@@ -12,4 +12,4 @@
 
 <h2>Releases</h2>
 
-<ReleaseCardGrid releases={data.releases} />
+<ReleaseCardGrid releases={data.releases} showArtistName />

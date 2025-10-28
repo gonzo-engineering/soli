@@ -38,10 +38,8 @@
 				{#each searchResultsReleases as release}
 					<ReleaseCard
 						name={release.name}
-						artist={'tbd'}
 						coverArt={release.image_cid ? makeImageLink(release.image_cid, 200) : ''}
 						link={`/releases/${release.id}`}
-						hideArtist={true}
 					/>
 				{/each}
 			</div>

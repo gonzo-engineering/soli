@@ -10,10 +10,14 @@ export interface TrackHydrated extends Track {
   artist: Artist;
 }
 
+export interface ArtistHydrated extends Artist {
+  releases: Release[];
+}
+
 export interface CollectionHydrated extends Collection {
-    releases: ReleaseHydrated[];
+  releases: ReleaseHydrated[];
 }
 
 export interface MixtapeHydrated extends Mixtape {
-    tracks: TrackHydrated[]
+  tracks: TrackHydrated[];
 }

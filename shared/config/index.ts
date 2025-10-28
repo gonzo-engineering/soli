@@ -15,6 +15,7 @@ export const REVENUE_SPLIT = {
 export const TABLES = {
   users: "users",
   artists: "artists",
+  artistsRich: "artists_rich",
   artistMembers: "artist_members",
   tracks: "tracks",
   releaseTracks: "release_tracks",

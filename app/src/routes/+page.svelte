@@ -25,7 +25,7 @@
 <section>
 	<a href="/releases"><h2>Releases</h2></a>
 
-	<ReleaseCardGrid releases={albumsAndEPs} />
+	<ReleaseCardGrid releases={albumsAndEPs} showArtistName />
 </section>
 
 <section>

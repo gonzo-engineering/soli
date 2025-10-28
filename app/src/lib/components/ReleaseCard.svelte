@@ -2,15 +2,13 @@
 	let {
 		link,
 		name,
-		artist,
-		coverArt,
-		hideArtist = false
+		artist = undefined,
+		coverArt
 	}: {
 		link: string;
 		name: string;
-		artist: string;
+		artist?: string;
 		coverArt: string;
-		hideArtist?: boolean;
 	} = $props();
 
 	const randomRotation = Math.floor(Math.random() * 4) - 2;
@@ -20,7 +18,7 @@
 	<div class="release-card">
 		<img src={coverArt} alt={`Artwork for ${name} by ${artist}`} />
 		<div class="release-name">{name}</div>
-		{#if !hideArtist}
+		{#if artist}
 			<div class="artist-name">
 				{artist}
 			</div>
