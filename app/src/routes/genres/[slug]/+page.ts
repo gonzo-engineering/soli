@@ -1,4 +1,5 @@
 import { API_BASE } from '$lib/global/config';
+import { error } from '@sveltejs/kit';
 import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
 
 export const load = async ({ params, fetch }) => {
@@ -7,12 +8,7 @@ export const load = async ({ params, fetch }) => {
 	const genres = releases.flatMap((release) => release.genres || []);
 	const uniqueGenres = Array.from(new Set(genres));
 
-	if (!uniqueGenres.includes(params.slug)) {
-		return {
-			status: 404,
-			error: new Error('Not Found')
-		};
-	}
+	if (!uniqueGenres.includes(params.slug)) error(404, 'Genre not found');
 
 	const filteredReleases = releases.filter((release) => release.genres?.includes(params.slug));
 
