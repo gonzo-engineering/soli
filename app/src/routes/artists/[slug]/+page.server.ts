@@ -1,25 +1,22 @@
 import { API_BASE } from '$lib/global/config';
+import { error } from '@sveltejs/kit';
 import type { Artist } from '../../../../../shared/types/core';
 import { sortReleasesByDate } from '../../../../../shared/utils';
+import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
 
 export const load = async ({ params, fetch }) => {
 	const matchingArtist: Artist = await fetch(`${API_BASE}/artists/${params.slug}`).then((res) => {
 		if (!res.ok) {
-			throw new Error(`Failed to fetch artist with slug: ${params.slug}`);
+			error(404, 'Artist not found');
 		}
 		return res.json();
 	});
 
-	if (!matchingArtist) {
-		return {
-			status: 404,
-			error: new Error('Not Found')
-		};
-	}
-
-	const artistReleases = await fetch(`${API_BASE}/artists/${params.slug}/releases`).then((res) => {
+	const artistReleases: ReleaseHydrated[] = await fetch(
+		`${API_BASE}/artists/${params.slug}/releases`
+	).then((res) => {
 		if (!res.ok) {
-			throw new Error(`Failed to fetch releases for artist with slug: ${params.slug}`);
+			error(500, 'Failed to fetch artist releases');
 		}
 		return res.json();
 	});
