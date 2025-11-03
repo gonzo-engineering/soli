@@ -6,6 +6,7 @@
   import { onMount } from "svelte";
   import { type SubmitFunction } from "@sveltejs/kit";
   import { enhance } from "$app/forms";
+  import { logOut } from "$lib/remote-functions/artist.remote";
 
   let { children, data } = $props();
 
@@ -91,11 +92,7 @@
         {/each}
       {/if}
       <hr />
-      <form method="post" action="?/signout" use:enhance={handleSignOut}>
-        <div>
-          <button class="button block" disabled={loading}>Sign Out</button>
-        </div>
-      </form>
+      <button onclick={() => logOut()}>Sign Out</button>
     </div>
   {/if}
 
@@ -105,6 +102,22 @@
 </div>
 
 <style>
+  :global {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.5rem;
+    }
+    .issue {
+      color: rgb(255, 162, 162);
+    }
+  }
   .dashboard-container {
     width: 100vw;
     height: 100vh;
