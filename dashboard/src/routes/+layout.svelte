@@ -4,25 +4,14 @@
   import { dashboardState, type DashboardSectionId } from "$lib/state.svelte";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
-  import { type SubmitFunction } from "@sveltejs/kit";
-  import { enhance } from "$app/forms";
+  import { signOut } from "$lib/remote-functions/artist.remote";
 
   let { children, data } = $props();
 
-  let { supabase, session } = $state(data);
-  let loading = $state(false);
-  const artists = $derived(data.artists);
-
-  const handleSignOut: SubmitFunction = () => {
-    loading = true;
-    return async ({ update }) => {
-      loading = false;
-      update();
-    };
-  };
+  let { supabase, session, artists } = $derived(data);
 
   onMount(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
+    const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
       if (newSession?.expires_at !== session?.expires_at) {
         invalidate("supabase:auth");
       }
@@ -38,8 +27,12 @@
   ];
 </script>
 
+<svelte:head>
+  <meta name="robots" content="noindex" />
+</svelte:head>
+
 <div class="dashboard-container">
-  {#if data.session}
+  {#if session}
     <div class="side-panel">
       <h1>Soli • Dashboard</h1>
       <hr />
@@ -91,11 +84,13 @@
         {/each}
       {/if}
       <hr />
-      <form method="post" action="?/signout" use:enhance={handleSignOut}>
-        <div>
-          <button class="button block" disabled={loading}>Sign Out</button>
-        </div>
-      </form>
+      <button
+        onclick={() => {
+          signOut().then(() => {
+            location.reload();
+          });
+        }}>Sign Out</button
+      >
     </div>
   {/if}
 
@@ -105,6 +100,22 @@
 </div>
 
 <style>
+  :global {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.5rem;
+    }
+    .issue {
+      color: rgb(255, 162, 162);
+    }
+  }
   .dashboard-container {
     width: 100vw;
     height: 100vh;
