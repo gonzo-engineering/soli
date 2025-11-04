@@ -2,7 +2,7 @@
   import { updateArtistDetails } from "$lib/remote-functions/artist.remote";
   import { makeImageLink } from "$lib/utils";
 
-  const {
+  let {
     artistId,
     artistName,
     currentArtistImageCID,
@@ -15,15 +15,12 @@
     artistBio?: string;
     artistWebsite?: string;
   } = $props();
-
-  console.log("artistId: ", artistId);
-  console.log("artistName: ", artistName);
-  console.log("currentArtistImageCID: ", currentArtistImageCID);
-  console.log("artistBio: ", artistBio);
-  console.log("artistWebsite: ", artistWebsite);
 </script>
 
-<form {...updateArtistDetails} enctype="multipart/form-data">
+<form
+  {...updateArtistDetails.enhance(({ submit }) => submit())}
+  enctype="multipart/form-data"
+>
   <input {...updateArtistDetails.fields.artistId.as("hidden", artistId)} />
   <input {...updateArtistDetails.fields.artistName.as("hidden", artistName)} />
   {#if currentArtistImageCID}
@@ -58,7 +55,9 @@
   {#each updateArtistDetails.fields.artistWebsite.issues() as issue}
     <div class="issue">{issue.message}</div>
   {/each}
-  <button type="submit" onclick={() => console.log("Updating profile...")}
-    >Update profile</button
+  <button
+    type="submit"
+    disabled={!!updateArtistDetails.pending}
+    data-sveltekit-reload>Update profile</button
   >
 </form>

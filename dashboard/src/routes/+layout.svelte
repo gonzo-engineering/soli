@@ -4,26 +4,16 @@
   import { dashboardState, type DashboardSectionId } from "$lib/state.svelte";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
-  import { type SubmitFunction } from "@sveltejs/kit";
-  import { enhance } from "$app/forms";
   import { logOut } from "$lib/remote-functions/artist.remote";
 
   let { children, data } = $props();
 
   let { supabase, session } = $state(data);
-  let loading = $state(false);
+
   const artists = $derived(data.artists);
 
-  const handleSignOut: SubmitFunction = () => {
-    loading = true;
-    return async ({ update }) => {
-      loading = false;
-      update();
-    };
-  };
-
   onMount(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
+    const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
       if (newSession?.expires_at !== session?.expires_at) {
         invalidate("supabase:auth");
       }

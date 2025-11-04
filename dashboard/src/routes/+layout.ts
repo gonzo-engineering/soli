@@ -34,8 +34,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     session: data.session ?? null,
     user: data.user,
     artists: data.artists,
-    releasesRaw: data.releasesRaw,
-    releasesHydrated: data.releasesHydrated,
+    releases: data.releases,
     songs: data.songs,
     streams: data.streams,
   };

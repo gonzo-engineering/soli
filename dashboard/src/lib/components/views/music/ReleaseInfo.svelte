@@ -1,10 +1,10 @@
 <script lang="ts">
   import { deleteRelease } from "$lib/remote-functions/music.remote";
   import { makeImageLink } from "$lib/utils";
-  import type { ReleaseHydrated } from "../../../../shared/types/hydrated";
-  import { formatReleaseType } from "../../../../shared/utils";
-  import BinIcon from "./icons/BinIcon.svelte";
-  import ButtonWrapper from "./layout/ButtonWrapper.svelte";
+  import type { ReleaseHydrated } from "../../../../../../shared/types/hydrated";
+  import { formatReleaseType } from "../../../../../../shared/utils";
+  import BinIcon from "../../icons/BinIcon.svelte";
+  import ButtonWrapper from "../../layout/ButtonWrapper.svelte";
 
   const {
     release,

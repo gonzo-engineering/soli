@@ -1,12 +1,13 @@
 <script lang="ts">
   import { addTrackToRelease } from "$lib/remote-functions/music.remote";
-  import type { Release, Track } from "../../../../../shared/types/core";
+  import type { Track } from "../../../../../shared/types/core";
+  import type { ReleaseHydrated } from "../../../../../shared/types/hydrated";
 
   const {
     releases,
     tracks,
   }: {
-    releases: Release[];
+    releases: ReleaseHydrated[];
     tracks: Track[];
   } = $props();
 </script>

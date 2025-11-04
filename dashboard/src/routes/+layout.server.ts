@@ -1,13 +1,12 @@
 import { fail } from "@sveltejs/kit";
 import { supabase } from "$lib/server/supabase";
-import type {
-  StreamLog,
-} from "../../../shared/types/core";
+import type { StreamLog } from "../../../shared/types/core";
 import { sortReleasesByDate } from "../../../shared/utils";
 import type { LayoutServerLoad } from "./$types";
 import { POWER_USER_ID } from "$lib/config";
-import type { Artist, Release, Track } from "../../../shared/types/core";
+import type { Artist, Track } from "../../../shared/types/core";
 import type { ReleaseHydrated } from "../../../shared/types/hydrated";
+import { TABLES } from "../../../shared/config";
 
 export const load: LayoutServerLoad = async ({
   locals: { safeGetSession },
@@ -15,33 +14,19 @@ export const load: LayoutServerLoad = async ({
 }) => {
   const { session, user } = await safeGetSession();
 
-  if (!session) {
+  if (!session || !user) {
     return {
       session,
       user,
       cookies: cookies.getAll(),
       artists: [],
-      releasesRaw: [],
-      releasesHydrated: [],
+      releases: [],
       songs: [],
       streams: [],
     };
   }
 
-  const userID = session?.user.id;
-
-  if (!userID) {
-    return {
-      session,
-      user,
-      cookies: cookies.getAll(),
-      artists: [],
-      releasesRaw: [],
-      releasesHydrated: [],
-      songs: [],
-      streams: [],
-    };
-  }
+  const userID = session.user.id;
 
   const {
     data: userData,
@@ -50,7 +35,7 @@ export const load: LayoutServerLoad = async ({
     data: { artist_id: string }[] | null;
     error: Error | null;
   } = await supabase
-    .from("artist_members")
+    .from(TABLES.artistMembers)
     .select("artist_id")
     .eq("user_id", userID);
 
@@ -69,9 +54,9 @@ export const load: LayoutServerLoad = async ({
     error: Error | null;
   } =
     userID === POWER_USER_ID
-      ? await supabase.from("artists").select("*")
+      ? await supabase.from(TABLES.artists).select("*")
       : await supabase
-          .from("artists")
+          .from(TABLES.artists)
           .select("*")
           .in(
             "id",
@@ -89,27 +74,15 @@ export const load: LayoutServerLoad = async ({
   }: {
     data: Track[] | null;
     error: Error | null;
-  } = await supabase.from("tracks").select("*");
+  } = await supabase.from(TABLES.tracks).select("*");
 
   const {
-    data: releasesRaw,
+    data: releases,
     error: releasesError,
-  }: {
-    data: Release[] | null;
-    error: Error | null;
-  } = await supabase.from("releases").select("*");
-  if (releasesError || !releasesRaw) {
-    console.error("Error fetching releases:", releasesError);
-    return fail(500, { error: "Failed to fetch releases" });
-  }
-
-  const {
-    data: releasesHydrated,
-    error: releasesHydratedError,
   }: {
     data: ReleaseHydrated[] | null; // Adjust type as needed
     error: Error | null;
-  } = await supabase.from("hydrated_releases").select("*");
+  } = await supabase.from(TABLES.releasesRich).select("*");
 
   if (artistsError || !connectedArtists) {
     console.error("Error fetching artists:", artistsError);
@@ -119,18 +92,12 @@ export const load: LayoutServerLoad = async ({
     console.error("Error fetching songs:", songsError);
     return fail(500, { error: "Failed to fetch songs" });
   }
-  if (releasesHydratedError || !releasesHydrated) {
-    console.error("Error fetching releases:", releasesHydratedError);
+  if (releasesError || !releases) {
+    console.error("Error fetching releases:", releasesError);
     return fail(500, { error: "Failed to fetch releases" });
   }
 
   songs.sort((a, b) => {
-    if (a.title < b.title) return -1;
-    if (a.title > b.title) return 1;
-    return 0;
-  });
-
-  releasesRaw.sort((a, b) => {
     if (a.title < b.title) return -1;
     if (a.title > b.title) return 1;
     return 0;
@@ -147,9 +114,9 @@ export const load: LayoutServerLoad = async ({
     data: streams,
     error: streamsError,
   }: {
-    data: StreamLog[] | null; // Adjust type as needed
+    data: StreamLog[] | null;
     error: Error | null;
-  } = await supabase.from("streams").select("*");
+  } = await supabase.from(TABLES.streams).select("*");
   if (streamsError || !streams) {
     console.error("Error fetching streams:", streamsError);
     return fail(500, { error: "Failed to fetch streams" });
@@ -160,8 +127,7 @@ export const load: LayoutServerLoad = async ({
     user,
     cookies: cookies.getAll(),
     artists: connectedArtists,
-    releasesRaw,
-    releasesHydrated: sortReleasesByDate(releasesHydrated),
+    releases: sortReleasesByDate(releases),
     songs,
     streams,
   };

@@ -1,8 +1,6 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-  import { makeImageLink } from "$lib/utils";
-  import type { Artist } from "../../../../shared/types/core";
-  import ArtistProfileForm from "./forms/ArtistProfileForm.svelte";
+  import type { Artist } from "../../../../../../shared/types/core";
+  import ArtistProfileForm from "../../forms/ArtistProfileForm.svelte";
 
   let { activeArtist }: { activeArtist: Artist } = $props();
 </script>
