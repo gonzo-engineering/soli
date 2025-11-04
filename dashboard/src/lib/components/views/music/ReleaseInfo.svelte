@@ -1,4 +1,6 @@
 <script lang="ts">
+  import ThreeDotsIcon from "$lib/components/icons/ThreeDotsIcon.svelte";
+  import PopupWrapper from "$lib/components/layout/PopupWrapper.svelte";
   import { deleteRelease } from "$lib/remote-functions/music.remote";
   import { makeImageLink } from "$lib/utils";
   import type { ReleaseHydrated } from "../../../../../../shared/types/hydrated";
@@ -11,6 +13,8 @@
   }: {
     release: ReleaseHydrated;
   } = $props();
+
+  let popupMenuOpen = $state(false);
 </script>
 
 <div class="release-info">
@@ -35,10 +39,19 @@
       {/each}
     </ol>
   </div>
-  <ButtonWrapper onClickFunction={() => deleteRelease(release.id)}>
-    <BinIcon />
+  <ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+    <ThreeDotsIcon />
   </ButtonWrapper>
 </div>
+
+{#if popupMenuOpen}
+  <PopupWrapper bind:popupMenuOpen>
+    <div>{release.title}</div>
+    <ButtonWrapper onClickFunction={() => deleteRelease(release.id)}>
+      <div class="delete">Delete Release <BinIcon /></div>
+    </ButtonWrapper>
+  </PopupWrapper>
+{/if}
 
 <style>
   .release-info {
@@ -59,5 +72,10 @@
     width: 150px;
     aspect-ratio: 1 / 1;
     box-shadow: var(--box-shadow);
+  }
+  .delete {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 </style>

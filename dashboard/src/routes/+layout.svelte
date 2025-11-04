@@ -8,7 +8,7 @@
 
   let { children, data } = $props();
 
-  let { supabase, session } = $state(data);
+  let { supabase, session } = $derived(data);
 
   const artists = $derived(data.artists);
 
