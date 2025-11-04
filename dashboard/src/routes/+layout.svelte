@@ -4,13 +4,11 @@
   import { dashboardState, type DashboardSectionId } from "$lib/state.svelte";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
-  import { logOut } from "$lib/remote-functions/artist.remote";
+  import { signOut } from "$lib/remote-functions/artist.remote";
 
   let { children, data } = $props();
 
-  let { supabase, session } = $derived(data);
-
-  const artists = $derived(data.artists);
+  let { supabase, session, artists } = $derived(data);
 
   onMount(() => {
     const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -29,8 +27,12 @@
   ];
 </script>
 
+<svelte:head>
+  <meta name="robots" content="noindex" />
+</svelte:head>
+
 <div class="dashboard-container">
-  {#if data.session}
+  {#if session}
     <div class="side-panel">
       <h1>Soli • Dashboard</h1>
       <hr />
@@ -82,7 +84,13 @@
         {/each}
       {/if}
       <hr />
-      <button onclick={() => logOut()}>Sign Out</button>
+      <button
+        onclick={() => {
+          signOut().then(() => {
+            location.reload();
+          });
+        }}>Sign Out</button
+      >
     </div>
   {/if}
 

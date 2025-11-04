@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-  <title>Login • Soli</title>
+  <title>Login • Soli Dashboard</title>
 </svelte:head>
 
 <div class="wrapper">

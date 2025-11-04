@@ -47,11 +47,9 @@ export const updateArtistDetails = form(ArtistDetailsForm, async (data) => {
   });
 });
 
-export const logOut = query(async () => {
+export const signOut = query(async () => {
   const { locals } = getRequestEvent();
-  const { session } = await locals.safeGetSession();
-  if (session) {
+  if (locals.session) {
     await locals.supabase.auth.signOut();
-    redirect(303, "/login");
   }
 });
