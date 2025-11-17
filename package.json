@@ -1,0 +1,16 @@
+{
+  "name": "soli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/gonzo-engineering/soli.git",
+  "author": "Frederick O'Brien <frederik.obrien@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "api",
+    "app",
+    "dashboard",
+    "payroll",
+    "shared"
+  ]
+}
