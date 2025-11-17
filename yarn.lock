@@ -554,7 +554,7 @@
   dependencies:
     tslib "2.8.1"
 
-"@supabase/supabase-js@^2.74.0", "@supabase/supabase-js@^2.76.1", "@supabase/supabase-js@^2.78.0":
+"@supabase/supabase-js@^2.78.0":
   version "2.81.1"
   resolved "https://registry.yarnpkg.com/@supabase/supabase-js/-/supabase-js-2.81.1.tgz#a501016420082b0df0600402e9b221e5ed75ab19"
   integrity sha512-KSdY7xb2L0DlLmlYzIOghdw/na4gsMcqJ8u4sD6tOQJr+x3hLujU9s4R8N3ob84/1bkvpvlU5PYKa1ae+OICnw==
@@ -570,11 +570,6 @@
   resolved "https://registry.yarnpkg.com/@sveltejs/acorn-typescript/-/acorn-typescript-1.0.7.tgz#ee92cb27a5084761a76b7cf65cf997cda156f507"
   integrity sha512-znp1A/Y1Jj4l/Zy7PX5DZKBE0ZNY+5QBngiE21NJkfSTyzzC5iKNWOtwFXKtIrn7MXEFBck4jD95iBNkGjK92Q==
 
-"@sveltejs/adapter-auto@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-auto/-/adapter-auto-7.0.0.tgz#e3f257a0d1be3383f6cd0c146aed8d470b33a7fe"
-  integrity sha512-ImDWaErTOCkRS4Gt+5gZuymKFBobnhChXUZ9lhUZLahUgvA4OOvRzi3sahzYgbxGj5nkA6OV0GAW378+dl/gyw==
-
 "@sveltejs/adapter-netlify@^5.2.4":
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-netlify/-/adapter-netlify-5.2.4.tgz#ae9edb806a321adf58572d76167b51a6c7cc4bf6"
@@ -584,7 +579,7 @@
     esbuild "^0.25.4"
     set-cookie-parser "^2.6.0"
 
-"@sveltejs/kit@^2.47.3", "@sveltejs/kit@^2.48.4":
+"@sveltejs/kit@^2.48.4":
   version "2.48.5"
   resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-2.48.5.tgz#ac6a36042e44b5eac48e917e17f8622146d304be"
   integrity sha512-/rnwfSWS3qwUSzvHynUTORF9xSJi7PCR9yXkxUOnRrNqyKmCmh3FPHH+E9BbgqxXfTevGXBqgnlh9kMb+9T5XA==
@@ -2263,7 +2258,7 @@ svelte-eslint-parser@^1.4.0:
     postcss-scss "^4.0.9"
     postcss-selector-parser "^7.0.0"
 
-svelte@^5.42.2, svelte@^5.43.2:
+svelte@^5.43.2:
   version "5.43.8"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.43.8.tgz#cbc8cdc0276c057de4711d17ad88a7624b3242d6"
   integrity sha512-d53/xClCjHsuFXuHsn7+F/0NKkkwgRv8kLg2his5YBYqVtfIrBqkvWd+5ZjYN6ryk/jv/rJF00vexXHkK8ofXA==
