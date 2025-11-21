@@ -5,7 +5,7 @@
 	import { prettifyBalance, prettifyPennies } from '$lib/utils/index';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import ContentBlock from '$lib/components/ContentBlock.svelte';
-	import { API_BASE } from '$lib/global/config';
+	import { tokensCheckout } from '$lib/remote-functions/user.remote';
 
 	let { data, form } = $props();
 
@@ -32,19 +32,6 @@
 			loading = false;
 			update();
 		};
-	};
-
-	const checkout = async () => {
-		const data = await fetch(`${API_BASE}/checkout`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				userId: session?.user.id,
-				balance: tokensBalance,
-				topUpAmount
-			})
-		}).then((data) => data.json());
-		window.location.replace(data.url);
 	};
 </script>
 
@@ -133,7 +120,12 @@
 				{Math.round(topUpAmount * REVENUE_SPLIT.artists)} tokens,
 				{prettifyPennies(topUpAmount * REVENUE_SPLIT.platform)} goes to us
 			</div>
-			<button onclick={checkout}>Top up</button>
+			<button
+				onclick={() =>
+					tokensCheckout({ balance: tokensBalance, topUpAmount }).then(({ url }) => {
+						window.location.href = url;
+					})}>Top up</button
+			>
 		</div>
 	</div>
 
