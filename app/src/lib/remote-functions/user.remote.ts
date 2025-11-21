@@ -36,6 +36,33 @@ export const toggleLikedTrack = form(ToggleLikedTrackForm, async ({ trackId, add
 	});
 });
 
+export const tokensCheckout = query(
+	z.object({
+		balance: z.number(),
+		topUpAmount: z.number()
+	}),
+	async ({ balance, topUpAmount }) => {
+		const userId = requireAuth().id;
+		const response = await fetch(`${API_BASE}/checkout`, {
+			method: 'POST',
+			headers: REQUEST_HEADER_BOILERPLATE,
+			body: JSON.stringify({
+				userId,
+				balance,
+				topUpAmount
+			})
+		});
+
+		if (!response.ok) {
+			console.error('Error initiating checkout:', response.statusText);
+			return { url: null, error: new Error(response.statusText) };
+		}
+
+		const data = await response.json();
+		return { url: data.url, error: null };
+	}
+);
+
 export const updateUserTokensBalance = query(
 	z.object({
 		userId: z.string(),

@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { API_BASE } from '$lib/global/config';
+import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/global/config';
 
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { session } = await safeGetSession();
@@ -28,9 +28,7 @@ export const actions: Actions = {
 					pay_per_stream: parseInt(payPerStream)
 				}
 			}),
-			headers: {
-				'Content-Type': 'application/json'
-			}
+			headers: REQUEST_HEADER_BOILERPLATE
 		}).then((res) => res.json());
 
 		if (error) {
