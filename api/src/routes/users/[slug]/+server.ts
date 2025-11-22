@@ -1,6 +1,7 @@
 import { TABLES } from '../../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
+import { requireUserMatch } from '$lib/server/auth';
 import type { User } from '../../../../../shared/types/core';
 
 const getUser = async (id: string): Promise<User | null> => {
@@ -12,8 +13,17 @@ const getUser = async (id: string): Promise<User | null> => {
 	return data;
 };
 
-export async function GET({ params }) {
+export async function GET({ params, request, ...event }) {
 	const maybeUserID = params.slug;
+
+	// Verify user is authenticated and can only access their own data
+	const authResult = await requireUserMatch(
+		{ request, ...event } as any,
+		maybeUserID
+	);
+	if (typeof authResult === 'object' && 'response' in authResult) {
+		return authResult.response;
+	}
 
 	const profile = await getUser(maybeUserID);
 
@@ -24,8 +34,17 @@ export async function GET({ params }) {
 	return json(profile);
 }
 
-export async function PATCH({ request, params }) {
+export async function PATCH({ request, params, ...event }) {
 	const maybeUserID = params.slug;
+
+	// Verify user is authenticated and can only modify their own data
+	const authResult = await requireUserMatch(
+		{ request, ...event } as any,
+		maybeUserID
+	);
+	if (typeof authResult === 'object' && 'response' in authResult) {
+		return authResult.response;
+	}
 
 	const profile = await getUser(maybeUserID);
 
