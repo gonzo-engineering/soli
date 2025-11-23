@@ -2,7 +2,7 @@ name: Weekly Soli Payroll
 
 on:
   schedule:
-    - cron: "0 9 * * 0" # Every Sunday at 09:00 UTC
+    - cron: '0 9 * * 0' # Every Sunday at 09:00 UTC
   workflow_dispatch: # Manual run option
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "22"
+          node-version: '22'
 
       - name: Install dependencies
         run: yarn install
