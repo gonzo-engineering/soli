@@ -13,7 +13,7 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
-		"test": "npm run test:unit -- --run"
+		"test": "yarn test:unit -- --run"
 	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.9.1",
