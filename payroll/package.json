@@ -1,9 +1,9 @@
 {
-  "name": "payroll",
-  "version": "1.0.0",
-  "description": "A payroll management system",
-  "type": "module",
-  "dependencies": {
-    "dotenv": "^17.2.3"
-  }
+	"name": "payroll",
+	"version": "1.0.0",
+	"description": "A payroll management system",
+	"type": "module",
+	"dependencies": {
+		"dotenv": "^17.2.3"
+	}
 }
