@@ -7,7 +7,10 @@ const publicEndpoints = ['/', '/checkout/success'];
 const appendHeaders = (response: Response, origin: string | null) => {
 	response.headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 	response.headers.append('Access-Control-Allow-Headers', '*');
-	response.headers.append('Access-Control-Allow-Origin', origin ? origin : '*');
+	// Only append CORS header for trusted origins - do NOT fallback to '*'
+	if (origin && domainsWithAccessToAPI.includes(origin)) {
+		response.headers.append('Access-Control-Allow-Origin', origin);
+	}
 	return response;
 };
 

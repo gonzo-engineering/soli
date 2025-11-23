@@ -1,9 +1,35 @@
 import { supabase } from '$lib/server/supabase';
 import { REVENUE_SPLIT, TABLES } from '../../../../../shared/config';
 import { type RequestHandler } from '@sveltejs/kit';
+import { verifyStripeWebhookSignature } from '$lib/server/stripe';
 
 export const POST: RequestHandler = async ({ request }) => {
-	const requestBody = await request.json();
+	// Verify webhook signature to prevent replay attacks
+	const signature = request.headers.get('stripe-signature');
+	if (!signature) {
+		console.error('Missing stripe-signature header');
+		return new Response(JSON.stringify({ message: 'Missing signature' }), { status: 401 });
+	}
+
+	const rawBody = await request.text();
+	let requestBody;
+	try {
+		requestBody = JSON.parse(rawBody);
+	} catch (err) {
+		console.error('Invalid JSON in request body');
+		return new Response(JSON.stringify({ message: 'Invalid JSON' }), { status: 400 });
+	}
+
+	// Verify signature
+	try {
+		if (!verifyStripeWebhookSignature(signature, rawBody)) {
+			console.error('Invalid stripe webhook signature');
+			return new Response(JSON.stringify({ message: 'Invalid signature' }), { status: 401 });
+		}
+	} catch (err) {
+		console.error('Webhook verification error:', err);
+		return new Response(JSON.stringify({ message: 'Verification failed' }), { status: 500 });
+	}
 
 	if (requestBody.type !== 'checkout.session.completed') {
 		console.log('Not a checkout session completed event');
@@ -29,7 +55,9 @@ export const POST: RequestHandler = async ({ request }) => {
 	const userId: string = stripeSession.metadata.userId;
 	const topUpAmount: number = stripeSession.amount_total;
 	const topUpTokens = Math.round(topUpAmount * REVENUE_SPLIT.artists);
-	const newBalance = parseInt(stripeSession.metadata.balance) + topUpTokens;
+	// FIX: Parse balance as number first, then add - prevents string concatenation bug
+	const currentBalance = parseInt(stripeSession.metadata.balance, 10);
+	const newBalance = currentBalance + topUpTokens;
 
 	const { error } = await supabase
 		.from(TABLES.users)

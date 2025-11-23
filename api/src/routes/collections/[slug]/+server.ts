@@ -1,6 +1,7 @@
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../../shared/config';
+import { requireAuth } from '$lib/server/auth';
 
 export async function GET({ params }) {
 	return handlePostgrestQuery(
@@ -44,9 +45,18 @@ export async function PATCH({ request, params }) {
 	return json({ success: true });
 }
 
-export async function DELETE({ request, params }) {
+export async function DELETE({ request, params, ...event }) {
 	const collectionId = params.slug;
-	const { userId } = await request.json();
+
+	// Get authenticated user instead of trusting client input
+	const authResult = await requireAuth(
+		{ request, ...event } as any
+	);
+	if (typeof authResult === 'object' && 'response' in authResult) {
+		return authResult.response;
+	}
+
+	const userId = authResult;
 
 	const { error } = await supabase
 		.from(TABLES.collections)
