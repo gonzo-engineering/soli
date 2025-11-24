@@ -31,9 +31,7 @@ export const addRelease = form(AddReleaseForm, async (data) => {
 	formData.append('releaseArtwork', data.releaseArtwork);
 	formData.append('releaseName', data.releaseName);
 	formData.append('releaseType', data.releaseType);
-	if (data.releaseDate) {
-		formData.append('releaseDate', data.releaseDate);
-	}
+	formData.append('releaseDate', data.releaseDate);
 	await fetch(`${API_BASE}/releases`, {
 		method: 'POST',
 		headers: {
