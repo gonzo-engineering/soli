@@ -37,7 +37,12 @@ export async function PATCH({ request, params }) {
 
 	const { error } = await supabase
 		.from(TABLES.artists)
-		.update({ artistName, artistBio, artistWebsite, imageCid })
+		.update({
+			name: artistName,
+			bio: artistBio,
+			website_url: artistWebsite,
+			image_ipfs_cid: imageCid
+		})
 		.eq('id', params.slug);
 	if (error) {
 		return json({ error: 'Failed to update artist details' }, { status: 500 });

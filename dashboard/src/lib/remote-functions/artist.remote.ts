@@ -15,6 +15,7 @@ export const updateArtistDetails = form(ArtistDetailsForm, async (data) => {
 	if (data.artistImageNew) {
 		formData.append('artistImageNew', data.artistImageNew);
 	}
+	formData.append('artistName', data.artistName);
 	formData.append('artistId', data.artistId);
 	formData.append('artistBio', data.artistBio || '');
 	formData.append('artistWebsite', data.artistWebsite || '');
