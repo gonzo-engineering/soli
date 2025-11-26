@@ -67,26 +67,12 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 		return 0;
 	});
 
-	// Get all streams for the artist
-	const {
-		data: streams,
-		error: streamsError
-	}: {
-		data: StreamLog[] | null;
-		error: Error | null;
-	} = await supabase.from(TABLES.streams).select('*');
-	if (streamsError || !streams) {
-		console.error('Error fetching streams:', streamsError);
-		return fail(500, { error: 'Failed to fetch streams' });
-	}
-
 	return {
 		session,
 		user,
 		cookies: cookies.getAll(),
 		artists: connectedArtists,
 		releases: sortReleasesByDate(releases),
-		songs,
-		streams
+		songs
 	};
 };

@@ -27,9 +27,6 @@
 	let activeArtistReleases = $derived(
 		data.releases.filter((release) => release.artist_id === activeArtist?.id)
 	);
-	let activeArtistStreams = $derived(
-		data.streams.filter((stream) => stream.artist_id === activeArtist?.id)
-	);
 </script>
 
 <svelte:head>
@@ -44,7 +41,7 @@
 		{:else if dashboardState.activeSection === 'profile'}
 			<ProfileView {activeArtist} />
 		{:else if dashboardState.activeSection === 'stats'}
-			<StatsView streams={activeArtistStreams} />
+			<StatsView artistId={activeArtist.id} />
 		{/if}
 	{:else}
 		<div>Select an artist to manage their releases and songs.</div>

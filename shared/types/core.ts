@@ -1,5 +1,3 @@
-import type { ReleaseHydrated } from './hydrated';
-
 export interface User {
 	first_name: string;
 	tokens_balance: number;
