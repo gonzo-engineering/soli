@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { GroupListResponse } from 'pinata';
 	import type { StreamLog } from '../../../shared/types/core';
 	import { dashboardState } from '$lib/state.svelte';
 	import ProfileView from '$lib/components/views/profile/ProfileView.svelte';
-	import type { Artist, Release, Track } from '../../../shared/types/core';
+	import type { Artist, Track } from '../../../shared/types/core';
 	import type { ReleaseHydrated } from '../../../shared/types/hydrated';
 	import StatsView from '$lib/components/views/stats/StatsView.svelte';
 	import MusicView from '$lib/components/views/music/MusicView.svelte';
@@ -12,7 +11,6 @@
 		data
 	}: {
 		data: {
-			groups: GroupListResponse;
 			artists: Artist[];
 			songs: Track[];
 			releases: ReleaseHydrated[];

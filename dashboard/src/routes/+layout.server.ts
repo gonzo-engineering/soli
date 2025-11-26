@@ -3,7 +3,6 @@ import { supabase } from '$lib/server/supabase';
 import type { StreamLog } from '../../../shared/types/core';
 import { sortReleasesByDate } from '../../../shared/utils';
 import type { LayoutServerLoad } from './$types';
-import { POWER_USER_ID } from '$lib/config';
 import type { Artist, Track } from '../../../shared/types/core';
 import type { ReleaseHydrated } from '../../../shared/types/hydrated';
 import { TABLES } from '../../../shared/config';
@@ -38,24 +37,20 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 		return fail(500, { error: 'Failed to fetch user data' });
 	}
 
-	// Get all artist IDs for the user, unless they are a power user
-	// in which case fetch all artists
+	// Get all artist IDs for the user
 	const {
 		data: connectedArtists,
 		error: artistsError
 	}: {
 		data: Artist[] | null;
 		error: Error | null;
-	} =
-		userID === POWER_USER_ID
-			? await supabase.from(TABLES.artists).select('*')
-			: await supabase
-					.from(TABLES.artists)
-					.select('*')
-					.in(
-						'id',
-						userData.map((u) => u.artist_id)
-					);
+	} = await supabase
+		.from(TABLES.artists)
+		.select('*')
+		.in(
+			'id',
+			userData.map((u) => u.artist_id)
+		);
 
 	if (artistsError || !connectedArtists) {
 		console.error('Error fetching artists:', artistsError);
