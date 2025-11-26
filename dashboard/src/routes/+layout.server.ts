@@ -3,9 +3,10 @@ import { supabase } from '$lib/server/supabase';
 import type { StreamLog } from '../../../shared/types/core';
 import { sortReleasesByDate } from '../../../shared/utils';
 import type { LayoutServerLoad } from './$types';
-import type { Artist, Track } from '../../../shared/types/core';
-import type { ReleaseHydrated } from '../../../shared/types/hydrated';
+import type { Track } from '../../../shared/types/core';
+import type { ArtistHydrated, ReleaseHydrated } from '../../../shared/types/hydrated';
 import { TABLES } from '../../../shared/config';
+import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies }) => {
 	const { session, user } = await safeGetSession();
@@ -24,38 +25,10 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 
 	const userID = session.user.id;
 
-	const {
-		data: userData,
-		error: userError
-	}: {
-		data: { artist_id: string }[] | null;
-		error: Error | null;
-	} = await supabase.from(TABLES.artistMembers).select('artist_id').eq('user_id', userID);
-
-	if (userError || !userData) {
-		console.error('Error fetching user data:', userError);
-		return fail(500, { error: 'Failed to fetch user data' });
-	}
-
-	// Get all artist IDs for the user
-	const {
-		data: connectedArtists,
-		error: artistsError
-	}: {
-		data: Artist[] | null;
-		error: Error | null;
-	} = await supabase
-		.from(TABLES.artists)
-		.select('*')
-		.in(
-			'id',
-			userData.map((u) => u.artist_id)
-		);
-
-	if (artistsError || !connectedArtists) {
-		console.error('Error fetching artists:', artistsError);
-		return fail(500, { error: 'Failed to fetch artists' });
-	}
+	const connectedArtists: ArtistHydrated[] = await fetch(`${API_BASE}/users/${userID}/artists`, {
+		method: 'GET',
+		headers: REQUEST_HEADER_BOILERPLATE
+	}).then((res) => res.json());
 
 	const {
 		data: songs,
@@ -73,10 +46,6 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 		error: Error | null;
 	} = await supabase.from(TABLES.releasesRich).select('*');
 
-	if (artistsError || !connectedArtists) {
-		console.error('Error fetching artists:', artistsError);
-		return fail(500, { error: 'Failed to fetch artists' });
-	}
 	if (songsError || !songs) {
 		console.error('Error fetching songs:', songsError);
 		return fail(500, { error: 'Failed to fetch songs' });
