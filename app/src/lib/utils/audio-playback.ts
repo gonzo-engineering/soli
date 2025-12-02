@@ -24,7 +24,6 @@ export const setActiveSong = async (
 	// Deduct the pay per stream after 30 seconds of playtime
 	setTimeout(() => {
 		updateUserTokensBalance({ userId, tokens: userPayPerStream, addOrSubtract: 'subtract' });
-		userState.liveBalance -= userPayPerStream;
 		logStream({
 			userId,
 			artistId: release.artist_id,

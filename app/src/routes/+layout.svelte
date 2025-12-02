@@ -57,9 +57,10 @@
 
 <Footer />
 
-{#if userState.activeSong && userState.activeSongRelease && userState.liveBalance && userState.activeSongUrl && data.session?.user.id && data.profileData?.pay_per_stream && hydratedRelease}
+{#if userState.activeSong && userState.activeSongRelease && data.profileData.tokens_balance && userState.activeSongUrl && data.session?.user.id && data.profileData?.pay_per_stream && hydratedRelease}
 	<AudioPlayer
 		userId={data.session?.user.id}
+		userBalance={data.profileData.tokens_balance}
 		userPayPerStream={data.profileData?.pay_per_stream}
 		track={userState.activeSong}
 		release={hydratedRelease}

@@ -7,18 +7,20 @@
 	import PopupWrapper from '../layout/PopupWrapper.svelte';
 	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
-	import type { Mixtape } from '../../../../../shared/types/core';
+	import type { Mixtape, Listener } from '../../../../../shared/types/core';
 
 	const {
 		i = undefined,
 		track,
 		showReleaseAndArtist = false,
+		userProfile,
 		mixtapes,
 		likedTracks
 	}: {
 		i?: number;
 		track: TrackHydrated;
 		showReleaseAndArtist: boolean;
+		userProfile: Listener;
 		mixtapes: Mixtape[];
 		likedTracks: TrackHydrated[];
 	} = $props();
@@ -37,7 +39,7 @@
 	{/if}
 	<td>{prettifyDuration(track.duration_seconds)}</td>
 	<td class="play-button-container">
-		<ReleaseTrackButton {track} release={track.release} />
+		<ReleaseTrackButton {track} release={track.release} {userProfile} />
 	</td>
 	<td>
 		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'light'} />

@@ -37,6 +37,7 @@
 	</div>
 	<TracksTable
 		{tracks}
+		userProfile={data.profileData}
 		userLikedTracks={data.likedTracks}
 		userMixtapes={data.mixtapes}
 		showReleaseAndArtist

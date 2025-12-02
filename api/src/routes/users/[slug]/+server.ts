@@ -1,12 +1,12 @@
 import { TABLES } from '../../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
-import type { User } from '../../../../../shared/types/core';
+import type { Listener } from '../../../../../shared/types/core';
 
-const getUser = async (id: string): Promise<User | null> => {
+const getUser = async (id: string): Promise<Listener | null> => {
 	const { data } = await supabase
 		.from(TABLES.users)
-		.select(`first_name, tokens_balance, pay_per_stream`)
+		.select(`id, first_name, tokens_balance, pay_per_stream`)
 		.eq('id', id)
 		.single();
 	return data;

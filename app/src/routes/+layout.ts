@@ -1,6 +1,5 @@
 import { createBrowserClient, createServerClient, isBrowser } from '@supabase/ssr';
 import type { LayoutLoad } from './$types';
-import { userState } from '$lib/global/state.svelte';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$lib/global/config';
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
@@ -35,12 +34,6 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 	const {
 		data: { user }
 	} = await supabase.auth.getUser();
-
-	if (data.profileData && session) {
-		userState.id = session.user.id;
-		userState.liveBalance = data.profileData.tokens_balance;
-		userState.payPerStream = data.profileData.pay_per_stream;
-	}
 
 	return {
 		supabase,

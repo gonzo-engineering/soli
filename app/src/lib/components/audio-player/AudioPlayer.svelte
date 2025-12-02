@@ -8,6 +8,7 @@
 
 	let {
 		userId,
+		userBalance,
 		userPayPerStream,
 		track,
 		release,
@@ -15,6 +16,7 @@
 		likedTracks
 	}: {
 		userId: string;
+		userBalance: number;
 		userPayPerStream: number;
 		track: Track;
 		release: ReleaseHydrated;
@@ -55,7 +57,7 @@
 				);
 				if (currentSongIndex !== -1 && currentSongIndex < release.tracks.length - 1) {
 					const nextSong = release.tracks[currentSongIndex + 1];
-					setActiveSong(nextSong, release, userId, userState.liveBalance, userPayPerStream);
+					setActiveSong(nextSong, release, userId, userBalance, userPayPerStream);
 				} else {
 					userState.autoPlay = false;
 				}

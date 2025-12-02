@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { userState } from '$lib/global/state.svelte.js';
 	import { prettifyBalance, prettifyPennies } from '$lib/utils/index';
 	import ContentBlock from '$lib/components/ContentBlock.svelte';
 	import { tokensCheckout, updateUserSettings } from '$lib/remote-functions/user.remote';
@@ -75,9 +74,9 @@
 
 	<div>
 		<h3>Balance</h3>
-		{#key userState.liveBalance}
+		{#key data.profileData.tokens_balance}
 			<div class="balance-amount">
-				{prettifyBalance(userState.liveBalance ? userState.liveBalance : tokensBalance)} tokens
+				{prettifyBalance(data.profileData.tokens_balance)} tokens
 			</div>
 		{/key}
 		<p>
@@ -86,10 +85,7 @@
 			>
 			you can stream
 			<span class="bold"
-				>{Math.floor(
-					(userState.liveBalance ? userState.liveBalance : tokensBalance) /
-						data.profileData.pay_per_stream
-				)}</span
+				>{Math.floor(data.profileData.tokens_balance / data.profileData.pay_per_stream)}</span
 			> more songs before needing to top up again.
 		</p>
 		<h4>Top up</h4>

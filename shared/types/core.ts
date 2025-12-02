@@ -1,4 +1,5 @@
-export interface User {
+export interface Listener {
+	id: string;
 	first_name: string;
 	tokens_balance: number;
 	pay_per_stream: number;

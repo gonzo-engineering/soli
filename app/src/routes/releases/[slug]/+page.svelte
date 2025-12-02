@@ -65,8 +65,8 @@
 				release.tracks[0],
 				release,
 				data.session.user.id,
-				userState.liveBalance ?? data.profileData.tokens_balance,
-				userState.payPerStream
+				data.profileData.tokens_balance,
+				data.profileData.pay_per_stream
 			);
 			userState.autoPlay = true;
 		}}
@@ -82,6 +82,7 @@
 			release,
 			artist: release.artist
 		}))}
+		userProfile={data.profileData}
 		userLikedTracks={data.likedTracks}
 		userMixtapes={data.mixtapes}
 	/>

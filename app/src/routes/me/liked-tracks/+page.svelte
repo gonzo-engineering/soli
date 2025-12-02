@@ -29,6 +29,7 @@
 <TracksTable
 	tracks={data.likedTracks}
 	showReleaseAndArtist={true}
+	userProfile={data.profileData}
 	userLikedTracks={data.likedTracks}
 	userMixtapes={data.mixtapes}
 />
