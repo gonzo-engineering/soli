@@ -84,3 +84,29 @@ export const updateUserTokensBalance = query(
 		return { data, error: response.ok ? null : new Error(response.statusText) };
 	}
 );
+
+export const updateUserSettings = form(
+	z.object({
+		firstName: z.string().min(1),
+		payPerStream: z.number().min(1).max(5)
+	}),
+	async ({ firstName, payPerStream }) => {
+		const userId = requireAuth().id;
+		const response = await fetch(`${API_BASE}/users/${userId}`, {
+			method: 'PATCH',
+			headers: REQUEST_HEADER_BOILERPLATE,
+			body: JSON.stringify({
+				updateProfileInfo: {
+					first_name: firstName,
+					pay_per_stream: payPerStream
+				}
+			})
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to update user settings');
+		}
+
+		return { success: true };
+	}
+);

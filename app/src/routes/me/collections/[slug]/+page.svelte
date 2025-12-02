@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SectionLink from '$lib/components/layout/SectionLink.svelte';
+	import SectionLink from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import { deleteCollection } from '$lib/remote-functions/collections.remote';
 	import type { Mixtape, User } from '../../../../../../shared/types/core';
@@ -23,11 +23,16 @@
 </script>
 
 <svelte:head>
-	<title>{name} · Your collections · Soli</title>
+	<title>{name} · My collections · Soli</title>
 	<meta name="description" content={`Browse the collection '${name}' on Soli.`} />
 </svelte:head>
 
-<SectionLink link="/me/collections" label="Your collections" />
+<SectionLink
+	breadcrumbs={[
+		{ link: '/me', label: 'Me' },
+		{ link: '/me/collections', label: 'My collections' }
+	]}
+/>
 
 <div class="collection">
 	<div class="collection-details">

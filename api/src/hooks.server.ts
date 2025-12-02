@@ -1,5 +1,6 @@
 import type { Handle } from '@sveltejs/kit';
 import { APP_BASE, DASHBOARD_BASE } from '$lib/server/config';
+import { dev } from '$app/environment';
 
 const domainsWithAccessToAPI = [APP_BASE, DASHBOARD_BASE, 'https://checkout.stripe.com'];
 const publicEndpoints = ['/', '/checkout/success'];
@@ -22,7 +23,7 @@ export const handle: Handle = async ({ resolve, event }) => {
 		return response;
 	}
 
-	if (!origin || !domainsWithAccessToAPI.includes(origin)) {
+	if ((!origin || !domainsWithAccessToAPI.includes(origin)) && !dev) {
 		console.error(`Unauthorized access attempt from origin: ${origin}`);
 		return new Response('Unauthorised', { status: 401 });
 	}

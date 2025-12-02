@@ -15,7 +15,7 @@
 			]
 		},
 		{
-			section: 'Your Library',
+			section: 'My library',
 			links: [
 				{ href: '/me/collections', label: 'Collections' },
 				{ href: '/me/mixtapes', label: 'Mixtapes' },
@@ -25,7 +25,7 @@
 		{
 			section: 'Misc',
 			links: [
-				{ href: '/account', label: 'Account' },
+				{ href: '/me', label: 'Account' },
 				{ href: '/about', label: 'About' }
 			]
 		}
