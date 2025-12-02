@@ -8,10 +8,8 @@
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import AudioPlayer from '$lib/components/audio-player/AudioPlayer.svelte';
-	import Vinyl from '$lib/components/icons/Vinyl.svelte';
-	import Cassette from '$lib/components/icons/Cassette.svelte';
-	import Heart from '$lib/components/icons/Heart.svelte';
 	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
+	import Navigation from '$lib/components/layout/Navigation.svelte';
 
 	let { children, data } = $props();
 
@@ -32,32 +30,6 @@
 		});
 		return () => data.subscription.unsubscribe();
 	});
-
-	const menuLinks = [
-		{
-			section: 'Browse',
-			links: [
-				{ href: '/releases', label: 'Releases' },
-				{ href: '/artists', label: 'Artists' },
-				{ href: '/genres', label: 'Genres' }
-			]
-		},
-		{
-			section: 'Your Library',
-			links: [
-				{ href: '/me/collections', label: 'Collections' },
-				{ href: '/me/mixtapes', label: 'Mixtapes' },
-				{ href: '/me/liked-tracks', label: 'Liked tracks' }
-			]
-		},
-		{
-			section: 'Misc',
-			links: [
-				{ href: '/account', label: 'Account' },
-				{ href: '/about', label: 'About' }
-			]
-		}
-	];
 </script>
 
 <svelte:head>
@@ -73,33 +45,7 @@
 {#if menuIsOpen}
 	<div class="menu">
 		<Header bind:menuIsOpen userIsLoggedIn={session ? true : false} />
-		<nav>
-			<ul>
-				{#if session}
-					{#each menuLinks as section}
-						<div class="nav-section">
-							<span class="section-title">{section.section}</span>
-							{#each section.links as link}
-								<li>
-									<a href={link.href} onclick={() => (menuIsOpen = !menuIsOpen)}>
-										{link.label}
-										{#if link.label === 'Collections'}
-											<span class="icon"><Vinyl /></span>
-										{:else if link.label === 'Mixtapes'}
-											<span class="icon"><Cassette /></span>
-										{:else if link.label === 'Liked tracks'}
-											<span class="icon"><Heart filled /></span>
-										{/if}
-									</a>
-								</li>
-							{/each}
-						</div>
-					{/each}
-				{:else}
-					<li><a href="/login" onclick={() => (menuIsOpen = !menuIsOpen)}>Login</a></li>
-				{/if}
-			</ul>
-		</nav>
+		<Navigation bind:menuIsOpen {session} />
 	</div>
 {:else}
 	<Header bind:menuIsOpen userIsLoggedIn={session ? true : false} />
@@ -134,30 +80,5 @@
 		height: 100vh;
 		background-color: var(--color-background);
 		z-index: 1000;
-	}
-	.nav-section {
-		margin-bottom: 2rem;
-	}
-	.section-title {
-		font-weight: 600;
-		text-transform: uppercase;
-		margin: 1rem 0 0.5rem 0;
-	}
-	ul {
-		list-style: none;
-		padding: 1rem;
-		margin: 0;
-	}
-	li {
-		margin: 0.5rem 0;
-	}
-	a {
-		text-decoration: none;
-		color: var(--color-text);
-		font-size: 1.4rem;
-		margin-right: 0.5rem;
-	}
-	.icon {
-		margin-left: 0.3rem;
 	}
 </style>
