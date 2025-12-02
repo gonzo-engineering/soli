@@ -22,7 +22,7 @@
 	{/if}
 
 	{#if !sendCode.result?.success === false && sendCode.result?.message}
-		<div style="color: red;">{sendCode.result.message}</div>
+		<div style="color: lightgreen;">{sendCode.result.message}</div>
 	{/if}
 
 	{#if stage === 'enterEmail'}
