@@ -6,6 +6,8 @@
 	import type { ReleaseHydrated } from '../../../shared/types/hydrated';
 	import StatsView from '$lib/components/views/stats/StatsView.svelte';
 	import MusicView from '$lib/components/views/music/MusicView.svelte';
+	import { getArtistReleases, getArtistTracks } from '$lib/remote-functions/artist.remote';
+	import { getArtistStreams } from '$lib/remote-functions/stats.remote';
 
 	let {
 		data
@@ -21,15 +23,24 @@
 	let activeArtist: Artist | null = $derived(
 		data.artists.find((artist) => artist.id === dashboardState.activeArtist?.id) || null
 	);
-	let activeArtistSongs = $derived(
-		data.songs.filter((song) => song.artist_id === activeArtist?.id)
-	);
-	let activeArtistReleases = $derived(
-		data.releases.filter((release) => release.artist_id === activeArtist?.id)
-	);
-	let activeArtistStreams = $derived(
-		data.streams.filter((stream) => stream.artist_id === activeArtist?.id)
-	);
+	let activeArtistStreams: StreamLog[] = $state([]);
+	let activeArtistSongs: Track[] = $state([]);
+	let activeArtistReleases: ReleaseHydrated[] = $state([]);
+
+	$effect(() => {
+		const fetchArtistData = async () => {
+			if (activeArtist) {
+				activeArtistStreams = await getArtistStreams(activeArtist.id);
+				activeArtistSongs = await getArtistTracks(activeArtist.id);
+				activeArtistReleases = await getArtistReleases(activeArtist.id);
+			} else {
+				activeArtistStreams = [];
+				activeArtistSongs = [];
+				activeArtistReleases = [];
+			}
+		};
+		fetchArtistData();
+	});
 </script>
 
 <svelte:head>
