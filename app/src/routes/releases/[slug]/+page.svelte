@@ -1,9 +1,7 @@
 <script lang="ts">
-	import type { Mixtape } from '../../../../../shared/types/core';
 	import { makeImageLink } from '$lib/utils';
-	import type { Session } from '@supabase/supabase-js';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
-	import { setActiveSong, userState } from '$lib/global/state.svelte';
+	import { userState, type UserData } from '$lib/global/state.svelte';
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import { formatReleaseType } from '../../../../../shared/utils';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
@@ -11,23 +9,14 @@
 	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { User } from '../../../../../shared/types/core';
-	import type {
-		CollectionHydrated,
-		TrackHydrated,
-		ReleaseHydrated
-	} from '../../../../../shared/types/hydrated';
+	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
+	import { setActiveSong } from '$lib/utils/audio-playback';
 
 	let {
 		data
 	}: {
-		data: {
+		data: UserData & {
 			release: ReleaseHydrated;
-			session: Session;
-			profileData: User;
-			collections: CollectionHydrated[];
-			likedTracks: TrackHydrated[];
-			mixtapes: Mixtape[];
 		};
 	} = $props();
 
@@ -93,6 +82,8 @@
 			release,
 			artist: release.artist
 		}))}
+		userLikedTracks={data.likedTracks}
+		userMixtapes={data.mixtapes}
 	/>
 
 	<hr />

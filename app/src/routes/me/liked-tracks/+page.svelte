@@ -26,4 +26,9 @@
 
 <h2>My liked tracks</h2>
 
-<TracksTable tracks={data.likedTracks} showReleaseAndArtist={true} />
+<TracksTable
+	tracks={data.likedTracks}
+	showReleaseAndArtist={true}
+	userLikedTracks={data.likedTracks}
+	userMixtapes={data.mixtapes}
+/>

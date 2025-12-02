@@ -40,8 +40,6 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		userState.id = session.user.id;
 		userState.liveBalance = data.profileData.tokens_balance;
 		userState.payPerStream = data.profileData.pay_per_stream;
-		userState.music.likedTracks = data.likedTracks;
-		userState.music.mixtapes = data.mixtapes;
 	}
 
 	return {

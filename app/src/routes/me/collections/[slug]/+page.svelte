@@ -1,21 +1,15 @@
 <script lang="ts">
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
+	import type { UserData } from '$lib/global/state.svelte';
 	import { deleteCollection } from '$lib/remote-functions/collections.remote';
-	import type { Mixtape, User } from '../../../../../../shared/types/core';
-	import type { CollectionHydrated, TrackHydrated } from '../../../../../../shared/types/hydrated';
-	import type { Session } from '@supabase/supabase-js';
+	import type { CollectionHydrated } from '../../../../../../shared/types/hydrated';
 
 	let {
 		data
 	}: {
-		data: {
+		data: UserData & {
 			collection: CollectionHydrated;
-			session: Session;
-			profileData: User;
-			collections: CollectionHydrated[];
-			likedTracks: TrackHydrated[];
-			mixtapes: Mixtape[];
 		};
 	} = $props();
 

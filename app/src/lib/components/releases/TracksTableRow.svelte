@@ -6,17 +6,21 @@
 	import ThreeDots from '../icons/ThreeDots.svelte';
 	import PopupWrapper from '../layout/PopupWrapper.svelte';
 	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
-	import { userState } from '$lib/global/state.svelte';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
+	import type { Mixtape } from '../../../../../shared/types/core';
 
 	const {
 		i = undefined,
 		track,
-		showReleaseAndArtist = false
+		showReleaseAndArtist = false,
+		mixtapes,
+		likedTracks
 	}: {
 		i?: number;
 		track: TrackHydrated;
 		showReleaseAndArtist: boolean;
+		mixtapes: Mixtape[];
+		likedTracks: TrackHydrated[];
 	} = $props();
 
 	let popupMenuOpen = $state(false);
@@ -36,11 +40,7 @@
 		<ReleaseTrackButton {track} release={track.release} />
 	</td>
 	<td>
-		<TrackLikeButton
-			trackID={track.id}
-			likedTracks={userState.music.likedTracks}
-			lightOrDark={'light'}
-		/>
+		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'light'} />
 	</td>
 	<td>
 		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
@@ -58,7 +58,7 @@
 					>Add to mixtape:
 					<select {...addTrackToMixtape.fields.mixtapeId.as('select')}>
 						<option value="" disabled selected>Select a mixtape</option>
-						{#each userState.music.mixtapes as mixtape}
+						{#each mixtapes as mixtape}
 							<option value={mixtape.id}>{mixtape.name}</option>
 						{/each}
 					</select>

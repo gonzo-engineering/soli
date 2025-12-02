@@ -1,25 +1,15 @@
 <script lang="ts">
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
+	import type { UserData } from '$lib/global/state.svelte';
 	import { deleteMixtape } from '$lib/remote-functions/mixtapes.remote';
-	import type { Session } from '@supabase/supabase-js';
-	import type { Mixtape, User } from '../../../../../../shared/types/core';
-	import type {
-		CollectionHydrated,
-		MixtapeHydrated,
-		TrackHydrated
-	} from '../../../../../../shared/types/hydrated';
+	import type { MixtapeHydrated } from '../../../../../../shared/types/hydrated';
 
 	let {
 		data
 	}: {
-		data: {
+		data: UserData & {
 			mixtape: MixtapeHydrated;
-			session: Session;
-			profileData: User;
-			collections: CollectionHydrated[];
-			likedTracks: TrackHydrated[];
-			mixtapes: Mixtape[];
 		};
 	} = $props();
 
@@ -45,7 +35,12 @@
 			<div>{description}</div>
 		{/if}
 	</div>
-	<TracksTable {tracks} showReleaseAndArtist />
+	<TracksTable
+		{tracks}
+		userLikedTracks={data.likedTracks}
+		userMixtapes={data.mixtapes}
+		showReleaseAndArtist
+	/>
 </div>
 
 <form {...deleteMixtape.for(id)}>

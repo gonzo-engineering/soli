@@ -12,7 +12,6 @@
 	let firstName: string = profileData?.first_name ?? '';
 	let tokensBalance: number = profileData?.tokens_balance ?? 0;
 
-	let payPerStream = $state(profileData?.pay_per_stream ?? 3);
 	let tokensTopUpAmount = $state(50);
 
 	const makeTopUpMessage = (numberOfTokens: number) => {
@@ -82,11 +81,14 @@
 			</div>
 		{/key}
 		<p>
-			At your chosen rate of <span class="bold">{payPerStream} tokens per stream</span> you can
-			stream
+			At your chosen rate of <span class="bold"
+				>{data.profileData.pay_per_stream} tokens per stream</span
+			>
+			you can stream
 			<span class="bold"
 				>{Math.floor(
-					(userState.liveBalance ? userState.liveBalance : tokensBalance) / payPerStream
+					(userState.liveBalance ? userState.liveBalance : tokensBalance) /
+						data.profileData.pay_per_stream
 				)}</span
 			> more songs before needing to top up again.
 		</p>
