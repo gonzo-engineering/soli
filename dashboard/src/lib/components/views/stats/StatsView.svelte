@@ -1,10 +1,7 @@
 <script lang="ts">
-	import { getArtistsStreams } from '$lib/remote-functions/stats.remote';
 	import type { StreamLog } from '../../../../../../shared/types/core';
 
-	const { artistId }: { artistId: string } = $props();
-
-	const streams = await getArtistsStreams(artistId);
+	const { streams }: { streams: StreamLog[] } = $props();
 
 	const calculateAveragePayout = (streams: StreamLog[]) => {
 		const total = streams.reduce((acc, stream) => acc + stream.tokens_used, 0);
