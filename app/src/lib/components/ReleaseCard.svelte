@@ -45,6 +45,7 @@
 		box-shadow: var(--box-shadow);
 		transform: rotate(var(--rotation));
 		transition: transform 0.2s ease-in-out;
+		background-color: lightgray;
 	}
 	img:hover {
 		@media (min-width: 600px) {

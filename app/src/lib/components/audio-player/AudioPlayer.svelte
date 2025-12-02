@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { setActiveSong, userState } from '$lib/global/state.svelte.js';
+	import { userState } from '$lib/global/state.svelte.js';
 	import { makeImageLink } from '$lib/utils';
+	import { setActiveSong } from '$lib/utils/audio-playback';
 	import type { Track } from '../../../../../shared/types/core';
 	import type { ReleaseHydrated, TrackHydrated } from '../../../../../shared/types/hydrated';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 
 	let {
 		userId,
+		userBalance,
 		userPayPerStream,
 		track,
 		release,
@@ -14,6 +16,7 @@
 		likedTracks
 	}: {
 		userId: string;
+		userBalance: number;
 		userPayPerStream: number;
 		track: Track;
 		release: ReleaseHydrated;
@@ -54,13 +57,7 @@
 				);
 				if (currentSongIndex !== -1 && currentSongIndex < release.tracks.length - 1) {
 					const nextSong = release.tracks[currentSongIndex + 1];
-					setActiveSong(
-						nextSong,
-						release,
-						userId,
-						userState.liveBalance ?? userPayPerStream,
-						userPayPerStream
-					);
+					setActiveSong(nextSong, release, userId, userBalance, userPayPerStream);
 				} else {
 					userState.autoPlay = false;
 				}

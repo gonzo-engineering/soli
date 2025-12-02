@@ -1,21 +1,15 @@
 <script lang="ts">
-	import SectionLink from '$lib/components/layout/SectionLink.svelte';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
+	import type { UserData } from '$lib/global/state.svelte';
 	import { deleteCollection } from '$lib/remote-functions/collections.remote';
-	import type { Mixtape, User } from '../../../../../../shared/types/core';
-	import type { CollectionHydrated, TrackHydrated } from '../../../../../../shared/types/hydrated';
-	import type { Session } from '@supabase/supabase-js';
+	import type { CollectionHydrated } from '../../../../../../shared/types/hydrated';
 
 	let {
 		data
 	}: {
-		data: {
+		data: UserData & {
 			collection: CollectionHydrated;
-			session: Session;
-			profileData: User;
-			collections: CollectionHydrated[];
-			likedTracks: TrackHydrated[];
-			mixtapes: Mixtape[];
 		};
 	} = $props();
 
@@ -23,11 +17,16 @@
 </script>
 
 <svelte:head>
-	<title>{name} · Your collections · Soli</title>
+	<title>{name} · My collections · Soli</title>
 	<meta name="description" content={`Browse the collection '${name}' on Soli.`} />
 </svelte:head>
 
-<SectionLink link="/me/collections" label="Your collections" />
+<BreadcrumbLinks
+	breadcrumbs={[
+		{ link: '/me', label: 'Me' },
+		{ link: '/me/collections', label: 'My collections' }
+	]}
+/>
 
 <div class="collection">
 	<div class="collection-details">

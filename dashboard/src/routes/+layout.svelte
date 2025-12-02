@@ -4,7 +4,7 @@
 	import { dashboardState, type DashboardSectionId } from '$lib/state.svelte';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { signOut } from '$lib/remote-functions/artist.remote';
+	import { signOut } from '$lib/remote-functions/login.remote';
 
 	let { children, data } = $props();
 

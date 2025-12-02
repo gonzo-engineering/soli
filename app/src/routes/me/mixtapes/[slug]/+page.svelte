@@ -1,25 +1,15 @@
 <script lang="ts">
-	import SectionLink from '$lib/components/layout/SectionLink.svelte';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
+	import type { UserData } from '$lib/global/state.svelte';
 	import { deleteMixtape } from '$lib/remote-functions/mixtapes.remote';
-	import type { Session } from '@supabase/supabase-js';
-	import type { Mixtape, User } from '../../../../../../shared/types/core';
-	import type {
-		CollectionHydrated,
-		MixtapeHydrated,
-		TrackHydrated
-	} from '../../../../../../shared/types/hydrated';
+	import type { MixtapeHydrated } from '../../../../../../shared/types/hydrated';
 
 	let {
 		data
 	}: {
-		data: {
+		data: UserData & {
 			mixtape: MixtapeHydrated;
-			session: Session;
-			profileData: User;
-			collections: CollectionHydrated[];
-			likedTracks: TrackHydrated[];
-			mixtapes: Mixtape[];
 		};
 	} = $props();
 
@@ -31,7 +21,12 @@
 	<meta name="description" content={`Browse the mixtape "${name}" on Soli.`} />
 </svelte:head>
 
-<SectionLink link="/me/mixtapes" label="Your mixtapes" />
+<BreadcrumbLinks
+	breadcrumbs={[
+		{ link: '/me', label: 'Me' },
+		{ link: '/me/mixtapes', label: 'My mixtapes' }
+	]}
+/>
 
 <div class="mixtape">
 	<div class="mixtape-details">
@@ -40,7 +35,13 @@
 			<div>{description}</div>
 		{/if}
 	</div>
-	<TracksTable {tracks} showReleaseAndArtist />
+	<TracksTable
+		{tracks}
+		userProfile={data.profileData}
+		userLikedTracks={data.likedTracks}
+		userMixtapes={data.mixtapes}
+		showReleaseAndArtist
+	/>
 </div>
 
 <form {...deleteMixtape.for(id)}>

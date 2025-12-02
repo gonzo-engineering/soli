@@ -1,33 +1,22 @@
 <script lang="ts">
-	import type { Mixtape } from '../../../../../shared/types/core';
 	import { makeImageLink } from '$lib/utils';
-	import type { Session } from '@supabase/supabase-js';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
-	import { setActiveSong, userState } from '$lib/global/state.svelte';
+	import { userState, type UserData } from '$lib/global/state.svelte';
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import { formatReleaseType } from '../../../../../shared/utils';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
 	import Albums from '$lib/components/icons/Albums.svelte';
 	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
-	import SectionLink from '$lib/components/layout/SectionLink.svelte';
-	import type { User } from '../../../../../shared/types/core';
-	import type {
-		CollectionHydrated,
-		TrackHydrated,
-		ReleaseHydrated
-	} from '../../../../../shared/types/hydrated';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
+	import { setActiveSong } from '$lib/utils/audio-playback';
 
 	let {
 		data
 	}: {
-		data: {
+		data: UserData & {
 			release: ReleaseHydrated;
-			session: Session;
-			profileData: User;
-			collections: CollectionHydrated[];
-			likedTracks: TrackHydrated[];
-			mixtapes: Mixtape[];
 		};
 	} = $props();
 
@@ -43,7 +32,7 @@
 	/>
 </svelte:head>
 
-<SectionLink link="/releases" label="Releases" />
+<BreadcrumbLinks breadcrumbs={[{ link: '/releases', label: 'Releases' }]} />
 
 <div class="release-summary-card">
 	<div class="release-header">
@@ -76,8 +65,8 @@
 				release.tracks[0],
 				release,
 				data.session.user.id,
-				userState.liveBalance ?? data.profileData.tokens_balance,
-				userState.payPerStream
+				data.profileData.tokens_balance,
+				data.profileData.pay_per_stream
 			);
 			userState.autoPlay = true;
 		}}
@@ -93,6 +82,9 @@
 			release,
 			artist: release.artist
 		}))}
+		userProfile={data.profileData}
+		userLikedTracks={data.likedTracks}
+		userMixtapes={data.mixtapes}
 	/>
 
 	<hr />

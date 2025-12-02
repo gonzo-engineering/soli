@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import { makeCollection, deleteCollection } from '$lib/remote-functions/collections.remote';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import { makeCollection } from '$lib/remote-functions/collections.remote';
 	import type { CollectionHydrated } from '../../../../../shared/types/hydrated';
 
 	let { data } = $props();
@@ -9,12 +9,14 @@
 </script>
 
 <svelte:head>
-	<title>Your collections · Soli</title>
-	<meta name="description" content="Browse your collections on Soli." />
+	<title>My collections · Soli</title>
+	<meta name="description" content="Browse my collections on Soli." />
 </svelte:head>
 
+<BreadcrumbLinks breadcrumbs={[{ link: '/me', label: 'Me' }]} />
+
 <section>
-	<h2>Your collections</h2>
+	<h2>My collections</h2>
 
 	{#each collections as collection}
 		<a href="/me/collections/{collection.id}">
@@ -59,6 +61,7 @@
 		padding: 1rem;
 		border: 1px solid #eee;
 		border-radius: 0.5rem;
+		max-width: 600px;
 	}
 	a {
 		text-decoration: none;

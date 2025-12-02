@@ -1,12 +1,19 @@
 <script lang="ts">
+	import type { Mixtape, Listener } from '../../../../../shared/types/core';
 	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
 	import TrackTableRow from './TracksTableRow.svelte';
 
 	const {
 		tracks,
+		userProfile,
+		userLikedTracks,
+		userMixtapes,
 		showReleaseAndArtist = false
 	}: {
 		tracks: TrackHydrated[];
+		userProfile: Listener;
+		userLikedTracks: TrackHydrated[];
+		userMixtapes: Mixtape[];
 		showReleaseAndArtist?: boolean;
 	} = $props();
 </script>
@@ -28,7 +35,14 @@
 	</thead>
 	<tbody>
 		{#each tracks as track, i}
-			<TrackTableRow i={i + 1} {track} {showReleaseAndArtist} />
+			<TrackTableRow
+				i={i + 1}
+				{track}
+				{showReleaseAndArtist}
+				{userProfile}
+				likedTracks={userLikedTracks}
+				mixtapes={userMixtapes}
+			/>
 		{/each}
 	</tbody>
 </table>

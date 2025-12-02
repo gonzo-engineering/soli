@@ -1,21 +1,9 @@
 <script lang="ts">
-	import type { SubmitFunction } from '@sveltejs/kit';
-	import { enhance } from '$app/forms';
-	import type { ActionData } from './$types';
+	import { sendCode, verifyCode } from '$lib/remote-functions/login.remote';
 
-	let { form }: { form?: ActionData } = $props();
-
-	let stage: 'enterEmail' | 'enterCode' = $derived(form?.success ? 'enterCode' : 'enterEmail');
-
-	let loading = $state(false);
-
-	const handleSubmit: SubmitFunction = () => {
-		loading = true;
-		return async ({ update }) => {
-			update();
-			loading = false;
-		};
-	};
+	let stage: 'enterEmail' | 'enterCode' = $derived(
+		sendCode.result?.success ? 'enterCode' : 'enterEmail'
+	);
 </script>
 
 <svelte:head>
@@ -24,42 +12,31 @@
 
 <div class="wrapper">
 	<h2>Log in</h2>
-	{#if stage === 'enterEmail'}
-		<div>Enter your email to receive a one-time code.</div>
-	{:else if stage === 'enterCode' && form?.email}
+	{#if !sendCode.result}
+		<div>Enter your email to log in.</div>
+	{:else if sendCode.result?.success}
 		<div>
-			A 6-digit code was sent to <strong>{form.email}</strong>. Please enter it below to log in.
+			A 6-digit code was sent to <strong>{sendCode.result.email}</strong>. Please enter it below to
+			log in.
 		</div>
 	{/if}
 
-	{#if form?.success === false && form?.message}
-		<div style="color: red;">{form.message}</div>
+	{#if !sendCode.result?.success === false && sendCode.result?.message}
+		<div style="color: lightgreen;">{sendCode.result.message}</div>
 	{/if}
 
 	{#if stage === 'enterEmail'}
-		<form method="POST" action="?/sendCode" use:enhance={handleSubmit}>
-			<input id="email" name="email" type="email" placeholder="you@example.com" required />
-			<button type="submit" disabled={loading}>
-				{loading ? 'Sending…' : 'Send code'}
-			</button>
+		<form {...sendCode}>
+			<input {...sendCode.fields.email.as('email')} />
+			<button type="submit">Send code</button>
 		</form>
 	{/if}
 
-	{#if stage === 'enterCode' && form?.email}
-		<form method="POST" action="?/verifyCode" use:enhance={handleSubmit}>
-			<input type="hidden" name="email" value={form.email} />
-			<input
-				id="code"
-				name="code"
-				type="text"
-				inputmode="numeric"
-				maxlength="6"
-				placeholder="123456"
-				required
-			/>
-			<button type="submit" disabled={loading}>
-				{loading ? 'Verifying…' : 'Verify code'}
-			</button>
+	{#if stage === 'enterCode' && sendCode.result?.email}
+		<form {...verifyCode}>
+			<input {...verifyCode.fields.email.as('hidden', sendCode.result.email)} />
+			<input {...verifyCode.fields.code.as('text')} />
+			<button type="submit">Verify code</button>
 		</form>
 	{/if}
 </div>
