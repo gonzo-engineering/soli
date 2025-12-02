@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SectionLink from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import { makeMixtape } from '$lib/remote-functions/mixtapes.remote';
 
 	let { data } = $props();
@@ -12,7 +12,7 @@
 	<meta name="description" content="Browse my mixtapes on Soli." />
 </svelte:head>
 
-<SectionLink breadcrumbs={[{ link: '/me', label: 'Me' }]} />
+<BreadcrumbLinks breadcrumbs={[{ link: '/me', label: 'Me' }]} />
 
 <section>
 	<h2>My mixtapes</h2>

@@ -3,7 +3,7 @@
 	import type { ArtistHydrated } from '../../../../../shared/types/hydrated';
 	import { makeImageLink } from '$lib/utils';
 	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
-	import SectionLink from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import type { Release } from '../../../../../shared/types/core';
 
 	let { data }: { data: { artist: ArtistHydrated; followedArtists: string[] } } = $props();
@@ -31,7 +31,7 @@
 	<meta name="description" content={`The artist page for ${name}.`} />
 </svelte:head>
 
-<SectionLink breadcrumbs={[{ link: '/artists', label: 'Artists' }]} />
+<BreadcrumbLinks breadcrumbs={[{ link: '/artists', label: 'Artists' }]} />
 
 <div class="container">
 	<div class="artist-summary-card">

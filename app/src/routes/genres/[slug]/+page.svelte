@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SectionLink from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 
 	let { data } = $props();
@@ -14,7 +14,7 @@
 	<meta name="description" content="Browse releases with the genres '{data.genre}' on Soli." />
 </svelte:head>
 
-<SectionLink breadcrumbs={[{ link: '/genres', label: 'Genres' }]} />
+<BreadcrumbLinks breadcrumbs={[{ link: '/genres', label: 'Genres' }]} />
 
 <h2>{capitaliseFirstLetter(data.genre!)}</h2>
 {#if data.genreReleases}

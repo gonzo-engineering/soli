@@ -10,7 +10,7 @@
 	import Albums from '$lib/components/icons/Albums.svelte';
 	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
-	import SectionLink from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import type { User } from '../../../../../shared/types/core';
 	import type {
 		CollectionHydrated,
@@ -43,7 +43,7 @@
 	/>
 </svelte:head>
 
-<SectionLink breadcrumbs={[{ link: '/releases', label: 'Releases' }]} />
+<BreadcrumbLinks breadcrumbs={[{ link: '/releases', label: 'Releases' }]} />
 
 <div class="release-summary-card">
 	<div class="release-header">

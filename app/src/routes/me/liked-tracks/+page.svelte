@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SectionLink from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
 
 	let { data } = $props();
@@ -22,7 +22,7 @@
 	<meta name="description" content="Browse your liked tracks on Soli." />
 </svelte:head>
 
-<SectionLink breadcrumbs={[{ link: '/me', label: 'Me' }]} />
+<BreadcrumbLinks breadcrumbs={[{ link: '/me', label: 'Me' }]} />
 
 <h2>My liked tracks</h2>
 

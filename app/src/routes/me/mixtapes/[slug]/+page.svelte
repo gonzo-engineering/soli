@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SectionLink from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
 	import { deleteMixtape } from '$lib/remote-functions/mixtapes.remote';
 	import type { Session } from '@supabase/supabase-js';
@@ -31,7 +31,7 @@
 	<meta name="description" content={`Browse the mixtape "${name}" on Soli.`} />
 </svelte:head>
 
-<SectionLink
+<BreadcrumbLinks
 	breadcrumbs={[
 		{ link: '/me', label: 'Me' },
 		{ link: '/me/mixtapes', label: 'My mixtapes' }

@@ -1,7 +1,6 @@
 <script lang="ts">
-	import SectionLink from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
-	import { makeCollection, deleteCollection } from '$lib/remote-functions/collections.remote';
+	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import { makeCollection } from '$lib/remote-functions/collections.remote';
 	import type { CollectionHydrated } from '../../../../../shared/types/hydrated';
 
 	let { data } = $props();
@@ -14,7 +13,7 @@
 	<meta name="description" content="Browse my collections on Soli." />
 </svelte:head>
 
-<SectionLink breadcrumbs={[{ link: '/me', label: 'Me' }]} />
+<BreadcrumbLinks breadcrumbs={[{ link: '/me', label: 'Me' }]} />
 
 <section>
 	<h2>My collections</h2>
