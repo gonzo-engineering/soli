@@ -31,13 +31,6 @@ export const updateArtistDetails = form(ArtistDetailsForm, async (data) => {
 	});
 });
 
-export const signOut = query(async () => {
-	const { locals } = getRequestEvent();
-	if (locals.session) {
-		await locals.supabase.auth.signOut();
-	}
-});
-
 export const getArtistReleases = query(z.string(), async (artistId) => {
 	const response = await fetch(`${API_BASE}/artists/${artistId}/releases`, {
 		method: 'GET',
