@@ -38,7 +38,7 @@
 	<script
 		data-goatcounter="https://soli.goatcounter.com/count"
 		async
-		src="//gc.zgo.at/count.js"
+		src="/goatcounter.js"
 	></script>
 </svelte:head>
 
