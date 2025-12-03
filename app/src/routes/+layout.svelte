@@ -2,6 +2,7 @@
 	import '../../../shared/styles/reset.css';
 	import '../../../shared/styles/global.css';
 
+	import { page } from '$app/state';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { userState } from '$lib/global/state.svelte.js';
@@ -10,10 +11,12 @@
 	import AudioPlayer from '$lib/components/audio-player/AudioPlayer.svelte';
 	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
 	import Navigation from '$lib/components/layout/Navigation.svelte';
+	import { INDEXABLE_PATH_ROOTS } from '$lib/global/config';
 
 	let { children, data } = $props();
 
 	let { supabase, session } = $derived(data);
+	let pagePath = $derived(page.url.pathname);
 
 	let hydratedReleasePromise = $derived(
 		userState.activeSongRelease?.id ? getHydratedRelease(userState.activeSongRelease?.id) : null
@@ -23,7 +26,7 @@
 	let menuIsOpen = $state(false);
 
 	onMount(() => {
-		const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
+		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
 			if (newSession?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}
@@ -35,11 +38,17 @@
 <svelte:head>
 	<meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)" />
 	<meta name="theme-color" content="#f0f0f0" media="(prefers-color-scheme: light)" />
-	<script
-		data-goatcounter="https://soli.goatcounter.com/count"
-		async
-		src="//gc.zgo.at/count.js"
-	></script>
+	{#key pagePath}
+		{#if INDEXABLE_PATH_ROOTS.some((path) => pagePath.startsWith(path)) || pagePath === '/'}
+			<script
+				data-goatcounter="https://soli.goatcounter.com/count"
+				async
+				src="//gc.zgo.at/count.js"
+			></script>
+		{:else}
+			<meta name="robots" content="noindex" />
+		{/if}
+	{/key}
 </svelte:head>
 
 {#if menuIsOpen}
