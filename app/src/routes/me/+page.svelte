@@ -3,6 +3,7 @@
 	import ContentBlock from '$lib/components/ContentBlock.svelte';
 	import { tokensCheckout, updateUserSettings } from '$lib/remote-functions/user.remote';
 	import { signOut } from '$lib/remote-functions/login.remote';
+	import { PLATFORM_FEE_PERCENTAGE } from '../../../../shared/config/index.js';
 
 	let { data } = $props();
 
@@ -15,7 +16,7 @@
 
 	const makeTopUpMessage = (numberOfTokens: number) => {
 		const tokensFee = numberOfTokens;
-		const soliCut = Math.round(tokensFee * 0.1);
+		const soliCut = Math.round(tokensFee * PLATFORM_FEE_PERCENTAGE);
 		return `Cost: ${prettifyPennies(
 			tokensFee + soliCut
 		)} (${prettifyPennies(tokensFee)} for the tokens and ${prettifyPennies(soliCut)} for Soli.)`;

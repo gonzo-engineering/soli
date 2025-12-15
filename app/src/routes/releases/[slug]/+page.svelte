@@ -64,7 +64,6 @@
 			setActiveSong(
 				release.tracks[0],
 				release,
-				data.session.user.id,
 				data.profileData.tokens_balance,
 				data.profileData.pay_per_stream
 			);
