@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { userState } from '$lib/global/state.svelte.js';
+	import { logStream } from '$lib/remote-functions/listening.remote';
+	import { updateUserTokensBalance } from '$lib/remote-functions/user.remote';
 	import { makeImageLink } from '$lib/utils';
 	import { setActiveSong } from '$lib/utils/audio-playback';
+	import { STREAM_THRESHOLD_SECONDS } from '../../../../../shared/config';
 	import type { Track } from '../../../../../shared/types/core';
 	import type { ReleaseHydrated, TrackHydrated } from '../../../../../shared/types/hydrated';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
@@ -24,6 +27,43 @@
 		likedTracks: TrackHydrated[];
 	} = $props();
 
+	let audioElement: HTMLAudioElement | null = $state(null);
+	let charged = $state(false);
+	let listenedSeconds = $state(0);
+	let lastTime = $state(0);
+
+	const onTimeUpdate = () => {
+		if (!audioElement || charged) return;
+
+		const delta = audioElement.currentTime - lastTime;
+
+		if (delta > 0 && delta < 1.5) {
+			listenedSeconds += delta;
+		}
+
+		lastTime = audioElement.currentTime;
+
+		if (listenedSeconds >= STREAM_THRESHOLD_SECONDS) {
+			charged = true;
+			charge();
+		}
+	};
+
+	const charge = async () => {
+		await updateUserTokensBalance({
+			userId,
+			tokens: userPayPerStream,
+			addOrSubtract: 'subtract'
+		});
+
+		await logStream({
+			userId,
+			artistId: release.artist_id,
+			trackId: track.id,
+			tokensUsed: userPayPerStream
+		});
+	};
+
 	$effect(() => {
 		if ('mediaSession' in navigator) {
 			navigator.mediaSession.metadata = new MediaMetadata({
@@ -38,6 +78,21 @@
 			});
 		}
 	});
+
+	$effect(() => {
+		if (!songUrl || !track?.id || !audioElement) return;
+
+		listenedSeconds = 0;
+		lastTime = 0;
+		charged = false;
+
+		audioElement.removeEventListener('timeupdate', onTimeUpdate);
+		audioElement.addEventListener('timeupdate', onTimeUpdate);
+
+		return () => {
+			audioElement?.removeEventListener('timeupdate', onTimeUpdate);
+		};
+	});
 </script>
 
 <div class="audio-player">
@@ -48,8 +103,10 @@
 		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'dark'} />
 	</div>
 	<audio
+		bind:this={audioElement}
 		src={songUrl}
 		bind:paused={userState.activeSongIsPaused}
+		ontimeupdate={onTimeUpdate}
 		onended={() => {
 			if (userState.autoPlay) {
 				const currentSongIndex = release.tracks.findIndex(
@@ -57,7 +114,7 @@
 				);
 				if (currentSongIndex !== -1 && currentSongIndex < release.tracks.length - 1) {
 					const nextSong = release.tracks[currentSongIndex + 1];
-					setActiveSong(nextSong, release, userId, userBalance, userPayPerStream);
+					setActiveSong(nextSong, release, userBalance, userPayPerStream);
 				} else {
 					userState.autoPlay = false;
 				}

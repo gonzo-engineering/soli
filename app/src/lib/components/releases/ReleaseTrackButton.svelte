@@ -23,13 +23,7 @@
 			if (track.ipfs_cid == userState.activeSong?.ipfs_cid) {
 				userState.activeSongIsPaused = !userState.activeSongIsPaused;
 			} else {
-				setActiveSong(
-					track,
-					release,
-					userProfile.id,
-					userProfile.tokens_balance,
-					userProfile.pay_per_stream
-				);
+				setActiveSong(track, release, userProfile.tokens_balance, userProfile.pay_per_stream);
 				userState.autoPlay = false;
 			}
 		}}

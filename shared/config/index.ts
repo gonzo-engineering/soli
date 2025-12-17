@@ -7,10 +7,8 @@ export const DASHBOARD_LOCAL_PORT = 3001;
 export const API_DOMAIN = 'https://api.soli.network';
 export const API_LOCAL_PORT = 3002;
 
-export const REVENUE_SPLIT = {
-	artists: 0.9,
-	platform: 0.1
-};
+export const PLATFORM_FEE_PERCENTAGE = 0.1;
+export const STREAM_THRESHOLD_SECONDS = 30;
 
 export const TABLES = {
 	users: 'users',
