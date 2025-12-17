@@ -11,6 +11,7 @@
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
 	import { setActiveSong } from '$lib/utils/audio-playback';
+	import ReleaseArtwork from '$lib/components/ReleaseArtwork.svelte';
 
 	let {
 		data
@@ -53,10 +54,10 @@
 		</PopupWrapper>
 	{/if}
 
-	<img
-		src={makeImageLink(release.artwork_ipfs_cid, 500)}
-		alt={`Cover art for '${release.title}' by ${release.artist.name}'`}
-		class="cover-art"
+	<ReleaseArtwork
+		name={release.title}
+		artist={release.artist.name}
+		imageSrc={makeImageLink(release.artwork_ipfs_cid, 500)}
 	/>
 
 	<ButtonWrapper
@@ -115,11 +116,6 @@
 	h2 {
 		margin: 0;
 		line-height: 1;
-	}
-	.cover-art {
-		aspect-ratio: 1/1;
-		background-color: lightgray;
-		box-shadow: var(--box-shadow);
 	}
 	.play-full-release-button {
 		background-color: var(--color-accent);

@@ -7,7 +7,10 @@
 	import { STREAM_THRESHOLD_SECONDS } from '../../../../../shared/config';
 	import type { Track } from '../../../../../shared/types/core';
 	import type { ReleaseHydrated, TrackHydrated } from '../../../../../shared/types/hydrated';
+	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
+	import ReleaseArtwork from '../ReleaseArtwork.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
+	import { slide } from 'svelte/transition';
 
 	let {
 		userId,
@@ -27,6 +30,7 @@
 		likedTracks: TrackHydrated[];
 	} = $props();
 
+	let fullPage = $state(false);
 	let audioElement: HTMLAudioElement | null = $state(null);
 	let charged = $state(false);
 	let listenedSeconds = $state(0);
@@ -95,10 +99,27 @@
 	});
 </script>
 
-<div class="audio-player">
+<div
+	class="audio-player"
+	class:full-page={fullPage}
+	transition:slide={{ duration: 300, axis: 'x' }}
+>
+	{#if fullPage}
+		<img src="/full-logo-black.png" class="soli-logo" alt="Soli emblem" />
+		<h2>Now Playing</h2>
+		<ReleaseArtwork
+			name={release.title}
+			artist={release.artist.name}
+			imageSrc={makeImageLink(release.artwork_ipfs_cid, 500)}
+			isAskew
+		/>
+	{/if}
 	<div class="now-playing-info">
 		<div>
-			“{track.title}” by <a href={`/artists/${release.artist_id}`}>{release.artist.name}</a>
+			“{track.title}” by
+			<a href={`/artists/${release.artist_id}`} onclick={() => (fullPage = false)}
+				>{release.artist.name}</a
+			>
 		</div>
 		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'dark'} />
 	</div>
@@ -124,6 +145,15 @@
 		autoplay
 		controlsList="nodownload noplaybackrate"
 	></audio>
+	<div class="hidden-on-desktop">
+		<ButtonWrapper
+			onClickFunction={() => {
+				fullPage = !fullPage;
+			}}
+		>
+			{fullPage ? 'Minimize' : 'Expand'}
+		</ButtonWrapper>
+	</div>
 </div>
 
 <style>
@@ -141,6 +171,18 @@
 		background-color: #f0f0f0;
 		padding: 1rem;
 	}
+	h2 {
+		margin: 0;
+	}
+	.full-page {
+		top: 0;
+		height: 100vh;
+		z-index: 1000;
+	}
+	.soli-logo {
+		max-width: 80px;
+		margin: 0 auto;
+	}
 	a {
 		color: black;
 	}
@@ -154,6 +196,9 @@
 		.audio-player {
 			flex-direction: row;
 			gap: 2rem;
+		}
+		.hidden-on-desktop {
+			display: none;
 		}
 	}
 </style>
