@@ -7,8 +7,8 @@
 	import { STREAM_THRESHOLD_SECONDS } from '../../../../../shared/config';
 	import type { Track } from '../../../../../shared/types/core';
 	import type { ReleaseHydrated, TrackHydrated } from '../../../../../shared/types/hydrated';
-	import Chevron from '../icons/Chevron.svelte';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
+	import Icon from '../layout/Icon.svelte';
 	import ReleaseArtwork from '../ReleaseArtwork.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 	import { slide } from 'svelte/transition';
@@ -123,7 +123,7 @@
 				}}
 			>
 				<div style:transform={fullPage ? 'rotate(0deg)' : 'rotate(180deg)'}>
-					<Chevron />
+					<Icon key="chevron" size={28} />
 				</div>
 			</ButtonWrapper>
 		</div>

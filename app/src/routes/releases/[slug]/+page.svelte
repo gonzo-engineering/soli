@@ -5,13 +5,13 @@
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import { formatReleaseType } from '../../../../../shared/utils';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
-	import Albums from '$lib/components/icons/Albums.svelte';
 	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
 	import { setActiveSong } from '$lib/utils/audio-playback';
 	import ReleaseArtwork from '$lib/components/ReleaseArtwork.svelte';
+	import Icon from '$lib/components/layout/Icon.svelte';
 
 	let {
 		data
@@ -44,7 +44,7 @@
 			</div>
 		</div>
 		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
-			<Albums />
+			<Icon key="albums" size={50} />
 		</ButtonWrapper>
 	</div>
 

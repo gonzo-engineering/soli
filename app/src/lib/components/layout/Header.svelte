@@ -1,12 +1,10 @@
 <script lang="ts">
-	import Menu from '../icons/Menu.svelte';
-	import Cross from '../icons/Cross.svelte';
-	import Search from '../icons/Search.svelte';
 	import ButtonWrapper from './ButtonWrapper.svelte';
 	import { API_BASE } from '$lib/global/config';
 	import { page } from '$app/state';
 	import type { SearchResult } from '../../../../../shared/types/core';
 	import SearchResults from '../search/SearchResults.svelte';
+	import Icon from './Icon.svelte';
 
 	let {
 		userIsLoggedIn,
@@ -50,7 +48,7 @@
 <header>
 	{#if userIsLoggedIn}
 		<ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
-			<Search />
+			<Icon key="search" size={30} strokeMode />
 		</ButtonWrapper>
 	{:else}
 		<div style="width: 30px;"></div>
@@ -61,9 +59,9 @@
 	</a>
 	<ButtonWrapper onClickFunction={() => (menuIsOpen = !menuIsOpen)}>
 		{#if menuIsOpen}
-			<Cross />
+			<Icon key="cross" size={30} strokeMode />
 		{:else}
-			<Menu />
+			<Icon key="menu" size={30} strokeMode />
 		{/if}
 	</ButtonWrapper>
 </header>

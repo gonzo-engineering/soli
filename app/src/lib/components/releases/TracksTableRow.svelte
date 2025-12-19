@@ -3,11 +3,11 @@
 	import { prettifyDuration } from '../../../../../shared/utils';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
-	import ThreeDots from '../icons/ThreeDots.svelte';
 	import PopupWrapper from '../layout/PopupWrapper.svelte';
 	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 	import type { Mixtape, Listener } from '../../../../../shared/types/core';
+	import Icon from '../layout/Icon.svelte';
 
 	const {
 		i = undefined,
@@ -46,7 +46,7 @@
 	</td>
 	<td>
 		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
-			<ThreeDots />
+			<Icon key="threeDots" size={20} />
 		</ButtonWrapper>
 	</td>
 </tr>

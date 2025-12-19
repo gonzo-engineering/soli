@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Heart from '../icons/Heart.svelte';
 	import { toggleLikedTrack } from '$lib/remote-functions/user.remote';
 	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
+	import Icon from '../layout/Icon.svelte';
 
 	let {
 		trackID,
@@ -22,7 +22,7 @@
 	<input {...toggleLikedTrack.fields.trackId.as('hidden', trackID)} />
 	<input {...toggleLikedTrack.fields.addOrRemove.as('hidden', isLiked ? 'remove' : 'add')} />
 	<button type="submit" class={lightOrDark}>
-		<Heart filled={isLiked} />
+		<Icon key="heart" strokeMode={!isLiked} />
 	</button>
 </form>
 

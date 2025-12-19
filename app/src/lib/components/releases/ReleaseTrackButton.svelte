@@ -2,9 +2,8 @@
 	import { setActiveSong } from '$lib/utils/audio-playback';
 	import { userState } from '$lib/global/state.svelte';
 	import type { Release, Track, Listener } from '../../../../../shared/types/core';
-	import Pause from '../icons/Pause.svelte';
-	import Play from '../icons/Play.svelte';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
+	import Icon from '../layout/Icon.svelte';
 
 	let {
 		track,
@@ -29,9 +28,9 @@
 		}}
 	>
 		{#if track.ipfs_cid === userState.activeSong?.ipfs_cid && !userState.activeSongIsPaused}
-			<Pause />
+			<Icon key="pause" size={26} />
 		{:else}
-			<Play />
+			<Icon key="play" size={26} />
 		{/if}
 	</ButtonWrapper>
 {:else}
