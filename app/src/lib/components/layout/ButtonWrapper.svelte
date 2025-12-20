@@ -18,10 +18,6 @@
 </div>
 
 <style>
-	.button-wrapper {
-		display: flex;
-		justify-content: right;
-	}
 	.button-wrapper:hover {
 		cursor: pointer;
 		opacity: 0.8;

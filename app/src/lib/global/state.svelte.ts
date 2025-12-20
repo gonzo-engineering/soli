@@ -1,6 +1,10 @@
 import type { Session } from '@supabase/supabase-js';
 import type { Mixtape, Release, Track, Listener } from '../../../../shared/types/core';
-import type { CollectionHydrated, TrackHydrated } from '../../../../shared/types/hydrated';
+import type {
+	CollectionHydrated,
+	MixtapeHydrated,
+	TrackHydrated
+} from '../../../../shared/types/hydrated';
 
 interface UserState {
 	activeSong: Track | null;
@@ -8,6 +12,7 @@ interface UserState {
 	activeSongUrl: string | null;
 	activeSongIsPaused: boolean;
 	autoPlay: boolean;
+	activeMixtape: MixtapeHydrated | null;
 }
 
 export interface UserData {
@@ -23,5 +28,6 @@ export const userState: UserState = $state({
 	activeSongRelease: null,
 	activeSongUrl: null,
 	activeSongIsPaused: false,
-	autoPlay: false
+	autoPlay: false,
+	activeMixtape: null
 });

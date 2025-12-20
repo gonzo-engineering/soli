@@ -5,12 +5,13 @@
 	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import { formatReleaseType } from '../../../../../shared/utils';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
-	import Albums from '$lib/components/icons/Albums.svelte';
 	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
 	import { setActiveSong } from '$lib/utils/audio-playback';
+	import ReleaseArtwork from '$lib/components/ReleaseArtwork.svelte';
+	import Icon from '$lib/components/layout/Icon.svelte';
 
 	let {
 		data
@@ -43,20 +44,14 @@
 			</div>
 		</div>
 		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
-			<Albums />
+			<Icon key="albums" size={50} />
 		</ButtonWrapper>
 	</div>
 
-	{#if popupMenuOpen}
-		<PopupWrapper bind:popupMenuOpen>
-			<ReleaseCollectionsMenu {release} collections={data.collections} />
-		</PopupWrapper>
-	{/if}
-
-	<img
-		src={makeImageLink(release.artwork_ipfs_cid, 500)}
-		alt={`Cover art for '${release.title}' by ${release.artist.name}'`}
-		class="cover-art"
+	<ReleaseArtwork
+		name={release.title}
+		artist={release.artist.name}
+		imageSrc={makeImageLink(release.artwork_ipfs_cid, 500)}
 	/>
 
 	<ButtonWrapper
@@ -98,6 +93,12 @@
 	</div>
 </div>
 
+{#if popupMenuOpen}
+	<PopupWrapper bind:popupMenuOpen>
+		<ReleaseCollectionsMenu {release} collections={data.collections} />
+	</PopupWrapper>
+{/if}
+
 <style>
 	.release-summary-card {
 		max-width: 600px;
@@ -115,11 +116,6 @@
 	h2 {
 		margin: 0;
 		line-height: 1;
-	}
-	.cover-art {
-		aspect-ratio: 1/1;
-		background-color: lightgray;
-		box-shadow: var(--box-shadow);
 	}
 	.play-full-release-button {
 		background-color: var(--color-accent);

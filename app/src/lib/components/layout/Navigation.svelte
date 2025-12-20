@@ -1,7 +1,5 @@
 <script lang="ts">
-	import Vinyl from '$lib/components/icons/Vinyl.svelte';
-	import Cassette from '$lib/components/icons/Cassette.svelte';
-	import Heart from '$lib/components/icons/Heart.svelte';
+	import Icon from './Icon.svelte';
 
 	let { menuIsOpen = $bindable(), session }: { menuIsOpen: boolean; session: any } = $props();
 
@@ -42,11 +40,11 @@
 						<li>
 							<a href={link.href} onclick={() => (menuIsOpen = !menuIsOpen)}>
 								{#if link.label === 'Collections'}
-									<span class="icon"><Vinyl /></span>
+									<span class="icon"><Icon key="vinyl" /></span>
 								{:else if link.label === 'Mixtapes'}
-									<span class="icon"><Cassette /></span>
+									<span class="icon"><Icon key="cassette" /></span>
 								{:else if link.label === 'Liked tracks'}
-									<span class="icon"><Heart filled /></span>
+									<span class="icon"><Icon key="heart" /></span>
 								{/if}
 								{link.label}
 							</a>

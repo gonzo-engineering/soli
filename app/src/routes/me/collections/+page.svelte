@@ -59,7 +59,8 @@
 	.collection-details {
 		margin-bottom: 1rem;
 		padding: 1rem;
-		border: 1px solid #eee;
+		background-color: var(--color-background-secondary);
+		box-shadow: var(--box-shadow);
 		border-radius: 0.5rem;
 		max-width: 600px;
 	}
