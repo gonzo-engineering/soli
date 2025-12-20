@@ -42,7 +42,7 @@
 		<ReleaseTrackButton {track} release={track.release} {userProfile} />
 	</td>
 	<td>
-		<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'light'} />
+		<TrackLikeButton trackID={track.id} {likedTracks} />
 	</td>
 	<td>
 		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>

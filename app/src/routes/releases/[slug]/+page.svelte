@@ -48,12 +48,6 @@
 		</ButtonWrapper>
 	</div>
 
-	{#if popupMenuOpen}
-		<PopupWrapper bind:popupMenuOpen>
-			<ReleaseCollectionsMenu {release} collections={data.collections} />
-		</PopupWrapper>
-	{/if}
-
 	<ReleaseArtwork
 		name={release.title}
 		artist={release.artist.name}
@@ -98,6 +92,12 @@
 		<TagsGrid slugs={release.genres ?? []} type="genres" />
 	</div>
 </div>
+
+{#if popupMenuOpen}
+	<PopupWrapper bind:popupMenuOpen>
+		<ReleaseCollectionsMenu {release} collections={data.collections} />
+	</PopupWrapper>
+{/if}
 
 <style>
 	.release-summary-card {

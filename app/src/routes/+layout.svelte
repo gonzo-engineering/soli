@@ -36,7 +36,7 @@
 </script>
 
 <svelte:head>
-	<meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)" />
+	<meta name="theme-color" content="#222222" media="(prefers-color-scheme: dark)" />
 	<meta name="theme-color" content="#f0f0f0" media="(prefers-color-scheme: light)" />
 	{#key pagePath}
 		{#if INDEXABLE_PATH_ROOTS.some((path) => pagePath.startsWith(path)) || pagePath === '/'}

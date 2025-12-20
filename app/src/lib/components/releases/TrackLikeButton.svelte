@@ -5,12 +5,10 @@
 
 	let {
 		trackID,
-		likedTracks,
-		lightOrDark
+		likedTracks
 	}: {
 		trackID: string;
 		likedTracks: TrackHydrated[];
-		lightOrDark: 'light' | 'dark';
 	} = $props();
 
 	// Prevents duplicate form IDs for kindred TrackLikeButton components on the same page
@@ -21,7 +19,7 @@
 <form {...toggleLikedTrack.for(trackRandomKey)}>
 	<input {...toggleLikedTrack.fields.trackId.as('hidden', trackID)} />
 	<input {...toggleLikedTrack.fields.addOrRemove.as('hidden', isLiked ? 'remove' : 'add')} />
-	<button type="submit" class={lightOrDark}>
+	<button type="submit">
 		<Icon key="heart" strokeMode={!isLiked} />
 	</button>
 </form>
@@ -38,11 +36,6 @@
 		border: none;
 		cursor: pointer;
 		display: flex;
-	}
-	.light {
-		color: var(--color-text);
-	}
-	.dark {
-		color: #333;
+		color: var(--color-accent);
 	}
 </style>

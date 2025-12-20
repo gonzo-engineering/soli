@@ -9,6 +9,7 @@
 	import type { ReleaseHydrated, TrackHydrated } from '../../../../../shared/types/hydrated';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 	import Icon from '../layout/Icon.svelte';
+	import Logo from '../layout/Logo.svelte';
 	import ReleaseArtwork from '../ReleaseArtwork.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 	import { slide } from 'svelte/transition';
@@ -106,8 +107,8 @@
 	transition:slide={{ duration: 300, axis: 'y' }}
 >
 	{#if fullPage}
-		<img src="/full-logo-black.png" class="soli-logo" alt="Soli emblem" />
-		<h3>Now Playing</h3>
+		<Logo />
+		<h3>Now playing...</h3>
 		<ReleaseArtwork
 			name={release.title}
 			artist={release.artist.name}
@@ -135,7 +136,7 @@
 						>{release.artist.name}</a
 					>
 				</div>
-				<TrackLikeButton trackID={track.id} {likedTracks} lightOrDark={'dark'} />
+				<TrackLikeButton trackID={track.id} {likedTracks} />
 			</div>
 			<audio
 				bind:this={audioElement}
@@ -144,12 +145,24 @@
 				ontimeupdate={onTimeUpdate}
 				onended={() => {
 					if (userState.autoPlay) {
-						const currentSongIndex = release.tracks.findIndex(
+						const siblingTracks = userState.activeMixtape?.tracks || release.tracks;
+						const currentSongIndex = siblingTracks.findIndex(
 							(track) => track.ipfs_cid === userState.activeSong?.ipfs_cid
 						);
-						if (currentSongIndex !== -1 && currentSongIndex < release.tracks.length - 1) {
-							const nextSong = release.tracks[currentSongIndex + 1];
-							setActiveSong(nextSong, release, userBalance, userPayPerStream);
+						if (currentSongIndex !== -1 && currentSongIndex < siblingTracks.length - 1) {
+							const nextSong = siblingTracks[currentSongIndex + 1];
+							const nextSongRelease = userState.activeMixtape
+								? userState.activeMixtape!.tracks.find(
+										(track) => track.ipfs_cid === nextSong.ipfs_cid
+									)!.release
+								: release;
+							setActiveSong(
+								nextSong,
+								nextSongRelease,
+								userBalance,
+								userPayPerStream,
+								userState.activeMixtape ? userState.activeMixtape : undefined
+							);
 						} else {
 							userState.autoPlay = false;
 						}
@@ -174,9 +187,10 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		color: #333;
-		background-color: #f0f0f0;
-		padding: 1rem;
+		color: var(--color-text);
+		background-color: var(--color-background-secondary);
+		padding: 0 1rem 1rem 1rem;
+		box-shadow: var(--box-shadow);
 	}
 	h3 {
 		margin: 0;
@@ -185,13 +199,6 @@
 		top: 0;
 		height: 100vh;
 		z-index: 1000;
-	}
-	.soli-logo {
-		max-width: 80px;
-		margin: 0 auto;
-	}
-	a {
-		color: black;
 	}
 	.now-playing-info {
 		display: flex;
@@ -209,7 +216,17 @@
 	.reverse-column {
 		flex-direction: column-reverse;
 	}
+	.essentials {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+	}
 	@media (min-width: 600px) {
+		.audio-player {
+			padding: 1rem;
+		}
 		.essentials {
 			display: flex;
 			flex-direction: row;

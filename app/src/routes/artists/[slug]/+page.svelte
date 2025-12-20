@@ -49,7 +49,7 @@
 
 		<hr />
 
-		<div>
+		<div class="follow-artist-section">
 			<div>
 				You are {data.followedArtists.includes(data.artist.id) ? 'following' : 'not following'} this
 				artist.
@@ -172,5 +172,11 @@
 	.release-type-section {
 		margin-bottom: 1.5rem;
 		width: 100%;
+	}
+	.follow-artist-section {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.5rem;
 	}
 </style>

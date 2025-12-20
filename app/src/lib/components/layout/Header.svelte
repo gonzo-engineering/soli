@@ -5,6 +5,7 @@
 	import type { SearchResult } from '../../../../../shared/types/core';
 	import SearchResults from '../search/SearchResults.svelte';
 	import Icon from './Icon.svelte';
+	import Logo from './Logo.svelte';
 
 	let {
 		userIsLoggedIn,
@@ -54,8 +55,7 @@
 		<div style="width: 30px;"></div>
 	{/if}
 	<a href="/">
-		<img src="/full-logo-white.png" class="icon dark" alt="Soli emblem" />
-		<img src="/full-logo-black.png" class="icon light" alt="Soli emblem" />
+		<Logo />
 	</a>
 	<ButtonWrapper onClickFunction={() => (menuIsOpen = !menuIsOpen)}>
 		{#if menuIsOpen}
