@@ -20,8 +20,6 @@ const stripe = new Stripe(STRIPE_KEY, {
 
 // Always pay midnight UTC → midnight UTC
 const periodEnd = new Date();
-// Add an extra day for testing purposes
-periodEnd.setUTCDate(periodEnd.getUTCDate() + 1);
 periodEnd.setUTCHours(0, 0, 0, 0);
 
 const periodStart = new Date(periodEnd);
