@@ -90,21 +90,12 @@ if (artistError || !artists) {
 }
 
 // 5. Payout rules
-const MIN_PAYOUT_PENCE = 100; // £1 minimum
-
 for (const artist of artists) {
 	const earnings = earningsByArtist[artist.id];
 	if (!earnings) continue;
 
 	if (!artist.stripe_account_id) {
 		console.warn(`Skipping ${artist.name}: no Stripe account`);
-		continue;
-	}
-
-	if (earnings.total < MIN_PAYOUT_PENCE) {
-		console.log(
-			`Skipping ${artist.name}: £${((MIN_PAYOUT_PENCE - earnings.total) / 100).toFixed(2)} below minimum`
-		);
 		continue;
 	}
 
