@@ -1,5 +1,5 @@
 import { supabase } from '$lib/server/supabase';
-import { REVENUE_SPLIT, TABLES } from '../../../../../shared/config';
+import { TABLES } from '../../../../../shared/config';
 import { type RequestHandler } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -28,7 +28,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	const userId: string = stripeSession.metadata.userId;
 	const topUpAmount: number = stripeSession.amount_total;
-	const topUpTokens = Math.round(topUpAmount * REVENUE_SPLIT.artists);
+	const topUpTokens = Math.round(topUpAmount * 0.9);
 	const newBalance = parseInt(stripeSession.metadata.balance) + topUpTokens;
 
 	const { error } = await supabase
