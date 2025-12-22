@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { STRIPE_SECRET_KEY } from '$env/static/private';
+import { STRIPE_API_VERSION } from '../../../../shared/config';
 
 export const stripe = new Stripe(STRIPE_SECRET_KEY, {
-	apiVersion: '2025-11-17.clover'
+	apiVersion: STRIPE_API_VERSION
 });
