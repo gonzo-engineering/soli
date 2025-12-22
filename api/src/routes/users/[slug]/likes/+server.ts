@@ -15,7 +15,7 @@ export async function GET({ params }) {
 	}
 
 	const { data: likedTracks, error: likedTracksError } = await supabase
-		.from('tracks_hydrated')
+		.from(TABLES.tracksRich)
 		.select('*')
 		.in(
 			'id',

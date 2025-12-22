@@ -18,6 +18,7 @@ export const TABLES = {
 	artistsRich: 'artists_rich',
 	artistMembers: 'artist_members',
 	tracks: 'tracks',
+	tracksRich: 'tracks_hydrated',
 	releaseTracks: 'release_tracks',
 	releases: 'releases',
 	releasesRich: 'releases_rich',
