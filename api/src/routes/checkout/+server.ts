@@ -1,4 +1,4 @@
-import { APP_DOMAIN, REVENUE_SPLIT } from '../../../../shared/config';
+import { APP_DOMAIN } from '../../../../shared/config';
 import { stripe } from '$lib/server/stripe';
 import type { RequestHandler } from '@sveltejs/kit';
 
@@ -17,7 +17,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		price_data: {
 			currency: 'gbp',
 			product_data: {
-				name: `${Math.round(topUpAmount * REVENUE_SPLIT.artists)} streaming tokens`,
+				name: `${Math.round(topUpAmount * 0.9)} streaming tokens`,
 				images: []
 			},
 			unit_amount: topUpAmount
