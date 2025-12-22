@@ -103,11 +103,7 @@ for (const artist of artists) {
 			amount: earnings.total,
 			currency: 'gbp',
 			destination: artist.stripe_account_id,
-			description: `Weekly payout ${periodStart.toLocaleDateString()}–${periodEnd.toLocaleDateString()}`,
-			metadata: {
-				payout_id: payout.id,
-				artist_id: artist.id
-			}
+			description: `Weekly payout ${periodStart.toLocaleDateString()}–${periodEnd.toLocaleDateString()}`
 		});
 
 		console.log(`Paid £${(earnings.total / 100).toFixed(2)} to ${artist.name}`);
