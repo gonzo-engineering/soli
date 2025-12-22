@@ -7,6 +7,8 @@ export const DASHBOARD_LOCAL_PORT = 3001;
 export const API_DOMAIN = 'https://api.soli.network';
 export const API_LOCAL_PORT = 3002;
 
+export const STRIPE_API_VERSION = '2025-11-17.clover';
+
 export const PLATFORM_FEE_PERCENTAGE = 0.1;
 export const STREAM_THRESHOLD_SECONDS = 30;
 
@@ -16,10 +18,13 @@ export const TABLES = {
 	artistsRich: 'artists_rich',
 	artistMembers: 'artist_members',
 	tracks: 'tracks',
+	tracksRich: 'tracks_hydrated',
 	releaseTracks: 'release_tracks',
 	releases: 'releases',
 	releasesRich: 'releases_rich',
 	streams: 'streams',
+	earningsLedger: 'earnings_ledger',
+	payouts: 'payouts',
 	betaUsers: 'beta-users',
 	likedTracks: 'liked_tracks',
 	followedArtists: 'followed_artists',
@@ -28,8 +33,5 @@ export const TABLES = {
 	collectionsRich: 'collections_rich',
 	mixtapes: 'mixtapes',
 	mixtapesRich: 'mixtapes_rich',
-	mixtapeTracks: 'mixtape_tracks',
-	// Old hat, to be removed/deleted later
-	collectionsHydrated: 'collections_hydrated',
-	releasesHydrated: 'hydrated_releases'
+	mixtapeTracks: 'mixtape_tracks'
 };

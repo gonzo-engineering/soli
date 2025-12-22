@@ -63,6 +63,7 @@
 		});
 
 		await logStream({
+			streamId: userState.activeStreamSessionId!,
 			userId,
 			artistId: release.artist_id,
 			trackId: track.id,

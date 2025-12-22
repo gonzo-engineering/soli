@@ -12,4 +12,4 @@ Early doors but a key part of the puzzle.
 
 ## Development
 
-For local development in the early stages running `npx tsx payroll.ts` does nicely.
+For local development running `npx tsx scripts/payroll.ts` from the root of the `payroll` project does nicely.

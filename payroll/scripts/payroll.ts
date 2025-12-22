@@ -1,139 +1,129 @@
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 import 'dotenv/config';
+import { STRIPE_API_VERSION, TABLES } from '../../shared/config';
 
-interface Stream {
-	id: string;
-	streamed_at: string;
-	user_id: string;
-	track_id: string;
-	artist_id: string;
-	tokens_used: number;
-}
-
-const PUBLIC_SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL;
-const PUBLIC_SUPABASE_ANON_KEY = process.env.PUBLIC_SUPABASE_ANON_KEY;
+const SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL;
+const SUPABASE_KEY = process.env.PUBLIC_SUPABASE_ANON_KEY;
 const STRIPE_KEY = process.env.STRIPE_SECRET_KEY;
 
-if (!PUBLIC_SUPABASE_URL || !PUBLIC_SUPABASE_ANON_KEY || !STRIPE_KEY) {
+if (!SUPABASE_URL || !SUPABASE_KEY || !STRIPE_KEY) {
 	console.error('Missing environment variables');
 	process.exit(1);
 }
 
-const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const { data, error } = await supabase.from('streams').select();
+const stripe = new Stripe(STRIPE_KEY, {
+	apiVersion: STRIPE_API_VERSION
+});
 
-if (error) {
-	console.error('Error fetching streams:', error);
-}
+// Always pay midnight UTC → midnight UTC
+const periodEnd = new Date();
+periodEnd.setUTCHours(0, 0, 0, 0);
 
-if (!data) {
-	console.error('No data found');
+const periodStart = new Date(periodEnd);
+periodStart.setUTCDate(periodEnd.getUTCDate() - 7);
+
+console.log(`Running payroll for period ${periodStart.toISOString()} → ${periodEnd.toISOString()}`);
+
+// 1. Create payout record (acts as a lock)
+const { data: payout, error: payoutError } = await supabase
+	.from(TABLES.payouts)
+	.insert({
+		period_start: periodStart.toISOString(),
+		period_end: periodEnd.toISOString(),
+		status: 'pending'
+	})
+	.select()
+	.single();
+
+if (payoutError) {
+	console.error('Failed to create payout record (already run?)', payoutError);
 	process.exit(1);
 }
 
-// TODO: Make this more robust, and possibly going from midnight to midnight
-// ending before the script runs to avoid double counting
-const today = new Date();
-const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(today.getDate() - 7);
+// 2. Fetch unpaid earnings for the period (and before for carry-overs)
+const { data: ledgerRows, error: ledgerError } = await supabase
+	.from(TABLES.earningsLedger)
+	.select('id, artist_id, tokens_earned')
+	.is('payout_id', null)
+	.lt('earned_at', periodEnd.toISOString());
 
-const streamsFromLastSevenDays: Stream[] = data.filter((stream) => {
-	const streamDate = new Date(stream.streamed_at);
-	return streamDate >= sevenDaysAgo && streamDate < today;
-});
+if (ledgerError) {
+	console.error('Error fetching earnings ledger', ledgerError);
+	process.exit(1);
+}
 
-const artistEarnings = streamsFromLastSevenDays.reduce<
-	Record<string, { total_streams: number; total_earnings: number }>
->((acc, stream) => {
-	const { artist_id, tokens_used } = stream;
-	if (!acc[artist_id]) {
-		acc[artist_id] = {
-			total_streams: 0,
-			total_earnings: 0
-		};
-	}
-	acc[artist_id].total_streams += 1;
-	acc[artist_id].total_earnings += tokens_used;
-	return acc;
-}, {});
+if (!ledgerRows || ledgerRows.length === 0) {
+	console.log('No earnings to pay out for this period');
+	await supabase.from(TABLES.payouts).update({ status: 'paid' }).eq('id', payout.id);
+	process.exit(0);
+}
 
-// Use each key to get the artist name and strip_account_id
-const artistIds = Object.keys(artistEarnings);
+// 3. Aggregate earnings by artist
+const earningsByArtist = ledgerRows.reduce<Record<string, { total: number; ledgerIds: string[] }>>(
+	(acc, row) => {
+		if (!acc[row.artist_id]) {
+			acc[row.artist_id] = { total: 0, ledgerIds: [] };
+		}
+		acc[row.artist_id].total += row.tokens_earned;
+		acc[row.artist_id].ledgerIds.push(row.id);
+		return acc;
+	},
+	{}
+);
+
+// 4. Fetch artist payout details
+const artistIds = Object.keys(earningsByArtist);
+
 const { data: artists, error: artistError } = await supabase
-	.from('artists')
+	.from(TABLES.artists)
 	.select('id, name, stripe_account_id')
 	.in('id', artistIds);
-if (artistError) {
-	console.error('Error fetching artists:', artistError);
-	process.exit(1);
-}
-if (!artists) {
-	console.error('No artists found');
+
+if (artistError || !artists) {
+	console.error('Error fetching artists', artistError);
 	process.exit(1);
 }
 
-const artistEarningsWithNames = artistIds.map((artistId) => {
-	const artist = artists.find((artist) => artist.id === artistId);
-	if (!artist) {
-		console.error(`Artist with id ${artistId} not found`);
-		return null;
-	}
-	const { name, stripe_account_id } = artist;
-	const { total_streams, total_earnings } = artistEarnings[artistId];
-	return {
-		artist_name: name,
-		artist_id: artistId,
-		stripe_id: stripe_account_id,
-		total_streams_for_period: total_streams,
-		total_earnings_for_period: total_earnings
-	};
-});
+// 5. Payout rules
+for (const artist of artists) {
+	const earnings = earningsByArtist[artist.id];
+	if (!earnings) continue;
 
-// Send a payout to each artist
-export const stripe = new Stripe(STRIPE_KEY, {
-	apiVersion: '2025-11-17.clover'
-});
-
-const prettifyPennies = (pence: number) => {
-	const pounds = Math.floor(pence / 100);
-	const pennies = pence % 100;
-	return `£${pounds}.${pennies < 10 ? '0' : ''}${pennies}`;
-};
-
-const payoutPromises = artistEarningsWithNames.map(async (artist) => {
-	if (!artist) {
-		console.error('Artist not found');
-		return;
+	if (!artist.stripe_account_id) {
+		console.warn(`Skipping ${artist.name}: no Stripe account`);
+		continue;
 	}
-	const { stripe_id, total_earnings_for_period } = artist;
-	if (!stripe_id) {
-		console.error(`Stripe ID for artist ${artist.artist_name} not found`);
-		return;
-	}
+
 	try {
-		const payout = await stripe.transfers.create({
-			amount: total_earnings_for_period,
+		// 6. Send Stripe transfer
+		const transfer = await stripe.transfers.create({
+			amount: earnings.total,
 			currency: 'gbp',
-			destination: stripe_id,
-			description: `Payout for ${
-				artist.artist_name
-			} for the period of ${sevenDaysAgo.toLocaleDateString()} to ${today.toLocaleDateString()}`
+			destination: artist.stripe_account_id,
+			description: `Weekly payout ${periodStart.toLocaleDateString()}–${periodEnd.toLocaleDateString()}`
 		});
-		console.log(
-			`Payout of ${prettifyPennies(total_earnings_for_period)} sent to ${
-				artist.artist_name
-			} (${stripe_id})`
-		);
-	} catch (error) {
-		console.error(`Error sending payout to ${artist.artist_name} (${stripe_id}):`, error);
+
+		console.log(`Paid £${(earnings.total / 100).toFixed(2)} to ${artist.name}`);
+
+		// 7. Mark ledger rows as paid
+		const { error: ledgerUpdateError } = await supabase
+			.from(TABLES.earningsLedger)
+			.update({ payout_id: payout.id })
+			.in('id', earnings.ledgerIds);
+
+		if (ledgerUpdateError) {
+			console.error(`Ledger update failed for ${artist.name}`, ledgerUpdateError);
+			throw ledgerUpdateError;
+		}
+	} catch (err) {
+		console.error(`Failed paying ${artist.name}`, err);
 	}
-});
-await Promise.all(payoutPromises);
+}
+
+// 8. Finalise payout record
+await supabase.from(TABLES.payouts).update({ status: 'paid' }).eq('id', payout.id);
 
 console.log('Payroll complete');
-
-// Send a notification to each artist?
-
-// Send notifications to listeners telling them where their money went?
