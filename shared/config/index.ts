@@ -20,6 +20,7 @@ export const TABLES = {
 	releases: 'releases',
 	releasesRich: 'releases_rich',
 	streams: 'streams',
+	earningsLedger: 'earnings_ledger',
 	betaUsers: 'beta-users',
 	likedTracks: 'liked_tracks',
 	followedArtists: 'followed_artists',

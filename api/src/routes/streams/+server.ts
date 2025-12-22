@@ -8,7 +8,7 @@ export async function POST({ request }) {
 		return new Response('Missing required fields', { status: 400 });
 	}
 
-	const { error } = await supabase
+	const { data, error } = await supabase
 		.from(TABLES.streams)
 		.insert({
 			user_id: userId,
@@ -16,11 +16,23 @@ export async function POST({ request }) {
 			track_id: trackId,
 			tokens_used: tokensUsed
 		})
-		.select();
+		.select()
+		.single();
 
 	if (error) {
 		return new Response('Error logging stream', { status: 500 });
 	}
 
-	return new Response('Stream logged', { status: 200 });
+	const { error: ledgerError } = await supabase.from(TABLES.earningsLedger).insert({
+		artist_id: artistId,
+		stream_id: data.id,
+		tokens_earned: tokensUsed,
+		earned_at: data.streamed_at
+	});
+
+	if (ledgerError) {
+		return new Response('Error logging earnings ledger entry', { status: 500 });
+	}
+
+	return new Response('Stream logged successfully', { status: 200 });
 }
