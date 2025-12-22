@@ -20,5 +20,5 @@ export const setActiveSong = async (
 	userState.activeSongRelease = release;
 	userState.activeSongUrl = songUrl;
 	userState.activeMixtape = mixtape || null;
-	// TODO: Create session ID for logging streams
+	userState.activeStreamSessionId = crypto.randomUUID();
 };

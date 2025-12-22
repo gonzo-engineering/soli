@@ -13,6 +13,7 @@ interface UserState {
 	activeSongIsPaused: boolean;
 	autoPlay: boolean;
 	activeMixtape: MixtapeHydrated | null;
+	activeStreamSessionId: string | null;
 }
 
 export interface UserData {
@@ -29,5 +30,6 @@ export const userState: UserState = $state({
 	activeSongUrl: null,
 	activeSongIsPaused: false,
 	autoPlay: false,
-	activeMixtape: null
+	activeMixtape: null,
+	activeStreamSessionId: null
 });

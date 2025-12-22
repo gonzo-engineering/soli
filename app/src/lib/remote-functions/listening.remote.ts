@@ -10,16 +10,17 @@ export const getTrackUrl = query(z.string(), async (trackId: string) => {
 
 export const logStream = query(
 	z.object({
+		streamId: z.string(),
 		userId: z.string(),
 		artistId: z.string(),
 		trackId: z.string(),
 		tokensUsed: z.number()
 	}),
-	async ({ userId, artistId, trackId, tokensUsed }) => {
+	async ({ streamId, userId, artistId, trackId, tokensUsed }) => {
 		const { status } = await fetch(`${API_BASE}/streams`, {
 			method: 'POST',
 			headers: REQUEST_HEADER_BOILERPLATE,
-			body: JSON.stringify({ userId, artistId, trackId, tokensUsed })
+			body: JSON.stringify({ streamId, userId, artistId, trackId, tokensUsed })
 		});
 		if (status === 200) {
 			console.log('Stream logged successfully');

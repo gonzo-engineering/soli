@@ -2,15 +2,16 @@ import { TABLES } from '../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
 
 export async function POST({ request }) {
-	const { userId, artistId, trackId, tokensUsed } = await request.json();
+	const { streamId, userId, artistId, trackId, tokensUsed } = await request.json();
 
-	if (!userId || !artistId || !trackId || !tokensUsed) {
+	if (!streamId || !userId || !artistId || !trackId || !tokensUsed) {
 		return new Response('Missing required fields', { status: 400 });
 	}
 
 	const { data, error } = await supabase
 		.from(TABLES.streams)
 		.insert({
+			id: streamId,
 			user_id: userId,
 			artist_id: artistId,
 			track_id: trackId,
