@@ -46,6 +46,14 @@
 	};
 </script>
 
+{#if !userIsLoggedIn}
+	<div class="closed-beta-message">
+		Soli is in closed beta. <a href="/about">Learn more about what we're trying to achieve</a> and
+		if you'd like to join,
+		<a href="/contact">get in touch</a>
+	</div>
+{/if}
+
 <header>
 	{#if userIsLoggedIn}
 		<ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
@@ -79,6 +87,18 @@
 {/if}
 
 <style>
+	.closed-beta-message {
+		background-color: #edca4f;
+		color: black;
+		text-align: center;
+		padding: 0.5rem 1rem;
+		font-size: 0.875rem;
+	}
+	.closed-beta-message a {
+		color: black;
+		font-weight: bold;
+		text-decoration: underline;
+	}
 	header {
 		display: flex;
 		justify-content: space-between;
@@ -89,9 +109,6 @@
 			text-decoration: none;
 			color: inherit;
 		}
-	}
-	.icon {
-		height: 50px;
 	}
 	input {
 		width: 90%;
@@ -104,21 +121,5 @@
 	}
 	.search-container {
 		width: 100%;
-	}
-	@media (min-width: 600px) {
-		.icon:hover {
-			opacity: 0.8;
-		}
-	}
-	.dark {
-		display: none;
-	}
-	@media (prefers-color-scheme: dark) {
-		.dark {
-			display: block;
-		}
-		.light {
-			display: none;
-		}
 	}
 </style>
