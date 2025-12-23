@@ -13,6 +13,7 @@
 	import ReleaseArtwork from '../ReleaseArtwork.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 	import { slide } from 'svelte/transition';
+	import SpinningRecord from './SpinningRecord.svelte';
 
 	let {
 		userId,
@@ -110,11 +111,9 @@
 	{#if fullPage}
 		<Logo />
 		<h3>Now playing...</h3>
-		<ReleaseArtwork
-			name={release.title}
-			artist={release.artist.name}
-			imageSrc={makeImageLink(release.artwork_ipfs_cid, 500)}
-			isAskew
+		<SpinningRecord
+			artworkUrl={makeImageLink(release.artwork_ipfs_cid, 512)}
+			isPaused={userState.activeSongIsPaused}
 		/>
 	{/if}
 	<div class="mobile-wrapper" class:reverse-column={fullPage}>
