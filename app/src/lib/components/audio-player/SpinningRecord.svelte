@@ -3,12 +3,7 @@
 </script>
 
 <div class="record-container" class:paused={isPaused}>
-	<svg
-		class="record-wrapper"
-		viewBox="0 0 100 100"
-		xmlns="http://www.w3.org/2000/svg"
-		aria-hidden="true"
-	>
+	<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 		<defs>
 			<clipPath id="label-clip">
 				<circle cx="50" cy="50" r="15" />
@@ -82,13 +77,13 @@
 			transform: rotate(0deg) translateX(0);
 		}
 		25% {
-			transform: rotate(0deg) translateX(0.3px);
+			transform: rotate(0deg) translateX(0.2px);
 		}
 		50% {
 			transform: rotate(0deg) translateX(0);
 		}
 		75% {
-			transform: rotate(0deg) translateX(-0.3px);
+			transform: rotate(0deg) translateX(-0.2px);
 		}
 		100% {
 			transform: rotate(0deg) translateX(0);

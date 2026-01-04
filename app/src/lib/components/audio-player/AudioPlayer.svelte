@@ -10,7 +10,6 @@
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 	import Icon from '../layout/Icon.svelte';
 	import Logo from '../layout/Logo.svelte';
-	import ReleaseArtwork from '../ReleaseArtwork.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 	import { slide } from 'svelte/transition';
 	import SpinningRecord from './SpinningRecord.svelte';
