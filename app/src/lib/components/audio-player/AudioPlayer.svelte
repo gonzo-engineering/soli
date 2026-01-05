@@ -11,7 +11,7 @@
 	import Icon from '../layout/Icon.svelte';
 	import Logo from '../layout/Logo.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
-	import { slide } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import SpinningRecord from './SpinningRecord.svelte';
 
 	let {
@@ -35,6 +35,7 @@
 	let fullPage = $state(false);
 	let audioElement: HTMLAudioElement | null = $state(null);
 	let charged = $state(false);
+	let paymentPopupVisible = $state(false);
 	let listenedSeconds = $state(0);
 	let lastTime = $state(0);
 
@@ -52,7 +53,15 @@
 		if (listenedSeconds >= STREAM_THRESHOLD_SECONDS) {
 			charged = true;
 			charge();
+			showPaymentPopup();
 		}
+	};
+
+	const showPaymentPopup = () => {
+		paymentPopupVisible = true;
+		setTimeout(() => {
+			paymentPopupVisible = false;
+		}, 3000);
 	};
 
 	const charge = async () => {
@@ -175,6 +184,12 @@
 	</div>
 </div>
 
+{#if paymentPopupVisible}
+	<div class="payment-popup" transition:fade>
+		{userPayPerStream} token{userPayPerStream !== 1 ? 's' : ''} sent to {release.artist.name}
+	</div>
+{/if}
+
 <style>
 	.audio-player {
 		display: flex;
@@ -221,6 +236,23 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.5rem;
+	}
+	.payment-popup {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: var(--color-background-secondary);
+		color: var(--color-text);
+		padding: 0.5rem 1rem;
+		border-radius: 12px;
+		box-shadow: var(--box-shadow);
+		font-size: 1rem;
+		min-width: fit-content;
+		text-align: center;
+		font-weight: bold;
+		white-space: nowrap;
+		z-index: 2000;
 	}
 	@media (min-width: 600px) {
 		.audio-player {
