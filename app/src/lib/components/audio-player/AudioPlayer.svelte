@@ -242,7 +242,7 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: var(--color-background-secondary);
+		background-color: #4c77a9;
 		color: var(--color-text);
 		padding: 0.5rem 1rem;
 		border-radius: 12px;
