@@ -29,8 +29,10 @@
 			{/if}
 			<th>Duration</th>
 			<th></th>
-			<th></th>
-			<th></th>
+			{#if userProfile}
+				<th></th>
+				<th></th>
+			{/if}
 		</tr>
 	</thead>
 	<tbody>
