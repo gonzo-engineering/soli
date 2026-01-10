@@ -1,10 +1,20 @@
 <script lang="ts">
 	import ArtistCardGrid from '$lib/components/ArtistCardGrid.svelte';
+	import WelcomeExplainer from '$lib/components/layout/WelcomeExplainer.svelte';
 	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
-	import type { PageProps } from './$types';
+	import type { UserData } from '$lib/global/state.svelte';
+	import type { Artist } from '../../../shared/types/core';
+	import type { ReleaseHydrated } from '../../../shared/types/hydrated';
 
-	let { data }: PageProps = $props();
+	let {
+		data
+	}: {
+		data: UserData & {
+			releases: ReleaseHydrated[];
+			artists: Artist[];
+		};
+	} = $props();
 
 	const albumsAndEPs = data.releases.filter(
 		(release) => release.release_type === 'album' || release.release_type === 'ep'
@@ -22,11 +32,11 @@
 	<meta name="description" content="Music streaming that doesn't fuck musicians." />
 </svelte:head>
 
-<section>
-	<a href="/releases"><h2>Releases</h2></a>
-
-	<ReleaseCardGrid releases={albumsAndEPs} showArtistName />
-</section>
+{#if !data.session}
+	<section>
+		<WelcomeExplainer />
+	</section>
+{/if}
 
 <section>
 	<a href="/artists"><h2>Artists</h2></a>
@@ -44,6 +54,12 @@
 			<ArtistCardGrid artists={otherArtists} />
 		</div>
 	{/if}
+</section>
+
+<section>
+	<a href="/releases"><h2>Releases</h2></a>
+
+	<ReleaseCardGrid releases={albumsAndEPs} showArtistName />
 </section>
 
 <section>

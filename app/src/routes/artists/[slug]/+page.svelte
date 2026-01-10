@@ -5,8 +5,15 @@
 	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import type { Release } from '../../../../../shared/types/core';
+	import type { UserData } from '$lib/global/state.svelte';
 
-	let { data }: { data: { artist: ArtistHydrated; followedArtists: string[] } } = $props();
+	let {
+		data
+	}: {
+		data: UserData & {
+			artist: ArtistHydrated;
+		};
+	} = $props();
 
 	const sortReleasesByDate = (releases: Release[]) => {
 		return releases.sort((a, b) => {
@@ -47,26 +54,28 @@
 			<a href={website_url}>{website_url?.replace('https://', '').replaceAll('/', '')}</a>
 		{/if}
 
-		<hr />
+		<hr class:hide-on-larger-screens={!data.profileData} />
 
-		<div class="follow-artist-section">
-			<div>
-				You are {data.followedArtists.includes(data.artist.id) ? 'following' : 'not following'} this
-				artist.
+		{#if data.profileData}
+			<div class="follow-artist-section">
+				<div>
+					You are {data.followedArtists.includes(data.artist.id) ? 'following' : 'not following'} this
+					artist.
+				</div>
+				<form {...toggleFollowedArtist}>
+					<input {...toggleFollowedArtist.fields.artistID.as('hidden', data.artist.id)} />
+					<input
+						{...toggleFollowedArtist.fields.addOrRemove.as(
+							'hidden',
+							data.followedArtists.includes(data.artist.id) ? 'remove' : 'add'
+						)}
+					/>
+					<button type="submit">
+						{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}
+					</button>
+				</form>
 			</div>
-			<form {...toggleFollowedArtist}>
-				<input {...toggleFollowedArtist.fields.artistID.as('hidden', data.artist.id)} />
-				<input
-					{...toggleFollowedArtist.fields.addOrRemove.as(
-						'hidden',
-						data.followedArtists.includes(data.artist.id) ? 'remove' : 'add'
-					)}
-				/>
-				<button type="submit">
-					{data.followedArtists.includes(data.artist.id) ? 'Unfollow' : 'Follow'}
-				</button>
-			</form>
-		</div>
+		{/if}
 	</div>
 
 	<div class="artist-music">
@@ -145,9 +154,13 @@
 		border: none;
 		border-top: 1px solid var(--color-accent);
 		margin: 1rem 0;
+		opacity: 0.3;
 	}
 	@media (min-width: 600px) {
 		h3 {
+			display: none;
+		}
+		.hide-on-larger-screens {
 			display: none;
 		}
 	}

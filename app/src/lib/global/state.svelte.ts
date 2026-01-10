@@ -22,6 +22,7 @@ export interface UserData {
 	collections: CollectionHydrated[];
 	likedTracks: TrackHydrated[];
 	mixtapes: Mixtape[];
+	followedArtists: string[];
 }
 
 export const userState: UserState = $state({

@@ -53,7 +53,7 @@
 				</div>
 			{/each}
 		{:else}
-			<li><a href="/login" onclick={() => (menuIsOpen = !menuIsOpen)}>Login</a></li>
+			<li><a href="/login" onclick={() => (menuIsOpen = !menuIsOpen)}>Log in</a></li>
 		{/if}
 	</ul>
 </nav>

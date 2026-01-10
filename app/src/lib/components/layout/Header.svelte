@@ -46,10 +46,10 @@
 	};
 </script>
 
-{#if !userIsLoggedIn}
+{#if !userIsLoggedIn && page.url.pathname !== '/'}
 	<div class="closed-beta-message">
-		Soli is in closed beta. <a href="/about">Learn more about what we're trying to achieve</a> and
-		if you'd like to join,
+		Soli is in closed beta. <a href="/about">Learn more about what it's trying to achieve</a> and if
+		you'd like to join,
 		<a href="/contact">get in touch</a>
 	</div>
 {/if}
