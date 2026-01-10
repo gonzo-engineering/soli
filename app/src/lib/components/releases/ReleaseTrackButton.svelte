@@ -12,11 +12,11 @@
 	}: {
 		track: Track;
 		release: Release;
-		userProfile: Listener;
+		userProfile: Listener | null;
 	} = $props();
 </script>
 
-{#if userProfile.tokens_balance && userProfile.id}
+{#if userProfile}
 	<ButtonWrapper
 		onClickFunction={() => {
 			if (track.ipfs_cid == userState.activeSong?.ipfs_cid) {
@@ -34,13 +34,20 @@
 		{/if}
 	</ButtonWrapper>
 {:else}
-	<button class="play-button" disabled>
-		<span>Play</span>
+	<button class="play-button" onclick={() => alert('You must be logged in to listen to music.')}>
+		<Icon key="play" size={26} />
 	</button>
 {/if}
 
 <style>
-	button:hover {
+	button {
+		background: none;
+		border: none;
+		color: gray;
 		cursor: pointer;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>

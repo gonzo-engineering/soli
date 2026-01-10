@@ -41,14 +41,16 @@
 	<td class="play-button-container">
 		<ReleaseTrackButton {track} release={track.release} {userProfile} />
 	</td>
-	<td>
-		<TrackLikeButton trackID={track.id} {likedTracks} />
-	</td>
-	<td>
-		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
-			<Icon key="threeDots" size={20} />
-		</ButtonWrapper>
-	</td>
+	{#if userProfile}
+		<td>
+			<TrackLikeButton trackID={track.id} {likedTracks} />
+		</td>
+		<td>
+			<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+				<Icon key="threeDots" size={20} />
+			</ButtonWrapper>
+		</td>
+	{/if}
 </tr>
 
 {#if popupMenuOpen}

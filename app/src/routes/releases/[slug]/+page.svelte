@@ -43,9 +43,11 @@
 				<a href={`/artists/${release.artist_id}`}>{release.artist.name}</a>
 			</div>
 		</div>
-		<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
-			<Icon key="albums" size={50} />
-		</ButtonWrapper>
+		{#if data.profileData}
+			<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+				<Icon key="albums" size={50} />
+			</ButtonWrapper>
+		{/if}
 	</div>
 
 	<ReleaseArtwork
@@ -54,21 +56,23 @@
 		imageSrc={makeImageLink(release.artwork_ipfs_cid, 500)}
 	/>
 
-	<ButtonWrapper
-		onClickFunction={() => {
-			setActiveSong(
-				release.tracks[0],
-				release,
-				data.profileData.tokens_balance,
-				data.profileData.pay_per_stream
-			);
-			userState.autoPlay = true;
-		}}
-	>
-		<div class="play-full-release-button">
-			Play full {release.release_type === 'ep' ? 'EP' : release.release_type}
-		</div>
-	</ButtonWrapper>
+	{#if data.profileData}
+		<ButtonWrapper
+			onClickFunction={() => {
+				setActiveSong(
+					release.tracks[0],
+					release,
+					data.profileData.tokens_balance,
+					data.profileData.pay_per_stream
+				);
+				userState.autoPlay = true;
+			}}
+		>
+			<div class="play-full-release-button">
+				Play full {release.release_type === 'ep' ? 'EP' : release.release_type}
+			</div>
+		</ButtonWrapper>
+	{/if}
 
 	<TracksTable
 		tracks={release.tracks.map((track) => ({
