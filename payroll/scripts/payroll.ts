@@ -1,11 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 import 'dotenv/config';
-import { TABLES } from '../../shared/config';
 
 const SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL;
 const SUPABASE_KEY = process.env.PUBLIC_SUPABASE_ANON_KEY;
 const STRIPE_KEY = process.env.STRIPE_SECRET_KEY;
+
+const TABLES = {
+	artists: 'artists',
+	earningsLedger: 'earnings_ledger',
+	payouts: 'payouts'
+};
 
 if (!SUPABASE_URL || !SUPABASE_KEY || !STRIPE_KEY) {
 	console.error('Missing environment variables');
