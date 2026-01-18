@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 import 'dotenv/config';
-import { STRIPE_API_VERSION, TABLES } from '../../shared/config';
+import { TABLES } from '../../shared/config';
 
 const SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL;
 const SUPABASE_KEY = process.env.PUBLIC_SUPABASE_ANON_KEY;
@@ -15,7 +15,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY || !STRIPE_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const stripe = new Stripe(STRIPE_KEY, {
-	apiVersion: STRIPE_API_VERSION
+	apiVersion: '2025-12-15.clover'
 });
 
 // Always pay midnight UTC → midnight UTC

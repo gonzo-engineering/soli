@@ -7,6 +7,7 @@ export const DASHBOARD_LOCAL_PORT = 3001;
 export const API_DOMAIN = 'https://api.soli.network';
 export const API_LOCAL_PORT = 3002;
 
+// TODO: Refactor monorepo to share this constant
 export const STRIPE_API_VERSION = '2025-11-17.clover';
 
 export const PLATFORM_FEE_PERCENTAGE = 0.1;
