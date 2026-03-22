@@ -20,7 +20,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY || !STRIPE_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const stripe = new Stripe(STRIPE_KEY, {
-	apiVersion: '2025-12-15.clover'
+	apiVersion: '2026-02-25.clover'
 });
 
 // Always pay midnight UTC → midnight UTC
