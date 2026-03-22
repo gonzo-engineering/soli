@@ -12,6 +12,6 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"dependencies": {
-		"music-metadata": "^11.12.1"
+		"music-metadata": "^11.12.3"
 	}
 }
