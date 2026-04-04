@@ -13,7 +13,11 @@
 <div class="wrapper">
 	<h2>Log in</h2>
 	{#if !sendCode.result}
-		<div>Enter your email to log in.</div>
+		<div>
+			Enter your email to log in. If you are not registered as part of the beta this will not work. <a
+				href="/contact">Get in touch</a
+			> if you would like to join.
+		</div>
 	{:else if sendCode.result?.success}
 		<div>
 			A 6-digit code was sent to <strong>{sendCode.result.email}</strong>. Please enter it below to
@@ -23,6 +27,10 @@
 
 	{#if !sendCode.result?.success === false && sendCode.result?.message}
 		<div style="color: lightgreen;">{sendCode.result.message}</div>
+	{/if}
+
+	{#if sendCode.result?.success === false && sendCode.result?.message}
+		<div style="color: lightcoral;">{sendCode.result.message}</div>
 	{/if}
 
 	{#if stage === 'enterEmail'}
