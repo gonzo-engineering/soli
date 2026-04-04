@@ -16,7 +16,7 @@ export const sendCode = form(z.object({ email: z.email() }), async ({ email }) =
 	if (betaUserError) {
 		return {
 			success: false,
-			message: 'Your email is not on the beta list.',
+			message: 'Email is not on the beta list.',
 			email
 		};
 	}
