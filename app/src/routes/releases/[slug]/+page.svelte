@@ -44,7 +44,10 @@
 			</div>
 		</div>
 		{#if data.profileData}
-			<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+			<ButtonWrapper
+				label="View collections"
+				onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}
+			>
 				<Icon key="albums" size={50} />
 			</ButtonWrapper>
 		{/if}
@@ -58,6 +61,7 @@
 
 	{#if data.profileData}
 		<ButtonWrapper
+			label="Play full release"
 			onClickFunction={() => {
 				setActiveSong(
 					release.tracks[0],

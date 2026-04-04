@@ -8,7 +8,10 @@
 	"theme_color": "#222222",
 	"id": "soli",
 	"dir": "ltr",
-	"categories": ["music"],
+	"categories": [
+		"music",
+		"streaming"
+	],
 	"icons": [
 		{
 			"src": "/icon-192.png",

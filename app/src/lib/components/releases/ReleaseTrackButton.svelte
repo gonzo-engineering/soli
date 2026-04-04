@@ -18,6 +18,9 @@
 
 {#if userProfile}
 	<ButtonWrapper
+		label={track.ipfs_cid === userState.activeSong?.ipfs_cid && !userState.activeSongIsPaused
+			? 'Pause'
+			: 'Play'}
 		onClickFunction={() => {
 			if (track.ipfs_cid == userState.activeSong?.ipfs_cid) {
 				userState.activeSongIsPaused = !userState.activeSongIsPaused;
