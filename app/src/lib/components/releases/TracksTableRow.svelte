@@ -46,7 +46,7 @@
 			<TrackLikeButton trackID={track.id} {likedTracks} />
 		</td>
 		<td>
-			<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+			<ButtonWrapper label="More options" onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
 				<Icon key="threeDots" size={20} />
 			</ButtonWrapper>
 		</td>

@@ -127,6 +127,7 @@
 	<div class="mobile-wrapper" class:reverse-column={fullPage}>
 		<div class="hidden-on-desktop">
 			<ButtonWrapper
+				label={fullPage ? 'Minimize player' : 'Expand player'}
 				onClickFunction={() => {
 					fullPage = !fullPage;
 				}}

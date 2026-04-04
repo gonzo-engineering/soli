@@ -1,21 +1,26 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	let { children, onClickFunction }: { children: Snippet; onClickFunction: () => void } = $props();
+	let {
+		label,
+		onClickFunction,
+		children
+	}: { label: string; onClickFunction: () => void; children: Snippet } = $props();
 </script>
 
-<div
+<span
+	aria-label={label}
 	class="button-wrapper"
 	onclick={() => onClickFunction()}
 	onkeydown={(e) => {
 		if (e.key === 'Enter' || e.key === ' ') {
-			onClickFunction;
+			onClickFunction();
 		}
 	}}
 	role="button"
 	tabindex="0"
 >
 	{@render children()}
-</div>
+</span>
 
 <style>
 	.button-wrapper:hover {

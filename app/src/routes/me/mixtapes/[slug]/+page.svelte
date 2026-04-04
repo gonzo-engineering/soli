@@ -51,6 +51,7 @@
 		{/if}
 	</div>
 	<ButtonWrapper
+		label="Play full mixtape"
 		onClickFunction={() => {
 			setActiveSong(
 				tracks[0],
