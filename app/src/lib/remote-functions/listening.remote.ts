@@ -3,7 +3,7 @@ import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/global/config';
 import * as z from 'zod';
 
 export const getTrackUrl = query(z.string(), async (trackId: string) => {
-	return await fetch(`${API_BASE}/links/${trackId}`, {
+	return await fetch(`${API_BASE}/media/${trackId}`, {
 		headers: REQUEST_HEADER_BOILERPLATE
 	}).then((res) => res.text());
 });

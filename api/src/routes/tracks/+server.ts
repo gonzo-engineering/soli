@@ -55,9 +55,21 @@ export const POST: RequestHandler = async ({ request }) => {
 			.select()
 			.single();
 
+		const bucketFileName = `${data.id}.mp3`;
+
+		const { error: supabaseError } = await supabase.storage
+			.from('tracks')
+			.upload(bucketFileName, file);
+
 		if (error) {
-			console.error('Supabase insert failed:', error);
+			console.error('Supabase row insert failed:', error);
 			return json({ error: 'Failed to save track metadata' }, { status: 500 });
+		}
+
+		// Uploading to Supabase as well as a backup
+		if (supabaseError) {
+			console.error('Supabase file upload failed:', supabaseError);
+			return json({ error: 'Failed to upload track file' }, { status: 500 });
 		}
 
 		return json({ success: true, track: data });
