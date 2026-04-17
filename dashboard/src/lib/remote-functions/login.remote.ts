@@ -3,48 +3,51 @@ import * as z from 'zod';
 import { TABLES } from '../../../../shared/config';
 import { redirect } from '@sveltejs/kit';
 
-export const sendCode = form(z.object({ email: z.email() }), async ({ email }) => {
-	const { locals } = getRequestEvent();
-	const supabase = locals.supabase;
+export const sendCode = form(
+	z.object({ email: z.email().trim().toLowerCase() }),
+	async ({ email }) => {
+		const { locals } = getRequestEvent();
+		const supabase = locals.supabase;
 
-	const { error: betaUserError } = await supabase
-		.from(TABLES.betaUsers)
-		.select('email')
-		.eq('email', email)
-		.single();
+		const { error: betaUserError } = await supabase
+			.from(TABLES.betaUsers)
+			.select('email')
+			.eq('email', email)
+			.single();
 
-	if (betaUserError) {
-		return {
-			success: false,
-			message: 'Email is not on the beta list.',
-			email
-		};
-	}
-
-	const { error } = await supabase.auth.signInWithOtp({
-		email,
-		options: {
-			emailRedirectTo: 'https://soli.network'
+		if (betaUserError) {
+			return {
+				success: false,
+				message: 'Email is not on the beta list.',
+				email
+			};
 		}
-	});
 
-	if (error) {
+		const { error } = await supabase.auth.signInWithOtp({
+			email,
+			options: {
+				emailRedirectTo: 'https://soli.network'
+			}
+		});
+
+		if (error) {
+			return {
+				success: false,
+				message: `There was an issue: ${error.message}`,
+				email
+			};
+		}
+
 		return {
-			success: false,
-			message: `There was an issue: ${error.message}`,
+			success: true,
+			message: `Login details were sent to ${email}`,
 			email
 		};
 	}
-
-	return {
-		success: true,
-		message: `Login details were sent to ${email}`,
-		email
-	};
-});
+);
 
 export const verifyCode = form(
-	z.object({ email: z.email(), code: z.string() }),
+	z.object({ email: z.email().trim().toLowerCase(), code: z.string() }),
 	async ({ email, code }) => {
 		const { locals } = getRequestEvent();
 		const supabase = locals.supabase;
