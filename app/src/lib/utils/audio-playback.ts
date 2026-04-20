@@ -14,7 +14,7 @@ export const setActiveSong = async (
 		throw new Error('Not enough balance');
 	}
 
-	const songUrl = await getTrackUrl(song.id);
+	const songUrl = await getTrackUrl(song.id).run();
 
 	userState.activeSong = song;
 	userState.activeSongRelease = release;

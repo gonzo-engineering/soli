@@ -27,8 +27,13 @@
 {#if popupMenuOpen}
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{song.title}</div>
-		<ButtonWrapper onClickFunction={() => deleteTrack(song.id)}>
-			<div class="delete">Delete Track <BinIcon /></div>
+		<ButtonWrapper
+			onClickFunction={() => {
+				deleteTrack(song.id).run();
+				popupMenuOpen = false;
+			}}
+		>
+			<div class="delete">Delete track <BinIcon /></div>
 		</ButtonWrapper>
 	</PopupWrapper>
 {/if}

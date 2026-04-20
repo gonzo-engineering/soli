@@ -16,8 +16,8 @@
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/svelte": "^5.3.1",
-		"jsdom": "^29.0.1",
+		"jsdom": "^29.0.2",
 		"mdsvex": "^0.12.7",
-		"vitest": "^4.1.0"
+		"vitest": "^4.1.4"
 	}
 }
