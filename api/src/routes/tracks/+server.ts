@@ -32,19 +32,33 @@ export const POST: RequestHandler = async ({ request }) => {
 		const artistGroup = formData.get('artistGroup') as string;
 
 		if (!file || !artistId || !title) {
-			return json({ error: 'Missing required fields' }, { status: 400 });
+			return json({ error: 'Missing required fields', fields: { file: !!file, artistId: !!artistId, title: !!title } }, { status: 400 });
 		}
 
-		const duration = await getAudioFileDuration(file);
+		// Get duration
+		let duration: number;
+		try {
+			duration = await getAudioFileDuration(file);
+		} catch (err) {
+			console.error('Failed to parse audio metadata:', err);
+			return json({ error: 'Failed to read audio file — it may be corrupt or an unsupported format', detail: String(err) }, { status: 400 });
+		}
 
 		// Upload to Pinata
-		const upload = await pinata.upload.private
-			.file(file)
-			.name(`${artistName} - ${title}`)
-			.group(artistGroup);
+		let upload;
+		try {
+			upload = await pinata.upload.private
+				.file(file)
+				.name(`${artistName} - ${title}`)
+				.group(artistGroup);
+			console.log('Pinata upload successful:', upload);
+		} catch (err) {
+			console.error('Pinata upload failed:', err);
+			return json({ error: 'Failed to upload to IPFS', detail: String(err) }, { status: 500 });
+		}
 
-		// Insert into Supabase
-		const { error, data } = await supabase
+		// Insert metadata into Supabase
+		const { error: insertError, data } = await supabase
 			.from(TABLES.tracks)
 			.insert({
 				title,
@@ -55,27 +69,36 @@ export const POST: RequestHandler = async ({ request }) => {
 			.select()
 			.single();
 
-		const bucketFileName = `${data.id}.mp3`;
+		if (insertError) {
+			console.error('Supabase row insert failed:', insertError);
+			return json({ error: 'Failed to save track metadata', detail: insertError.message }, { status: 500 });
+		}
 
-		const { error: supabaseError } = await supabase.storage
+		console.log('Supabase insert successful:', data);
+
+		// Upload file to Supabase storage
+		const bucketFileName = `${data.id}.mp3`;
+		const { error: storageError } = await supabase.storage
 			.from('tracks')
 			.upload(bucketFileName, file);
 
-		if (error) {
-			console.error('Supabase row insert failed:', error);
-			return json({ error: 'Failed to save track metadata' }, { status: 500 });
+		if (storageError) {
+			console.error('Supabase storage upload failed:', storageError);
+			// Row was inserted but file upload failed — flag this clearly
+			return json({
+				error: 'Track metadata saved but file upload to storage failed',
+				detail: storageError.message,
+				trackId: data.id
+			}, { status: 500 });
 		}
 
-		// Uploading to Supabase as well as a backup
-		if (supabaseError) {
-			console.error('Supabase file upload failed:', supabaseError);
-			return json({ error: 'Failed to upload track file' }, { status: 500 });
-		}
+		console.log('Supabase storage upload successful:', bucketFileName);
 
 		return json({ success: true, track: data });
+
 	} catch (err) {
-		console.error('Upload failed:', err);
-		return json({ error: 'Upload failed' }, { status: 500 });
+		console.error('Unexpected error during upload:', err);
+		return json({ error: 'Unexpected error during upload', detail: String(err) }, { status: 500 });
 	}
 };
 
