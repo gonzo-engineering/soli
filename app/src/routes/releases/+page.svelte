@@ -1,6 +1,8 @@
 <script lang="ts">
-	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
+	import GridWrapper from '$lib/components/GridWrapper.svelte';
+	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
+	import { makeImageLink } from '$lib/utils';
 
 	let { data }: { data: { releases: ReleaseHydrated[] } } = $props();
 </script>
@@ -12,4 +14,13 @@
 
 <h2>Releases</h2>
 
-<ReleaseCardGrid releases={data.releases} showArtistName />
+<GridWrapper gridItemSize="150px" gridGap="20px">
+	{#each data.releases as release}
+		<ReleaseCard
+			link={`/releases/${release.id}`}
+			name={release.title}
+			artist={release.artist.name}
+			coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
+		/>
+	{/each}
+</GridWrapper>

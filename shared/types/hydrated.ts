@@ -1,4 +1,4 @@
-import type { Artist, Collection, Mixtape, Release, Track } from './core';
+import type { Artist, Collection, Label, Mixtape, Release, Track } from './core';
 
 export interface ReleaseHydrated extends Release {
 	artist: Artist;
@@ -12,6 +12,7 @@ export interface TrackHydrated extends Track {
 
 export interface ArtistHydrated extends Artist {
 	releases: Release[];
+	label?: Label;
 }
 
 export interface CollectionHydrated extends Collection {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { makeImageLink } from '$lib/utils';
 	import type { SearchResult } from '../../../../../shared/types/core';
-	import ArtistCard from '../ArtistCard.svelte';
+	import CircleCard from '../CircleCard.svelte';
 	import ReleaseCard from '../ReleaseCard.svelte';
 
 	let { searchResults, query }: { searchResults: SearchResult[]; query: string } = $props();
@@ -24,7 +24,7 @@
 			<div class="search-results-section">
 				<h3>Artists</h3>
 				{#each searchResultsArtists as artist}
-					<ArtistCard
+					<CircleCard
 						name={artist.name}
 						image={artist.image_cid ? makeImageLink(artist.image_cid, 200) : undefined}
 						link={`/artists/${artist.id}`}
