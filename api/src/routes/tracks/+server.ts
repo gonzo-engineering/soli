@@ -32,7 +32,13 @@ export const POST: RequestHandler = async ({ request }) => {
 		const artistGroup = formData.get('artistGroup') as string;
 
 		if (!file || !artistId || !title) {
-			return json({ error: 'Missing required fields', fields: { file: !!file, artistId: !!artistId, title: !!title } }, { status: 400 });
+			return json(
+				{
+					error: 'Missing required fields',
+					fields: { file: !!file, artistId: !!artistId, title: !!title }
+				},
+				{ status: 400 }
+			);
 		}
 
 		// Get duration
@@ -41,7 +47,13 @@ export const POST: RequestHandler = async ({ request }) => {
 			duration = await getAudioFileDuration(file);
 		} catch (err) {
 			console.error('Failed to parse audio metadata:', err);
-			return json({ error: 'Failed to read audio file — it may be corrupt or an unsupported format', detail: String(err) }, { status: 400 });
+			return json(
+				{
+					error: 'Failed to read audio file — it may be corrupt or an unsupported format',
+					detail: String(err)
+				},
+				{ status: 400 }
+			);
 		}
 
 		// Upload to Pinata
@@ -71,7 +83,10 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		if (insertError) {
 			console.error('Supabase row insert failed:', insertError);
-			return json({ error: 'Failed to save track metadata', detail: insertError.message }, { status: 500 });
+			return json(
+				{ error: 'Failed to save track metadata', detail: insertError.message },
+				{ status: 500 }
+			);
 		}
 
 		console.log('Supabase insert successful:', data);
@@ -85,17 +100,19 @@ export const POST: RequestHandler = async ({ request }) => {
 		if (storageError) {
 			console.error('Supabase storage upload failed:', storageError);
 			// Row was inserted but file upload failed — flag this clearly
-			return json({
-				error: 'Track metadata saved but file upload to storage failed',
-				detail: storageError.message,
-				trackId: data.id
-			}, { status: 500 });
+			return json(
+				{
+					error: 'Track metadata saved but file upload to storage failed',
+					detail: storageError.message,
+					trackId: data.id
+				},
+				{ status: 500 }
+			);
 		}
 
 		console.log('Supabase storage upload successful:', bucketFileName);
 
 		return json({ success: true, track: data });
-
 	} catch (err) {
 		console.error('Unexpected error during upload:', err);
 		return json({ error: 'Unexpected error during upload', detail: String(err) }, { status: 500 });

@@ -4,6 +4,6 @@
 	"description": "A payroll management system",
 	"type": "module",
 	"dependencies": {
-		"dotenv": "^17.3.1"
+		"dotenv": "^17.4.2"
 	}
 }
