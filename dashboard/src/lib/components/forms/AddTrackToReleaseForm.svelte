@@ -17,7 +17,10 @@
 <form {...addTrackToRelease}>
 	<label>
 		Release
-		<select {...addTrackToRelease.fields.releaseId.as('select')}>
+		<select
+			{...addTrackToRelease.fields.releaseId.as('select')}
+			disabled={!!addTrackToRelease.pending}
+		>
 			{#each releases as release}
 				<option value={release.id}>{release.title}</option>
 			{/each}
@@ -25,7 +28,10 @@
 	</label>
 	<label>
 		Track
-		<select {...addTrackToRelease.fields.trackId.as('select')}>
+		<select
+			{...addTrackToRelease.fields.trackId.as('select')}
+			disabled={!!addTrackToRelease.pending}
+		>
 			{#each tracks as track}
 				<option value={track.id}>{track.title}</option>
 			{/each}
@@ -33,7 +39,12 @@
 	</label>
 	<label>
 		Track number
-		<input {...addTrackToRelease.fields.trackNumber.as('number')} />
+		<input
+			{...addTrackToRelease.fields.trackNumber.as('number')}
+			disabled={!!addTrackToRelease.pending}
+		/>
 	</label>
-	<button type="submit"> Add to Release </button>
+	<button type="submit" disabled={!!addTrackToRelease.pending}>
+		{addTrackToRelease.pending ? 'Adding...' : 'Add to Release'}
+	</button>
 </form>
