@@ -6,10 +6,10 @@ const domainsWithAccessToAPI = [APP_BASE, DASHBOARD_BASE, 'https://checkout.stri
 const publicEndpoints = ['/', '/checkout/success'];
 
 const appendHeaders = (response: Response, origin: string | null) => {
-	response.headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-	response.headers.append('Access-Control-Allow-Headers', '*');
+	response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+	response.headers.set('Access-Control-Allow-Headers', '*');
 	if (origin && domainsWithAccessToAPI.includes(origin)) {
-		response.headers.append('Access-Control-Allow-Origin', origin);
+		response.headers.set('Access-Control-Allow-Origin', origin);
 	}
 	return response;
 };
