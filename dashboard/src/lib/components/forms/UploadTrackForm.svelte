@@ -1,28 +1,63 @@
 <script lang="ts">
-	import { uploadTrack } from '$lib/remote-functions/music.remote';
+	import { API_BASE } from '$lib/config';
 
 	const {
 		artistId,
 		artistName,
 		artistGroup
 	}: { artistId: string; artistName: string; artistGroup: string } = $props();
+
+	let isLoading = $state(false);
+	let error = $state<string | null>(null);
+
+	const handleSubmit = async (e: SubmitEvent) => {
+		e.preventDefault();
+		isLoading = true;
+		error = null;
+
+		const form = e.target as HTMLFormElement;
+		const formData = new FormData(form);
+
+		try {
+			const response = await fetch(`${API_BASE}/tracks`, {
+				method: 'POST',
+				body: formData
+			});
+
+			if (!response.ok) {
+				const data = await response.json();
+				error = data.error ?? 'Upload failed';
+				return;
+			}
+
+			form.reset();
+		} catch (err) {
+			error = 'Upload failed — please try again';
+		} finally {
+			isLoading = false;
+		}
+	};
 </script>
 
 <h3>Upload Track</h3>
 
-<form {...uploadTrack} enctype="multipart/form-data">
+{#if error}
+	<p class="error">{error}</p>
+{/if}
+
+<form onsubmit={handleSubmit} enctype="multipart/form-data">
+	<input type="hidden" name="artistId" value={artistId} />
+	<input type="hidden" name="artistName" value={artistName} />
+	<input type="hidden" name="artistGroup" value={artistGroup} />
 	<label>
 		Track audio file
-		<input {...uploadTrack.fields.file.as('file')} disabled={!!uploadTrack.pending} />
+		<input type="file" name="audioFile" disabled={isLoading} />
 	</label>
 	<label>
 		Title
-		<input {...uploadTrack.fields.title.as('text')} disabled={!!uploadTrack.pending} />
+		<input type="text" name="title" disabled={isLoading} />
 	</label>
-	<input {...uploadTrack.fields.artistId.as('hidden', artistId)} />
-	<input {...uploadTrack.fields.artistName.as('hidden', artistName)} />
-	<input {...uploadTrack.fields.artistGroup.as('hidden', artistGroup)} />
-	<button type="submit" disabled={!!uploadTrack.pending}>
-		{uploadTrack.pending ? 'Uploading...' : 'Upload Track'}
+	<button type="submit" disabled={isLoading}>
+		{isLoading ? 'Uploading...' : 'Upload Track'}
 	</button>
 </form>
