@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	import { API_BASE } from '$lib/config';
+	import { API_BASE, DOMAIN_BASE } from '$lib/config';
 
 	const {
 		artistId,
@@ -22,6 +22,9 @@
 		try {
 			const response = await fetch(`${API_BASE}/tracks`, {
 				method: 'POST',
+				headers: {
+					origin: DOMAIN_BASE
+				},
 				body: formData
 			});
 
