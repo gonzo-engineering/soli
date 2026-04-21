@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import { API_BASE } from '$lib/config';
 
 	const {
@@ -35,6 +36,8 @@
 			error = 'Upload failed — please try again';
 		} finally {
 			isLoading = false;
+			// Force refresh of the track list
+			invalidateAll();
 		}
 	};
 </script>
