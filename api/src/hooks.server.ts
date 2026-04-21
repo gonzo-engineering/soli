@@ -17,6 +17,18 @@ const appendHeaders = (response: Response, origin: string | null) => {
 export const handle: Handle = async ({ resolve, event }) => {
 	const origin = event.request.headers.get('origin');
 
+	if (event.request.method === 'OPTIONS') {
+		return new Response(null, {
+			status: 204,
+			headers: {
+				'Access-Control-Allow-Origin':
+					origin && domainsWithAccessToAPI.includes(origin) ? origin : '',
+				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+				'Access-Control-Allow-Headers': '*'
+			}
+		});
+	}
+
 	if (publicEndpoints.includes(event.url.pathname)) {
 		const response = await resolve(event);
 		appendHeaders(response, origin);
