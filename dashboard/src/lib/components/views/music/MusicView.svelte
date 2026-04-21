@@ -44,11 +44,7 @@
 		<h2>Manage</h2>
 		<div class="forms">
 			<Card>
-				<UploadTrackForm
-					artistId={activeArtist.id}
-					artistName={activeArtist.name}
-					artistGroup={activeArtist.pinata_group_id}
-				/>
+				<UploadTrackForm artistId={activeArtist.id} />
 			</Card>
 			<Card>
 				<AddReleaseForm artistId={activeArtist.id} />

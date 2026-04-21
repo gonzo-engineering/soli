@@ -1,9 +1,5 @@
-import { fail } from '@sveltejs/kit';
-import { supabase } from '$lib/server/supabase';
 import type { LayoutServerLoad } from './$types';
-import type { Track } from '../../../shared/types/core';
 import type { ArtistHydrated } from '../../../shared/types/hydrated';
-import { TABLES } from '../../../shared/config';
 import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies }) => {
