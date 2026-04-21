@@ -1,11 +1,13 @@
 <script lang="ts">
-	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
 	import type { ArtistHydrated } from '../../../../../shared/types/hydrated';
 	import { makeImageLink } from '$lib/utils';
 	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { Release } from '../../../../../shared/types/core';
+	import type { Label, Release } from '../../../../../shared/types/core';
 	import type { UserData } from '$lib/global/state.svelte';
+	import GridWrapper from '$lib/components/GridWrapper.svelte';
+	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
+	import CircleCard from '$lib/components/CircleCard.svelte';
 
 	let {
 		data
@@ -86,45 +88,65 @@
 		{#if lps.length > 0}
 			<div class="release-type-section">
 				<h4>LPs</h4>
-				<ReleaseCardGrid
-					releases={lps.map((lp) => {
-						return {
-							...lp,
-							artistName: name
-						};
-					})}
-				/>
+				<GridWrapper gridItemSize="150px" gridGap="20px">
+					{#each lps as lp}
+						<ReleaseCard
+							link={`/releases/${lp.id}`}
+							name={lp.title}
+							artist={name}
+							coverArt={makeImageLink(lp.artwork_ipfs_cid, 200)}
+						/>
+					{/each}
+				</GridWrapper>
 			</div>
 		{/if}
 
 		{#if eps.length > 0}
 			<div class="release-type-section">
 				<h4>EPs</h4>
-				<ReleaseCardGrid
-					releases={eps.map((ep) => {
-						return {
-							...ep,
-							artistName: name
-						};
-					})}
-				/>
+				<GridWrapper gridItemSize="150px" gridGap="20px">
+					{#each eps as ep}
+						<ReleaseCard
+							link={`/releases/${ep.id}`}
+							name={ep.title}
+							artist={name}
+							coverArt={makeImageLink(ep.artwork_ipfs_cid, 200)}
+						/>
+					{/each}
+				</GridWrapper>
 			</div>
 		{/if}
 
 		{#if singles.length > 0}
 			<div class="release-type-section">
 				<h4>Singles</h4>
-				<ReleaseCardGrid
-					releases={singles.map((single) => {
-						return {
-							...single,
-							artistName: name
-						};
-					})}
-				/>
+				<GridWrapper gridItemSize="150px" gridGap="20px">
+					{#each singles as single}
+						<ReleaseCard
+							link={`/releases/${single.id}`}
+							name={single.title}
+							artist={name}
+							coverArt={makeImageLink(single.artwork_ipfs_cid, 200)}
+						/>
+					{/each}
+				</GridWrapper>
 			</div>
 		{/if}
 	</div>
+
+	{#if data.artist.label}
+		<hr />
+		<div>
+			<h3>Label</h3>
+			<CircleCard
+				name={data.artist.label.name}
+				image={data.artist.label.image_cid
+					? makeImageLink(data.artist.label.image_cid, 200)
+					: '/placeholder-label.png'}
+				link={`/labels/${data.artist.label.id}`}
+			/>
+		</div>
+	{/if}
 </div>
 
 <style>

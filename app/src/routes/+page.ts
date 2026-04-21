@@ -5,6 +5,7 @@ import type { Artist } from '../../../shared/types/core';
 export const load = async ({ data, fetch }) => {
 	const artists: Artist[] = await fetch(`${API_BASE}/artists`).then((res) => res.json());
 	const releases: ReleaseHydrated[] = await fetch(`${API_BASE}/releases`).then((res) => res.json());
+	const labels = await fetch(`${API_BASE}/labels`).then((res) => res.json());
 
 	// Filter artists to only those who have releases
 	const filteredArtists = artists.filter((artist) =>
@@ -13,6 +14,7 @@ export const load = async ({ data, fetch }) => {
 
 	return {
 		artists: filteredArtists,
-		releases
+		releases,
+		labels
 	};
 };

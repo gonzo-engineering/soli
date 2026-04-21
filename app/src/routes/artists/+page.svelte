@@ -1,5 +1,8 @@
 <script lang="ts">
-	import ArtistCardGrid from '$lib/components/ArtistCardGrid.svelte';
+	import CircleCard from '$lib/components/CircleCard.svelte';
+	import GridWrapper from '$lib/components/GridWrapper.svelte';
+	import { makeImageLink } from '$lib/utils/index.js';
+	import type { Artist } from '../../../../shared/types/core';
 
 	let { data } = $props();
 
@@ -17,16 +20,28 @@
 {#if followedArtists.length > 0}
 	<div class="artist-card-subsection">
 		<h3>Your followed artists</h3>
-		<ArtistCardGrid artists={followedArtists} />
+		{@render grid(followedArtists)}
 	</div>
 {/if}
 
 {#if otherArtists.length > 0}
 	<div class="artist-card-subsection">
 		{#if followedArtists.length > 0}<h3>More you might like</h3>{/if}
-		<ArtistCardGrid artists={otherArtists} />
+		{@render grid(otherArtists)}
 	</div>
 {/if}
+
+{#snippet grid(artists: Artist[])}
+	<GridWrapper>
+		{#each artists as artist}
+			<CircleCard
+				name={artist.name}
+				image={artist.image_ipfs_cid ? makeImageLink(artist.image_ipfs_cid, 200) : undefined}
+				link={`/artists/${artist.id}`}
+			/>
+		{/each}
+	</GridWrapper>
+{/snippet}
 
 <style>
 	h3 {

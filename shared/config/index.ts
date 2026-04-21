@@ -34,5 +34,6 @@ export const TABLES = {
 	collectionsRich: 'collections_rich',
 	mixtapes: 'mixtapes',
 	mixtapesRich: 'mixtapes_rich',
-	mixtapeTracks: 'mixtape_tracks'
+	mixtapeTracks: 'mixtape_tracks',
+	labels: 'labels'
 };

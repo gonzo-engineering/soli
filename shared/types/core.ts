@@ -13,6 +13,7 @@ export interface Artist {
 	stripe_account_id: string;
 	pinata_group_id: string;
 	image_ipfs_cid?: string;
+	label_id?: string;
 }
 
 export interface Track {
@@ -62,4 +63,13 @@ export interface StreamLog {
 	track_id: string;
 	artist_id: string;
 	tokens_used: number;
+}
+
+export interface Label {
+	id: string;
+	created_at: string;
+	name: string;
+	description?: string;
+	image_cid?: string;
+	website_url?: string;
 }

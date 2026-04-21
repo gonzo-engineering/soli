@@ -1,8 +1,10 @@
 <script lang="ts">
+	import GridWrapper from '$lib/components/GridWrapper.svelte';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import ReleaseCardGrid from '$lib/components/ReleaseCardGrid.svelte';
+	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
 	import type { UserData } from '$lib/global/state.svelte';
 	import { deleteCollection } from '$lib/remote-functions/collections.remote';
+	import { makeImageLink } from '$lib/utils';
 	import type { CollectionHydrated } from '../../../../../../shared/types/hydrated';
 
 	let {
@@ -35,7 +37,16 @@
 			<div>{description}</div>
 		{/if}
 	</div>
-	<ReleaseCardGrid {releases} showArtistName />
+	<GridWrapper gridItemSize="150px" gridGap="20px">
+		{#each releases as release}
+			<ReleaseCard
+				link={`/releases/${release.id}`}
+				name={release.title}
+				artist={release.artist.name}
+				coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
+			/>
+		{/each}
+	</GridWrapper>
 </div>
 
 <form {...deleteCollection.for(id)}>
