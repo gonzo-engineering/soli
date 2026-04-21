@@ -12,7 +12,7 @@ const AddReleaseForm = z.object({
 });
 
 const UploadTrackForm = z.object({
-	file: z.instanceof(File),
+	audioFile: z.instanceof(File),
 	artistId: z.string(),
 	title: z.string().min(1),
 	artistName: z.string().min(1),
@@ -43,7 +43,7 @@ export const addRelease = form(AddReleaseForm, async (data) => {
 
 export const uploadTrack = form(UploadTrackForm, async (data) => {
 	const formData = new FormData();
-	formData.append('file', data.file);
+	formData.append('audioFile', data.audioFile);
 	formData.append('artistId', data.artistId);
 	formData.append('title', data.title);
 	formData.append('artistName', data.artistName);

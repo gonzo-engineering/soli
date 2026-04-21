@@ -25,17 +25,17 @@ export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const formData = await request.formData();
 
-		const file = formData.get('file') as File;
+		const audioFile = formData.get('audioFile') as File;
 		const artistId = formData.get('artistId') as string;
 		const title = formData.get('title') as string;
 		const artistName = formData.get('artistName') as string;
 		const artistGroup = formData.get('artistGroup') as string;
 
-		if (!file || !artistId || !title) {
+		if (!audioFile || !artistId || !title) {
 			return json(
 				{
 					error: 'Missing required fields',
-					fields: { file: !!file, artistId: !!artistId, title: !!title }
+					fields: { audioFile: !!audioFile, artistId: !!artistId, title: !!title }
 				},
 				{ status: 400 }
 			);
@@ -44,7 +44,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		// Get duration
 		let duration: number;
 		try {
-			duration = await getAudioFileDuration(file);
+			duration = await getAudioFileDuration(audioFile);
 		} catch (err) {
 			console.error('Failed to parse audio metadata:', err);
 			return json(
@@ -60,7 +60,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		let upload;
 		try {
 			upload = await pinata.upload.private
-				.file(file)
+				.file(audioFile)
 				.name(`${artistName} - ${title}`)
 				.group(artistGroup);
 			console.log('Pinata upload successful:', upload);
@@ -95,7 +95,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		const bucketFileName = `${data.id}.mp3`;
 		const { error: storageError } = await supabase.storage
 			.from('tracks')
-			.upload(bucketFileName, file);
+			.upload(bucketFileName, audioFile);
 
 		if (storageError) {
 			console.error('Supabase storage upload failed:', storageError);
