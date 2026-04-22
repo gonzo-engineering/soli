@@ -20,7 +20,7 @@ export interface Track {
 	id: string;
 	artist_id: string;
 	title: string;
-	ipfs_cid: string;
+	ipfs_cid?: string;
 	duration_seconds: number;
 }
 

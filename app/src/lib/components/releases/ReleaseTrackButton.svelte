@@ -18,11 +18,11 @@
 
 {#if userProfile}
 	<ButtonWrapper
-		label={track.ipfs_cid === userState.activeSong?.ipfs_cid && !userState.activeSongIsPaused
+		label={track.id === userState.activeSong?.id && !userState.activeSongIsPaused
 			? 'Pause'
 			: 'Play'}
 		onClickFunction={() => {
-			if (track.ipfs_cid == userState.activeSong?.ipfs_cid) {
+			if (track.id == userState.activeSong?.id) {
 				userState.activeSongIsPaused = !userState.activeSongIsPaused;
 			} else {
 				setActiveSong(track, release, userProfile.tokens_balance, userProfile.pay_per_stream);
@@ -30,7 +30,7 @@
 			}
 		}}
 	>
-		{#if track.ipfs_cid === userState.activeSong?.ipfs_cid && !userState.activeSongIsPaused}
+		{#if track.id === userState.activeSong?.id && !userState.activeSongIsPaused}
 			<Icon key="pause" size={26} />
 		{:else}
 			<Icon key="play" size={26} />
