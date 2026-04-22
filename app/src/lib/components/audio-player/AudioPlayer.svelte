@@ -156,13 +156,13 @@
 					if (userState.autoPlay) {
 						const siblingTracks = userState.activeMixtape?.tracks || release.tracks;
 						const currentSongIndex = siblingTracks.findIndex(
-							(track) => track.ipfs_cid === userState.activeSong?.ipfs_cid
+							(track) => track.id === userState.activeSong?.id
 						);
 						if (currentSongIndex !== -1 && currentSongIndex < siblingTracks.length - 1) {
 							const nextSong = siblingTracks[currentSongIndex + 1];
 							const nextSongRelease = userState.activeMixtape
 								? userState.activeMixtape!.tracks.find(
-										(track) => track.ipfs_cid === nextSong.ipfs_cid
+										(track) => track.id === nextSong.id
 									)!.release
 								: release;
 							setActiveSong(
