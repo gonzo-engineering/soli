@@ -3,7 +3,7 @@
 	import { makeImageLink } from '$lib/utils';
 	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { Label, Release } from '../../../../../shared/types/core';
+	import type { Release } from '../../../../../shared/types/core';
 	import type { UserData } from '$lib/global/state.svelte';
 	import GridWrapper from '$lib/components/GridWrapper.svelte';
 	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
@@ -93,7 +93,6 @@
 						<ReleaseCard
 							link={`/releases/${lp.id}`}
 							name={lp.title}
-							artist={name}
 							coverArt={makeImageLink(lp.artwork_ipfs_cid, 200)}
 						/>
 					{/each}
@@ -109,7 +108,6 @@
 						<ReleaseCard
 							link={`/releases/${ep.id}`}
 							name={ep.title}
-							artist={name}
 							coverArt={makeImageLink(ep.artwork_ipfs_cid, 200)}
 						/>
 					{/each}
@@ -125,7 +123,6 @@
 						<ReleaseCard
 							link={`/releases/${single.id}`}
 							name={single.title}
-							artist={name}
 							coverArt={makeImageLink(single.artwork_ipfs_cid, 200)}
 						/>
 					{/each}
