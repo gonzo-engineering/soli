@@ -5,6 +5,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { signOut } from '$lib/remote-functions/login.remote';
+	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 
 	let { children, data } = $props();
 
@@ -79,13 +80,16 @@
 				{/each}
 			{/if}
 			<hr />
-			<button
-				onclick={() => {
+			<ButtonWrapper
+				label="Sign Out"
+				onClickFunction={() => {
 					signOut().then(() => {
 						location.reload();
 					});
-				}}>Sign Out</button
+				}}
 			>
+				Sign Out
+			</ButtonWrapper>
 		</div>
 	{/if}
 
