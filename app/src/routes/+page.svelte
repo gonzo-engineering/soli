@@ -14,48 +14,19 @@
 		data
 	}: {
 		data: UserData & {
-			releases: ReleaseHydrated[];
-			artists: Artist[];
+			latestReleases: {
+				label: string;
+				releases: ReleaseHydrated[];
+			}[];
+			artists: {
+				featured: Artist;
+				followed: Artist[];
+				other: Artist[];
+			};
 			labels: Label[];
+			genres: string[];
 		};
 	} = $props();
-
-	const recentAlbums = $derived(
-		data.releases.filter((release) => release.release_type === 'album').slice(0, 6)
-	);
-	const recentEPs = $derived(
-		data.releases.filter((release) => release.release_type === 'ep').slice(0, 6)
-	);
-	const recentSingles = $derived(
-		data.releases.filter((release) => release.release_type === 'single').slice(0, 6)
-	);
-
-	const followedArtists = $derived(
-		data.artists.filter((artist) => data.followedArtists.includes(artist.id))
-	);
-	const otherArtists = $derived(
-		data.artists.filter((artist) => !data.followedArtists.includes(artist.id))
-	);
-
-	const genres = $derived(data.releases.flatMap((release) => release.genres || []));
-	const uniqueGenres = $derived(Array.from(new Set(genres)));
-
-	const featuredArtist = $derived(otherArtists[Math.floor(Math.random() * otherArtists.length)]);
-
-	const latestReleases = $derived([
-		{
-			label: 'Albums',
-			releases: recentAlbums
-		},
-		{
-			label: 'EPs',
-			releases: recentEPs
-		},
-		{
-			label: 'Singles',
-			releases: recentSingles
-		}
-	]);
 </script>
 
 <svelte:head>
@@ -75,14 +46,14 @@
 
 		<div class="subsection">
 			<h3>Spotlight</h3>
-			<FeaturedArtistCard artist={featuredArtist} />
+			<FeaturedArtistCard artist={data.artists.featured} />
 		</div>
 
-		{#if followedArtists.length > 0}
+		{#if data.artists.followed.length > 0}
 			<div class="subsection">
 				<h3>Your followed artists</h3>
 				<GridWrapper>
-					{#each followedArtists as artist}
+					{#each data.artists.followed as artist}
 						<CircleCard
 							name={artist.name}
 							image={artist.image_ipfs_cid ? makeImageLink(artist.image_ipfs_cid, 200) : undefined}
@@ -93,11 +64,11 @@
 			</div>
 		{/if}
 
-		{#if otherArtists.length > 0}
+		{#if data.artists.other.length > 0}
 			<div class="subsection">
-				{#if followedArtists.length > 0}<h3>More you might like</h3>{/if}
+				{#if data.artists.followed.length > 0}<h3>More you might like</h3>{/if}
 				<GridWrapper>
-					{#each otherArtists.filter((artist) => artist.id !== featuredArtist.id) as artist}
+					{#each data.artists.other as artist}
 						<CircleCard
 							name={artist.name}
 							image={artist.image_ipfs_cid ? makeImageLink(artist.image_ipfs_cid, 200) : undefined}
@@ -115,7 +86,7 @@
 			<a href="/releases">See all</a>
 		</div>
 
-		{#each latestReleases as { label, releases }}
+		{#each data.latestReleases as { label, releases }}
 			<div class="subsection">
 				<h3>{label}</h3>
 				<GridWrapper gridItemSize="150px" gridGap="20px">
@@ -147,7 +118,7 @@
 
 	<section>
 		<a href="/genres"><h2>Genres</h2></a>
-		<TagsGrid slugs={uniqueGenres} type="genres" />
+		<TagsGrid slugs={data.genres} type="genres" />
 	</section>
 </div>
 

@@ -161,9 +161,7 @@
 						if (currentSongIndex !== -1 && currentSongIndex < siblingTracks.length - 1) {
 							const nextSong = siblingTracks[currentSongIndex + 1];
 							const nextSongRelease = userState.activeMixtape
-								? userState.activeMixtape!.tracks.find(
-										(track) => track.id === nextSong.id
-									)!.release
+								? userState.activeMixtape!.tracks.find((track) => track.id === nextSong.id)!.release
 								: release;
 							setActiveSong(
 								nextSong,
