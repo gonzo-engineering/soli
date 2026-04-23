@@ -38,4 +38,7 @@
 		display: flex;
 		color: var(--color-accent);
 	}
+	button:hover {
+		opacity: 0.8;
+	}
 </style>

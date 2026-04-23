@@ -90,3 +90,33 @@ h4 {
 	font-weight: 500;
 	font-size: inherit;
 }
+
+/* Apply webkit/moz appearance none to all elements that look different on different platforms */
+button,
+input,
+select,
+textarea,
+audio {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	font-size: inherit;
+	font-family: inherit;
+	border: 0;
+}
+
+button {
+	border-radius: 4px;
+}
+
+input,
+select,
+textarea {
+	border-radius: 4px;
+	padding: 0 0.3rem;
+}
+
+button:hover {
+	cursor: pointer;
+	opacity: 0.8;
+}

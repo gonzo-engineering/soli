@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import ButtonWrapper from './ButtonWrapper.svelte';
 
 	let { children, popupMenuOpen = $bindable() }: { children: Snippet; popupMenuOpen: boolean } =
 		$props();
@@ -7,7 +8,9 @@
 
 <div class="popup-menu-wrapper">
 	{@render children()}
-	<button onclick={() => (popupMenuOpen = false)}>Close</button>
+	<ButtonWrapper label="Close popup" onClickFunction={() => (popupMenuOpen = false)}>
+		<div class="close-button">Close</div>
+	</ButtonWrapper>
 </div>
 
 <style>
@@ -23,5 +26,13 @@
 		box-shadow: var(--box-shadow);
 		width: 90%;
 		max-width: 400px;
+	}
+	.close-button {
+		padding: 0.5rem;
+		border-radius: 4px;
+		background-color: var(--color-text);
+		color: var(--color-background);
+		text-align: center;
+		margin-top: 1rem;
 	}
 </style>
