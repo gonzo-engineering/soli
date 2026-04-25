@@ -12,6 +12,9 @@
 	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
 	import Navigation from '$lib/components/layout/Navigation.svelte';
 	import { INDEXABLE_PATH_ROOTS } from '$lib/global/config';
+	import Icon from '$lib/components/layout/Icon.svelte';
+	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
+	import SearchMenu from '$lib/components/search/SearchMenu.svelte';
 
 	let { children, data } = $props();
 
@@ -24,6 +27,7 @@
 	let hydratedRelease = $derived(await hydratedReleasePromise);
 
 	let menuIsOpen = $state(false);
+	let searchIsOpen = $state(false);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -51,20 +55,38 @@
 	{/key}
 </svelte:head>
 
-{#if menuIsOpen}
+{#if menuIsOpen || searchIsOpen}
 	<div class="menu">
-		<Header bind:menuIsOpen userIsLoggedIn={session ? true : false} />
-		<Navigation bind:menuIsOpen {session} />
+		<Header bind:menuIsOpen bind:searchIsOpen userIsLoggedIn={session ? true : false} />
+		{#if menuIsOpen}
+			<Navigation bind:menuIsOpen {session} />
+		{:else if searchIsOpen}
+			<SearchMenu bind:searchIsOpen />
+		{/if}
 	</div>
 {:else}
-	<Header bind:menuIsOpen userIsLoggedIn={session ? true : false} />
+	<Header bind:menuIsOpen bind:searchIsOpen userIsLoggedIn={session ? true : false} />
 {/if}
-
 <main>
 	{@render children()}
 </main>
-
 <Footer />
+
+<nav>
+	<div>
+		<ButtonWrapper
+			onClickFunction={() => {
+				const searchState = searchIsOpen;
+				searchIsOpen = !searchState;
+			}}
+			label="Search"
+		>
+			<Icon key="search" size={32} strokeMode />
+		</ButtonWrapper>
+	</div>
+	<div><a href="/me/collections"><Icon key="vinyl" size={32} /></a></div>
+	<div><a href="/me/mixtapes"><Icon key="cassette" size={32} /></a></div>
+</nav>
 
 {#if userState.activeSong && userState.activeSongRelease && data.profileData.tokens_balance && userState.activeSongUrl && data.session?.user.id && data.profileData?.pay_per_stream && hydratedRelease}
 	<AudioPlayer
@@ -90,5 +112,23 @@
 		height: 100vh;
 		background-color: var(--color-background);
 		z-index: 1000;
+	}
+	nav {
+		position: sticky;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		background-color: var(--color-background-secondary);
+		z-index: 1000;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		padding: 1rem;
+		box-shadow: var(--box-shadow);
+	}
+	a {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 </style>
