@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import { API_BASE } from '$lib/global/config';
 	import type { SearchResult } from '../../../../../shared/types/core';
 	import SearchResults from './SearchResults.svelte';
@@ -7,7 +6,15 @@
 	let { searchIsOpen = $bindable() }: { searchIsOpen: boolean } = $props();
 
 	let searchQuery = $state('');
+	let submittedQuery: string | undefined = $state(undefined);
 	let searchResults: SearchResult[] = $state([]);
+
+	const browseOptions = [
+		{ label: 'Artists', path: '/artists' },
+		{ label: 'Releases', path: '/releases' },
+		{ label: 'Genres', path: '/genres' },
+		{ label: 'Labels', path: '/labels' }
+	];
 
 	const performSearch = async (query: string) => {
 		if (query.length < 3) {
@@ -33,9 +40,29 @@
 		type="text"
 		placeholder="Find artists and releases..."
 		bind:value={searchQuery}
-		onkeydown={(e) => e.key === 'Enter' && performSearch(searchQuery)}
+		onkeydown={(e) => {
+			if (e.key === 'Enter') {
+				performSearch(searchQuery);
+				submittedQuery = searchQuery;
+			}
+		}}
 	/>
-	<SearchResults {searchResults} query={searchQuery} />
+	{#if submittedQuery}
+		<SearchResults {searchResults} query={submittedQuery} />
+	{:else}
+		<div class="browse-menu">
+			<h3>Browse</h3>
+			<div class="browse-cards">
+				{#each browseOptions as option}
+					<a href={option.path}
+						><div class="browse-card">
+							{option.label}
+						</div>
+					</a>
+				{/each}
+			</div>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -54,5 +81,22 @@
 		border: 1px solid var(--color-accent);
 		border-radius: 4px;
 		font-size: 1rem;
+	}
+	.browse-cards {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+	.browse-cards a {
+		text-decoration: none;
+		color: inherit;
+		font-weight: 700;
+	}
+	.browse-card {
+		font-size: 2rem;
+		padding: 0.5rem;
+		background-color: var(--color-background-secondary);
+		box-shadow: var(--box-shadow);
+		border-radius: 4px;
 	}
 </style>

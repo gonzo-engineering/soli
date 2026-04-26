@@ -20,6 +20,7 @@
 
 <div class="search-results">
 	{#if searchResults.length > 0}
+		<div>Results for '{query}'</div>
 		{#if searchResultsArtists.length > 0}
 			<div class="search-results-section">
 				<h3>Artists</h3>
@@ -62,6 +63,11 @@
 <style>
 	h3 {
 		margin-bottom: 1rem;
+	}
+	.search-results {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 	.search-results-section {
 		margin-bottom: 1.5rem;

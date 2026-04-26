@@ -8,12 +8,14 @@
 		strokeMode = false,
 		rotation = 0
 	}: {
-		key: keyof typeof icons;
+		key: IconKey;
 		size?: string | number;
 		color?: string;
 		strokeMode?: boolean;
 		rotation?: number;
 	} = $props();
+
+	export type IconKey = keyof typeof icons;
 
 	const iconData = icons[key];
 </script>

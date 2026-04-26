@@ -213,7 +213,6 @@
 		color: var(--color-text);
 		background-color: var(--color-background-secondary);
 		padding: 1rem 1rem 0 1rem;
-		box-shadow: var(--box-shadow);
 	}
 	h3 {
 		margin: 0;

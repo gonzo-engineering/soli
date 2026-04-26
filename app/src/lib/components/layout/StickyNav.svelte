@@ -5,7 +5,7 @@
 	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
 	import AudioPlayer from '../audio-player/AudioPlayer.svelte';
 	import ButtonWrapper from './ButtonWrapper.svelte';
-	import Icon from './Icon.svelte';
+	import Icon, { type IconKey } from './Icon.svelte';
 	import { page } from '$app/state';
 
 	let {
@@ -26,12 +26,12 @@
 			: null
 	);
 
-	let currentPage = $state(page);
-	let currentPath = $derived(currentPage.url.pathname);
+	const isActive = (path: string) => page.url.pathname.startsWith(path);
 
-	$effect(() => {
-		console.log('Current page:', currentPath);
-	});
+	const navLinks: { sectionRoot: string; icon: IconKey; label: string }[] = [
+		{ sectionRoot: '/me/collections', icon: 'vinyl', label: 'Collections' },
+		{ sectionRoot: '/me/mixtapes', icon: 'cassette', label: 'Mixtapes' }
+	];
 </script>
 
 <nav>
@@ -47,17 +47,8 @@
 		/>
 	{/if}
 	<div class="sticky-nav-buttons">
-		<div
-			class="button"
-			style="background-color: {searchIsOpen ? 'var(--color-text)' : 'transparent'}"
-		>
-			<ButtonWrapper
-				onClickFunction={() => {
-					const searchState = searchIsOpen;
-					searchIsOpen = !searchState;
-				}}
-				label="Search"
-			>
+		<div class="button" class:active={searchIsOpen}>
+			<ButtonWrapper onClickFunction={() => (searchIsOpen = !searchIsOpen)} label="Search">
 				<Icon
 					key="search"
 					size={32}
@@ -66,38 +57,17 @@
 				/>
 			</ButtonWrapper>
 		</div>
-		<div
-			class="button"
-			style="background-color: {currentPath.startsWith('/me/collections')
-				? 'var(--color-text)'
-				: 'transparent'}"
-		>
-			<a href="/me/collections"
-				><Icon
-					key="vinyl"
-					size={32}
-					color={currentPath.startsWith('/me/collections')
-						? 'var(--color-background)'
-						: 'var(--color-text)'}
-				/></a
-			>
-		</div>
-		<div
-			class="button"
-			style="background-color: {currentPath.startsWith('/me/mixtapes')
-				? 'var(--color-text)'
-				: 'transparent'}"
-		>
-			<a href="/me/mixtapes"
-				><Icon
-					key="cassette"
-					size={32}
-					color={currentPath.startsWith('/me/mixtapes')
-						? 'var(--color-background)'
-						: 'var(--color-text)'}
-				/></a
-			>
-		</div>
+		{#each navLinks as { sectionRoot: href, icon, label }}
+			<div class="button" class:active={isActive(href)}>
+				<a {href} aria-label={label}>
+					<Icon
+						key={icon}
+						size={32}
+						color={isActive(href) ? 'var(--color-background)' : 'var(--color-text)'}
+					/>
+				</a>
+			</div>
+		{/each}
 	</div>
 </nav>
 
@@ -123,7 +93,10 @@
 		align-items: center;
 	}
 	.button {
-		padding: 0.5rem;
-		border-radius: 40px;
+		padding: 0.25rem;
+		border-radius: 4px;
+	}
+	.button.active {
+		background-color: var(--color-text);
 	}
 </style>
