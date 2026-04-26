@@ -5,26 +5,18 @@
 	import { page } from '$app/state';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { userState } from '$lib/global/state.svelte.js';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
-	import AudioPlayer from '$lib/components/audio-player/AudioPlayer.svelte';
-	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
-	import Navigation from '$lib/components/layout/Navigation.svelte';
+	import BurgerMenu from '$lib/components/layout/BurgerMenu.svelte';
 	import { INDEXABLE_PATH_ROOTS } from '$lib/global/config';
-	import Icon from '$lib/components/layout/Icon.svelte';
-	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
 	import SearchMenu from '$lib/components/search/SearchMenu.svelte';
+	import StickyNav from '$lib/components/layout/StickyNav.svelte';
 
 	let { children, data } = $props();
 
 	let { supabase, session } = $derived(data);
+	let userIsLoggedIn = $derived(session ? true : false);
 	let pagePath = $derived(page.url.pathname);
-
-	let hydratedReleasePromise = $derived(
-		userState.activeSongRelease?.id ? getHydratedRelease(userState.activeSongRelease?.id) : null
-	);
-	let hydratedRelease = $derived(await hydratedReleasePromise);
 
 	let menuIsOpen = $state(false);
 	let searchIsOpen = $state(false);
@@ -36,6 +28,13 @@
 			}
 		});
 		return () => data.subscription.unsubscribe();
+	});
+
+	// Reset search when page changes
+	$effect(() => {
+		if (page.url) {
+			searchIsOpen = false;
+		}
 	});
 </script>
 
@@ -57,46 +56,27 @@
 
 {#if menuIsOpen || searchIsOpen}
 	<div class="menu">
-		<Header bind:menuIsOpen bind:searchIsOpen userIsLoggedIn={session ? true : false} />
+		<Header bind:menuIsOpen {userIsLoggedIn} />
 		{#if menuIsOpen}
-			<Navigation bind:menuIsOpen {session} />
+			<BurgerMenu bind:menuIsOpen {session} />
 		{:else if searchIsOpen}
 			<SearchMenu bind:searchIsOpen />
 		{/if}
 	</div>
 {:else}
-	<Header bind:menuIsOpen bind:searchIsOpen userIsLoggedIn={session ? true : false} />
+	<Header bind:menuIsOpen {userIsLoggedIn} />
 {/if}
 <main>
 	{@render children()}
 </main>
 <Footer />
 
-<nav>
-	<div>
-		<ButtonWrapper
-			onClickFunction={() => {
-				const searchState = searchIsOpen;
-				searchIsOpen = !searchState;
-			}}
-			label="Search"
-		>
-			<Icon key="search" size={32} strokeMode />
-		</ButtonWrapper>
-	</div>
-	<div><a href="/me/collections"><Icon key="vinyl" size={32} /></a></div>
-	<div><a href="/me/mixtapes"><Icon key="cassette" size={32} /></a></div>
-</nav>
-
-{#if userState.activeSong && userState.activeSongRelease && data.profileData.tokens_balance && userState.activeSongUrl && data.session?.user.id && data.profileData?.pay_per_stream && hydratedRelease}
-	<AudioPlayer
+{#if data.session?.user.id && data.profileData && data.likedTracks}
+	<StickyNav
+		bind:searchIsOpen
 		userId={data.session?.user.id}
-		userBalance={data.profileData.tokens_balance}
-		userPayPerStream={data.profileData?.pay_per_stream}
-		track={userState.activeSong}
-		release={hydratedRelease}
-		songUrl={userState.activeSongUrl}
-		likedTracks={data.likedTracks}
+		userProfileData={data.profileData}
+		userLikedTracks={data.likedTracks}
 	/>
 {/if}
 
@@ -112,23 +92,5 @@
 		height: 100vh;
 		background-color: var(--color-background);
 		z-index: 1000;
-	}
-	nav {
-		position: sticky;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		background-color: var(--color-background-secondary);
-		z-index: 1000;
-		display: flex;
-		justify-content: space-around;
-		align-items: center;
-		padding: 1rem;
-		box-shadow: var(--box-shadow);
-	}
-	a {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
 	}
 </style>

@@ -6,12 +6,10 @@
 
 	let {
 		userIsLoggedIn,
-		menuIsOpen = $bindable(),
-		searchIsOpen = $bindable()
+		menuIsOpen = $bindable()
 	}: {
 		userIsLoggedIn: boolean;
 		menuIsOpen: boolean;
-		searchIsOpen: boolean;
 	} = $props();
 
 	let showPWAInstallPrompt = $state(false);
@@ -57,13 +55,7 @@
 {/if}
 
 <header>
-	{#if userIsLoggedIn}
-		<ButtonWrapper label="Search" onClickFunction={() => (searchIsOpen = !searchIsOpen)}>
-			<Icon key="search" size={30} strokeMode />
-		</ButtonWrapper>
-	{:else}
-		<div style="width: 30px;"></div>
-	{/if}
+	<div style="width: 30px;"></div>
 	<a href="/">
 		<Logo />
 	</a>

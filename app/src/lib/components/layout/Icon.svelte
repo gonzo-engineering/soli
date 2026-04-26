@@ -5,12 +5,14 @@
 		key,
 		size = 22,
 		color = 'currentColor',
-		strokeMode = false
+		strokeMode = false,
+		rotation = 0
 	}: {
 		key: keyof typeof icons;
 		size?: string | number;
 		color?: string;
 		strokeMode?: boolean;
+		rotation?: number;
 	} = $props();
 
 	const iconData = icons[key];
@@ -22,7 +24,7 @@
 	width={size}
 	viewBox={iconData.viewBox}
 	fill={strokeMode ? 'none' : color}
-	style={'display: inline-block;'}
+	style={`display: inline-block; transform: rotate(${rotation}deg);`}
 	stroke-width={3}
 >
 	{#each iconData.ds as d}

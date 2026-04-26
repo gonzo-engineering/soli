@@ -9,15 +9,6 @@
 	let searchQuery = $state('');
 	let searchResults: SearchResult[] = $state([]);
 
-	// Reset search when page changes
-	$effect(() => {
-		if (page.url) {
-			searchIsOpen = false;
-			searchQuery = '';
-			searchResults = [];
-		}
-	});
-
 	const performSearch = async (query: string) => {
 		if (query.length < 3) {
 			return;
@@ -37,9 +28,10 @@
 </script>
 
 <div class="search-container">
+	<h2>Search</h2>
 	<input
 		type="text"
-		placeholder="Search for artists, releases, tracks..."
+		placeholder="Find artists and releases..."
 		bind:value={searchQuery}
 		onkeydown={(e) => e.key === 'Enter' && performSearch(searchQuery)}
 	/>
@@ -47,17 +39,20 @@
 </div>
 
 <style>
+	h2 {
+		margin-bottom: 0;
+	}
+	.search-container {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		gap: 1rem;
+	}
 	input {
-		width: 90%;
-		max-width: 400px;
+		max-width: 800px;
 		padding: 0.5rem;
-		margin: 0 1rem;
 		border: 1px solid var(--color-accent);
 		border-radius: 4px;
 		font-size: 1rem;
-	}
-	.search-container {
-		width: 100%;
-		height: 100%;
 	}
 </style>
