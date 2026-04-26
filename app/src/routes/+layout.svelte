@@ -5,25 +5,21 @@
 	import { page } from '$app/state';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { userState } from '$lib/global/state.svelte.js';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
-	import AudioPlayer from '$lib/components/audio-player/AudioPlayer.svelte';
-	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
-	import Navigation from '$lib/components/layout/Navigation.svelte';
+	import BurgerMenu from '$lib/components/layout/BurgerMenu.svelte';
 	import { INDEXABLE_PATH_ROOTS } from '$lib/global/config';
+	import SearchMenu from '$lib/components/search/SearchMenu.svelte';
+	import StickyNav from '$lib/components/layout/StickyNav.svelte';
 
 	let { children, data } = $props();
 
 	let { supabase, session } = $derived(data);
+	let userIsLoggedIn = $derived(session ? true : false);
 	let pagePath = $derived(page.url.pathname);
 
-	let hydratedReleasePromise = $derived(
-		userState.activeSongRelease?.id ? getHydratedRelease(userState.activeSongRelease?.id) : null
-	);
-	let hydratedRelease = $derived(await hydratedReleasePromise);
-
 	let menuIsOpen = $state(false);
+	let searchIsOpen = $state(false);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -32,6 +28,13 @@
 			}
 		});
 		return () => data.subscription.unsubscribe();
+	});
+
+	// Reset search when page changes
+	$effect(() => {
+		if (page.url) {
+			searchIsOpen = false;
+		}
 	});
 </script>
 
@@ -51,30 +54,29 @@
 	{/key}
 </svelte:head>
 
-{#if menuIsOpen}
+{#if menuIsOpen || searchIsOpen}
 	<div class="menu">
-		<Header bind:menuIsOpen userIsLoggedIn={session ? true : false} />
-		<Navigation bind:menuIsOpen {session} />
+		<Header bind:menuIsOpen {userIsLoggedIn} />
+		{#if menuIsOpen}
+			<BurgerMenu bind:menuIsOpen {session} />
+		{:else if searchIsOpen}
+			<SearchMenu bind:searchIsOpen />
+		{/if}
 	</div>
 {:else}
-	<Header bind:menuIsOpen userIsLoggedIn={session ? true : false} />
+	<Header bind:menuIsOpen {userIsLoggedIn} />
 {/if}
-
 <main>
 	{@render children()}
 </main>
-
 <Footer />
 
-{#if userState.activeSong && userState.activeSongRelease && data.profileData.tokens_balance && userState.activeSongUrl && data.session?.user.id && data.profileData?.pay_per_stream && hydratedRelease}
-	<AudioPlayer
+{#if data.session?.user.id && data.profileData && data.likedTracks}
+	<StickyNav
+		bind:searchIsOpen
 		userId={data.session?.user.id}
-		userBalance={data.profileData.tokens_balance}
-		userPayPerStream={data.profileData?.pay_per_stream}
-		track={userState.activeSong}
-		release={hydratedRelease}
-		songUrl={userState.activeSongUrl}
-		likedTracks={data.likedTracks}
+		userProfileData={data.profileData}
+		userLikedTracks={data.likedTracks}
 	/>
 {/if}
 

@@ -2,6 +2,7 @@
 	import { makeImageLink } from '$lib/utils';
 	import type { SearchResult } from '../../../../../shared/types/core';
 	import CircleCard from '../CircleCard.svelte';
+	import GridWrapper from '../GridWrapper.svelte';
 	import ReleaseCard from '../ReleaseCard.svelte';
 
 	let { searchResults, query }: { searchResults: SearchResult[]; query: string } = $props();
@@ -19,29 +20,33 @@
 
 <div class="search-results">
 	{#if searchResults.length > 0}
-		<h2>Search results for '{query}'</h2>
+		<div>Results for '{query}'</div>
 		{#if searchResultsArtists.length > 0}
 			<div class="search-results-section">
 				<h3>Artists</h3>
-				{#each searchResultsArtists as artist}
-					<CircleCard
-						name={artist.name}
-						image={artist.image_cid ? makeImageLink(artist.image_cid, 200) : undefined}
-						link={`/artists/${artist.id}`}
-					/>
-				{/each}
+				<GridWrapper>
+					{#each searchResultsArtists as artist}
+						<CircleCard
+							name={artist.name}
+							image={artist.image_cid ? makeImageLink(artist.image_cid, 200) : undefined}
+							link={`/artists/${artist.id}`}
+						/>
+					{/each}
+				</GridWrapper>
 			</div>
 		{/if}
 		{#if searchResultsReleases.length > 0}
 			<div class="search-results-section">
 				<h3>Releases</h3>
-				{#each searchResultsReleases as release}
-					<ReleaseCard
-						name={release.name}
-						coverArt={release.image_cid ? makeImageLink(release.image_cid, 200) : ''}
-						link={`/releases/${release.id}`}
-					/>
-				{/each}
+				<GridWrapper>
+					{#each searchResultsReleases as release}
+						<ReleaseCard
+							name={release.name}
+							coverArt={release.image_cid ? makeImageLink(release.image_cid, 200) : ''}
+							link={`/releases/${release.id}`}
+						/>
+					{/each}
+				</GridWrapper>
 			</div>
 		{/if}
 		<!-- {#if searchResultsTracks.length > 0}
@@ -60,7 +65,9 @@
 		margin-bottom: 1rem;
 	}
 	.search-results {
-		margin: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 	.search-results-section {
 		margin-bottom: 1.5rem;

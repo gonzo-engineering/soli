@@ -23,6 +23,11 @@
 </span>
 
 <style>
+	.button-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 	.button-wrapper:hover {
 		cursor: pointer;
 		opacity: 0.8;

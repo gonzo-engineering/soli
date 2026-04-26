@@ -69,7 +69,7 @@
 			userId,
 			tokens: userPayPerStream,
 			addOrSubtract: 'subtract'
-		});
+		}).run();
 
 		await logStream({
 			streamId: userState.activeStreamSessionId!,
@@ -77,7 +77,7 @@
 			artistId: release.artist_id,
 			trackId: track.id,
 			tokensUsed: userPayPerStream
-		});
+		}).run();
 	};
 
 	$effect(() => {
@@ -125,18 +125,18 @@
 		/>
 	{/if}
 	<div class="mobile-wrapper" class:reverse-column={fullPage}>
-		<div class="hidden-on-desktop">
-			<ButtonWrapper
-				label={fullPage ? 'Minimize player' : 'Expand player'}
-				onClickFunction={() => {
-					fullPage = !fullPage;
-				}}
-			>
-				<div style:transform={fullPage ? 'rotate(0deg)' : 'rotate(180deg)'}>
-					<Icon key="chevron" size={28} />
-				</div>
-			</ButtonWrapper>
-		</div>
+		{#if fullPage}
+			<div class="hidden-on-desktop">
+				<ButtonWrapper
+					label={fullPage ? 'Minimize player' : 'Expand player'}
+					onClickFunction={() => {
+						fullPage = !fullPage;
+					}}
+				>
+					<Icon key="chevron" size={36} />
+				</ButtonWrapper>
+			</div>
+		{/if}
 		<div class="essentials">
 			<div class="now-playing-info">
 				<div>
@@ -146,12 +146,23 @@
 					>
 				</div>
 				<TrackLikeButton trackID={track.id} {likedTracks} />
+				{#if !fullPage}
+					<ButtonWrapper
+						label={fullPage ? 'Minimize player' : 'Expand player'}
+						onClickFunction={() => {
+							fullPage = !fullPage;
+						}}
+					>
+						<Icon key="chevron" size={36} rotation={180} />
+					</ButtonWrapper>
+				{/if}
 			</div>
 			<audio
 				bind:this={audioElement}
 				src={songUrl}
 				bind:paused={userState.activeSongIsPaused}
 				ontimeupdate={onTimeUpdate}
+				class:hidden={!fullPage}
 				onended={() => {
 					if (userState.autoPlay) {
 						const siblingTracks = userState.activeMixtape?.tracks || release.tracks;
@@ -196,20 +207,19 @@
 		align-items: center;
 		justify-content: space-evenly;
 		text-align: center;
-		position: fixed;
 		bottom: 0;
 		left: 0;
 		right: 0;
 		color: var(--color-text);
 		background-color: var(--color-background-secondary);
-		padding: 0 1rem 1rem 1rem;
-		box-shadow: var(--box-shadow);
+		padding: 1rem 1rem 0 1rem;
 	}
 	h3 {
 		margin: 0;
 	}
 	.full-page {
 		top: 0;
+		position: fixed;
 		height: 100vh;
 		z-index: 1000;
 	}
@@ -252,6 +262,9 @@
 		font-weight: bold;
 		white-space: nowrap;
 		z-index: 2000;
+	}
+	.hidden {
+		display: none;
 	}
 	@media (min-width: 600px) {
 		.audio-player {
