@@ -8,6 +8,7 @@
 	import MusicView from '$lib/components/views/music/MusicView.svelte';
 	import { getArtistReleases, getArtistTracks } from '$lib/remote-functions/artist.remote';
 	import { getArtistStreams } from '$lib/remote-functions/stats.remote';
+	import { makeImageLink } from '$lib/utils';
 
 	let {
 		data
@@ -57,7 +58,25 @@
 		{:else if dashboardState.activeSection === 'stats'}
 			<StatsView streams={activeArtistStreams} />
 		{/if}
+	{:else if dashboardState.activeLabel}
+		<div>
+			<h2>{dashboardState.activeLabel.name}</h2>
+			{#if dashboardState.activeLabel.image_cid}
+				<img
+					src={makeImageLink(dashboardState.activeLabel.image_cid, 500)}
+					alt="{dashboardState.activeLabel.name} logo"
+					class="label-logo"
+				/>
+			{/if}
+			<p>{dashboardState.activeLabel.description}</p>
+			<a href={dashboardState.activeLabel.website_url} target="_blank" rel="noopener noreferrer"
+				>{dashboardState.activeLabel.website_url}</a
+			>
+		</div>
 	{:else}
-		<div>Select an artist to manage their releases and songs.</div>
+		<div class="no-selection">
+			<h2>Welcome to your dashboard</h2>
+			<p>Please select an artist or label from the sidebar to get started.</p>
+		</div>
 	{/if}
 </div>

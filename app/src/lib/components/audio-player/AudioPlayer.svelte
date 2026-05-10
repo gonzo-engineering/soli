@@ -17,7 +17,6 @@
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 	import { fade, slide } from 'svelte/transition';
 	import SpinningRecord from './SpinningRecord.svelte';
-	import { is } from 'zod/locales';
 
 	let {
 		userId,

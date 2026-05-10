@@ -9,7 +9,7 @@
 
 	let { children, data } = $props();
 
-	let { supabase, session, artists } = $derived(data);
+	let { supabase, session, artists, labels } = $derived(data);
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -56,6 +56,24 @@
 				</select>
 			{:else}
 				<li>No artists found.</li>
+			{/if}
+			{#if labels}
+				<h3>Your linked labels</h3>
+				<select
+					class="label-selector"
+					onchange={(e) => {
+						const selectedId = (e.target as HTMLSelectElement).value;
+						dashboardState.activeLabel = labels.find((l) => l.id === selectedId) || null;
+						dashboardState.activeSection = 'profile';
+					}}
+				>
+					<option value="" selected>Select a label</option>
+					{#each labels as label}
+						<option value={label.id}>
+							{label.name}
+						</option>
+					{/each}
+				</select>
 			{/if}
 			{#if dashboardState.activeArtist}
 				<hr />
