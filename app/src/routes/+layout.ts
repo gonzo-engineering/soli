@@ -42,6 +42,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 		profileData: data.profileData,
 		collections: data.collections,
 		followedArtists: data.followedArtists,
+		linkedArtists: data.linkedArtists,
 		likedTracks: data.likedTracks,
 		mixtapes: data.mixtapes
 	};

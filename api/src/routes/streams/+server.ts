@@ -4,7 +4,7 @@ import { supabase } from '$lib/server/supabase';
 export async function POST({ request }) {
 	const { streamId, userId, artistId, trackId, tokensUsed } = await request.json();
 
-	if (!streamId || !userId || !artistId || !trackId || !tokensUsed) {
+	if (!streamId || !userId || !artistId || !trackId || tokensUsed == null) {
 		return new Response('Missing required fields', { status: 400 });
 	}
 

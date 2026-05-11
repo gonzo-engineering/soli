@@ -1,6 +1,7 @@
 import type { Session } from '@supabase/supabase-js';
 import type { Mixtape, Release, Track, Listener } from '../../../../shared/types/core';
 import type {
+	ArtistHydrated,
 	CollectionHydrated,
 	MixtapeHydrated,
 	TrackHydrated
@@ -23,6 +24,7 @@ export interface UserData {
 	likedTracks: TrackHydrated[];
 	mixtapes: Mixtape[];
 	followedArtists: string[];
+	linkedArtists: ArtistHydrated[];
 }
 
 export const userState: UserState = $state({
