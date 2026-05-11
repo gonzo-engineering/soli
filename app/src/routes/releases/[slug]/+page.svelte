@@ -78,6 +78,13 @@
 		</ButtonWrapper>
 	{/if}
 
+	{#if data.linkedArtists.find((artist) => artist.id === release.artist_id)}
+		<div class="linked-artist-indicator">
+			You will not be charged for streaming this release because you are linked to (or may even be)
+			the artist!
+		</div>
+	{/if}
+
 	<TracksTable
 		tracks={release.tracks.map((track) => ({
 			...track,
@@ -133,5 +140,14 @@
 		text-align: center;
 		font-weight: 400;
 		padding: 0.5rem 1rem;
+	}
+	.linked-artist-indicator {
+		background-color: #4c77a9;
+		color: var(--color-text);
+		padding: 0.5rem 1rem;
+		border-radius: 12px;
+		font-size: 0.9rem;
+		line-height: 1.2;
+		font-weight: 500;
 	}
 </style>

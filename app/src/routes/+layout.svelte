@@ -71,12 +71,13 @@
 </main>
 <Footer />
 
-{#if data.session?.user.id && data.profileData && data.likedTracks}
+{#if data.session?.user.id && data.profileData}
 	<StickyNav
 		bind:searchIsOpen
 		userId={data.session?.user.id}
 		userProfileData={data.profileData}
 		userLikedTracks={data.likedTracks}
+		userLinkedArtists={data.linkedArtists}
 	/>
 {/if}
 

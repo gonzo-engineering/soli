@@ -24,8 +24,10 @@ export const logStream = query(
 		});
 		if (status === 200) {
 			console.log('Stream logged successfully');
+			return { success: true };
 		} else {
 			console.error('Error logging stream:', status);
+			return { success: false };
 		}
 	}
 );

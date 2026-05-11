@@ -77,11 +77,13 @@ export const updateUserTokensBalance = query(
 			body: JSON.stringify({ balanceChange })
 		});
 
-		if (!response.ok) {
-			console.error('Error updating user balance:', response.statusText);
+		if (response.ok) {
+			console.log('User tokens balance updated successfully');
+			return { success: true };
+		} else {
+			console.error('Error updating user tokens balance:', response.statusText);
+			return { success: false };
 		}
-		const data = await response.json();
-		return { data, error: response.ok ? null : new Error(response.statusText) };
 	}
 );
 

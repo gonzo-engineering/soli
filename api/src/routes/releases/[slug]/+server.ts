@@ -4,6 +4,10 @@ import { TABLES } from '../../../../../shared/config';
 import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
 
 export async function GET({ params }) {
+	const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+	if (!uuidRegex.test(params.slug)) {
+		return json({ error: 'Invalid release ID' }, { status: 400 });
+	}
 	return handlePostgrestQuery<ReleaseHydrated>(
 		async () => await supabase.from(TABLES.releasesRich).select().eq('id', params.slug).single(),
 		{ errorMessage: 'Failed to fetch release' }

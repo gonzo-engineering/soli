@@ -6,13 +6,18 @@
 	import { setActiveSong } from '$lib/utils/audio-playback';
 	import { STREAM_THRESHOLD_SECONDS } from '../../../../../shared/config';
 	import type { Track } from '../../../../../shared/types/core';
-	import type { ReleaseHydrated, TrackHydrated } from '../../../../../shared/types/hydrated';
+	import type {
+		ArtistHydrated,
+		ReleaseHydrated,
+		TrackHydrated
+	} from '../../../../../shared/types/hydrated';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 	import Icon from '../layout/Icon.svelte';
 	import Logo from '../layout/Logo.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 	import { fade, slide } from 'svelte/transition';
 	import SpinningRecord from './SpinningRecord.svelte';
+	import { is } from 'zod/locales';
 
 	let {
 		userId,
@@ -21,7 +26,8 @@
 		track,
 		release,
 		songUrl,
-		likedTracks
+		likedTracks,
+		linkedArtists
 	}: {
 		userId: string;
 		userBalance: number;
@@ -30,6 +36,7 @@
 		release: ReleaseHydrated;
 		songUrl: string;
 		likedTracks: TrackHydrated[];
+		linkedArtists: ArtistHydrated[];
 	} = $props();
 
 	let fullPage = $state(false);
@@ -39,7 +46,11 @@
 	let listenedSeconds = $state(0);
 	let lastTime = $state(0);
 
-	const onTimeUpdate = () => {
+	let artistIsLinkedToUser = $derived(
+		linkedArtists.some((linkedArtist) => linkedArtist.id === release.artist_id)
+	);
+
+	const onTimeUpdate = async () => {
 		if (!audioElement || charged) return;
 
 		const delta = audioElement.currentTime - lastTime;
@@ -52,8 +63,12 @@
 
 		if (listenedSeconds >= STREAM_THRESHOLD_SECONDS) {
 			charged = true;
-			charge();
-			showPaymentPopup();
+			const chargeResult = await chargeForStreamAndLog(artistIsLinkedToUser);
+			if (chargeResult.success && !artistIsLinkedToUser) {
+				showPaymentPopup();
+			} else if (!chargeResult.success) {
+				console.error('Error charging for stream');
+			}
 		}
 	};
 
@@ -64,20 +79,39 @@
 		}, 3000);
 	};
 
-	const charge = async () => {
-		await updateUserTokensBalance({
-			userId,
-			tokens: userPayPerStream,
-			addOrSubtract: 'subtract'
-		}).run();
+	const chargeForStreamAndLog = async (isFreebie: boolean) => {
+		if (isFreebie) {
+			const logResult = await logStream({
+				streamId: userState.activeStreamSessionId!,
+				userId,
+				artistId: release.artist_id,
+				trackId: track.id,
+				tokensUsed: 0
+			}).run();
 
-		await logStream({
-			streamId: userState.activeStreamSessionId!,
-			userId,
-			artistId: release.artist_id,
-			trackId: track.id,
-			tokensUsed: userPayPerStream
-		}).run();
+			if (!logResult.success) console.error('Error logging stream');
+			return { success: logResult.success };
+		}
+
+		const [balanceUpdateResult, logResult] = await Promise.all([
+			updateUserTokensBalance({
+				userId,
+				tokens: userPayPerStream,
+				addOrSubtract: 'subtract'
+			}).run(),
+			logStream({
+				streamId: userState.activeStreamSessionId!,
+				userId,
+				artistId: release.artist_id,
+				trackId: track.id,
+				tokensUsed: userPayPerStream
+			}).run()
+		]);
+
+		if (!balanceUpdateResult.success) console.error('Error updating user balance');
+		if (!logResult.success) console.error('Error logging stream');
+
+		return { success: balanceUpdateResult.success && logResult.success };
 	};
 
 	$effect(() => {
