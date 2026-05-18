@@ -35,5 +35,7 @@ export const TABLES = {
 	mixtapes: 'mixtapes',
 	mixtapesRich: 'mixtapes_rich',
 	mixtapeTracks: 'mixtape_tracks',
-	labels: 'labels'
+	labels: 'labels',
+	labelsRich: 'labels_rich',
+	labelMembers: 'label_members'
 };

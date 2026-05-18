@@ -8,6 +8,8 @@
 	import MusicView from '$lib/components/views/music/MusicView.svelte';
 	import { getArtistReleases, getArtistTracks } from '$lib/remote-functions/artist.remote';
 	import { getArtistStreams } from '$lib/remote-functions/stats.remote';
+	import LabelView from '$lib/components/views/label/LabelView.svelte';
+	import { APP_BASE } from '$lib/config';
 
 	let {
 		data
@@ -57,7 +59,27 @@
 		{:else if dashboardState.activeSection === 'stats'}
 			<StatsView streams={activeArtistStreams} />
 		{/if}
+	{:else if dashboardState.activeLabel}
+		{#if dashboardState.activeSection === 'profile'}
+			<LabelView activeLabel={dashboardState.activeLabel} />
+		{:else if dashboardState.activeSection === 'artists'}
+			<div class="label-artists">
+				<h2>Artists on your label</h2>
+				{#if dashboardState.activeLabel.artists.length > 0}
+					<ul>
+						{#each dashboardState.activeLabel.artists as artist}
+							<li><a href={`${APP_BASE}/artist/${artist.id}`} target="_blank">{artist.name}</a></li>
+						{/each}
+					</ul>
+				{:else}
+					<p>You don't have any artists linked to your label yet.</p>
+				{/if}
+			</div>
+		{/if}
 	{:else}
-		<div>Select an artist to manage their releases and songs.</div>
+		<div class="no-selection">
+			<h2>Welcome to your dashboard</h2>
+			<p>Please select an artist or label from the sidebar to get started.</p>
+		</div>
 	{/if}
 </div>

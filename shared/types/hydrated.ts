@@ -22,3 +22,7 @@ export interface CollectionHydrated extends Collection {
 export interface MixtapeHydrated extends Mixtape {
 	tracks: TrackHydrated[];
 }
+
+export interface LabelHydrated extends Label {
+	artists: Artist[];
+}

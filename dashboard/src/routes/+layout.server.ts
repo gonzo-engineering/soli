@@ -1,6 +1,7 @@
 import type { LayoutServerLoad } from './$types';
 import type { ArtistHydrated } from '../../../shared/types/hydrated';
 import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
+import type { Label } from '../../../shared/types/core';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies }) => {
 	const { session, user } = await safeGetSession();
@@ -29,10 +30,16 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 		return 0;
 	});
 
+	const connectedLabels: Label[] = await fetch(`${API_BASE}/users/${userID}/labels`, {
+		method: 'GET',
+		headers: REQUEST_HEADER_BOILERPLATE
+	}).then((res) => res.json());
+
 	return {
 		session,
 		user,
 		cookies: cookies.getAll(),
-		artists: connectedArtists
+		artists: connectedArtists,
+		labels: connectedLabels
 	};
 };
