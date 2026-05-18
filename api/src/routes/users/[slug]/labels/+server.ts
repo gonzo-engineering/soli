@@ -2,6 +2,7 @@ import { TABLES } from '../../../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import type { Label } from '../../../../../../shared/types/core';
+import type { LabelHydrated } from '../../../../../../shared/types/hydrated';
 
 export async function GET({ params }) {
 	const userId = params.slug;
@@ -20,10 +21,10 @@ export async function GET({ params }) {
 		data: connectedLabels,
 		error: labelError
 	}: {
-		data: Label[] | null;
+		data: LabelHydrated[] | null;
 		error: Error | null;
 	} = await supabase
-		.from(TABLES.labels)
+		.from(TABLES.labelsRich)
 		.select('*')
 		.in(
 			'id',

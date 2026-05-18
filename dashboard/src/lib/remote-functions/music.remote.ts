@@ -1,5 +1,5 @@
 import { form, query } from '$app/server';
-import { API_BASE, DOMAIN_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
+import { API_BASE, DASHBOARD_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
 import * as z from 'zod';
 
 const AddReleaseForm = z.object({
@@ -35,7 +35,7 @@ export const addRelease = form(AddReleaseForm, async (data) => {
 	await fetch(`${API_BASE}/releases`, {
 		method: 'POST',
 		headers: {
-			origin: DOMAIN_BASE
+			origin: DASHBOARD_BASE
 		},
 		body: formData
 	});
@@ -53,7 +53,7 @@ export const uploadTrack = form(UploadTrackForm, async (data) => {
 	await fetch(`${API_BASE}/tracks`, {
 		method: 'POST',
 		headers: {
-			origin: DOMAIN_BASE
+			origin: DASHBOARD_BASE
 		},
 		body: formData
 	});

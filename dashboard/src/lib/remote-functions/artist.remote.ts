@@ -1,5 +1,5 @@
-import { form, getRequestEvent, query } from '$app/server';
-import { API_BASE, DOMAIN_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
+import { form, query } from '$app/server';
+import { API_BASE, DASHBOARD_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
 import * as z from 'zod';
 import type { Track } from '../../../../shared/types/core';
 import { sortReleasesByDate } from '../../../../shared/utils';
@@ -25,7 +25,7 @@ export const updateArtistDetails = form(ArtistDetailsForm, async (data) => {
 	await fetch(`${API_BASE}/artists/${data.artistId}`, {
 		method: 'PATCH',
 		headers: {
-			origin: DOMAIN_BASE
+			origin: DASHBOARD_BASE
 		},
 		body: formData
 	});

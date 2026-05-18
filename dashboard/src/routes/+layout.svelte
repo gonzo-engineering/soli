@@ -20,10 +20,15 @@
 		return () => data.subscription.unsubscribe();
 	});
 
-	const dashboardSections: { id: DashboardSectionId; name: string }[] = [
+	const artistDashboardSections: { id: DashboardSectionId; name: string }[] = [
 		{ id: 'profile', name: 'Profile' },
 		{ id: 'music', name: 'Music' },
 		{ id: 'stats', name: 'Stats' }
+	];
+
+	const labelDashboardSections: { id: DashboardSectionId; name: string }[] = [
+		{ id: 'profile', name: 'Profile' },
+		{ id: 'artists', name: 'Artists' }
 	];
 </script>
 
@@ -36,8 +41,8 @@
 		<div class="side-panel">
 			<h1>Soli • Dashboard</h1>
 			<hr />
-			<div>User: {session?.user?.email}</div>
-			{#if artists}
+			<div>User: {session.user.email}</div>
+			{#if artists && artists.length > 0}
 				<h3>Your linked artists</h3>
 				<select
 					class="artist-selector"
@@ -57,7 +62,7 @@
 			{:else}
 				<li>No artists found.</li>
 			{/if}
-			{#if labels}
+			{#if labels && labels.length > 0}
 				<h3>Your linked labels</h3>
 				<select
 					class="label-selector"
@@ -77,7 +82,29 @@
 			{/if}
 			{#if dashboardState.activeArtist}
 				<hr />
-				{#each dashboardSections as section}
+				{#each artistDashboardSections as section}
+					<div
+						class="section-selector"
+						class:active={dashboardState.activeSection === section.id}
+						role="button"
+						onclick={() => {
+							dashboardState.activeSection = section.id;
+						}}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								dashboardState.activeSection = section.id;
+							}
+						}}
+						aria-label={`${section.name} Section`}
+						tabindex="0"
+					>
+						{section.name}
+					</div>
+				{/each}
+			{/if}
+			{#if dashboardState.activeLabel}
+				<hr />
+				{#each labelDashboardSections as section}
 					<div
 						class="section-selector"
 						class:active={dashboardState.activeSection === section.id}

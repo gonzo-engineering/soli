@@ -8,7 +8,8 @@
 	import MusicView from '$lib/components/views/music/MusicView.svelte';
 	import { getArtistReleases, getArtistTracks } from '$lib/remote-functions/artist.remote';
 	import { getArtistStreams } from '$lib/remote-functions/stats.remote';
-	import { makeImageLink } from '$lib/utils';
+	import LabelView from '$lib/components/views/label/LabelView.svelte';
+	import { APP_BASE } from '$lib/config';
 
 	let {
 		data
@@ -59,20 +60,22 @@
 			<StatsView streams={activeArtistStreams} />
 		{/if}
 	{:else if dashboardState.activeLabel}
-		<div>
-			<h2>{dashboardState.activeLabel.name}</h2>
-			{#if dashboardState.activeLabel.image_cid}
-				<img
-					src={makeImageLink(dashboardState.activeLabel.image_cid, 500)}
-					alt="{dashboardState.activeLabel.name} logo"
-					class="label-logo"
-				/>
-			{/if}
-			<p>{dashboardState.activeLabel.description}</p>
-			<a href={dashboardState.activeLabel.website_url} target="_blank" rel="noopener noreferrer"
-				>{dashboardState.activeLabel.website_url}</a
-			>
-		</div>
+		{#if dashboardState.activeSection === 'profile'}
+			<LabelView activeLabel={dashboardState.activeLabel} />
+		{:else if dashboardState.activeSection === 'artists'}
+			<div class="label-artists">
+				<h2>Artists on your label</h2>
+				{#if dashboardState.activeLabel.artists.length > 0}
+					<ul>
+						{#each dashboardState.activeLabel.artists as artist}
+							<li><a href={`${APP_BASE}/artist/${artist.id}`} target="_blank">{artist.name}</a></li>
+						{/each}
+					</ul>
+				{:else}
+					<p>You don't have any artists linked to your label yet.</p>
+				{/if}
+			</div>
+		{/if}
 	{:else}
 		<div class="no-selection">
 			<h2>Welcome to your dashboard</h2>
