@@ -16,11 +16,11 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-netlify": "^6.0.4",
-		"@sveltejs/kit": "^2.57.1",
-		"@sveltejs/vite-plugin-svelte": "^7.0.0",
-		"svelte": "^5.55.4",
-		"svelte-check": "^4.4.6",
+		"@sveltejs/kit": "^2.61.1",
+		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"svelte": "^5.55.0",
+		"svelte-check": "^4.4.8",
 		"typescript": "^6.0.3",
-		"vite": "^8.0.9"
+		"vite": "^8.0.14"
 	}
 }
