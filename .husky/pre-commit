@@ -1,0 +1,6 @@
+yarn workspace app test
+yarn workspace api run check
+yarn workspace app run check
+yarn workspace dashboard run check
+yarn constraints
+yarn lint-staged

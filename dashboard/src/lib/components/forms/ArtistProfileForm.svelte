@@ -17,7 +17,12 @@
 	} = $props();
 </script>
 
-<form {...updateArtistDetails.enhance(({ submit }) => submit())} enctype="multipart/form-data">
+<form
+	{...updateArtistDetails.enhance(({ submit }) => {
+		void submit();
+	})}
+	enctype="multipart/form-data"
+>
 	<input {...updateArtistDetails.fields.artistId.as('hidden', artistId)} />
 	<input {...updateArtistDetails.fields.artistName.as('hidden', artistName)} />
 	{#if currentArtistImageCID}

@@ -1,8 +1,9 @@
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../shared/config';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
 	const { userId, name, description } = await request.json();
 
 	if (!name) {
@@ -18,4 +19,4 @@ export async function POST({ request }) {
 	}
 
 	return json({ success: true });
-}
+};

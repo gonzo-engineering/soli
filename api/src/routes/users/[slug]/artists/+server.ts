@@ -2,8 +2,9 @@ import { TABLES } from '../../../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import type { ArtistHydrated } from '../../../../../../shared/types/hydrated';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	const userId = params.slug;
 
 	const { data: relatedArtistsData, error } = await supabase
@@ -34,4 +35,4 @@ export async function GET({ params }) {
 		return json({ error: 'Failed to fetch connected artists' }, { status: 500 });
 	}
 	return json(connectedArtists);
-}
+};

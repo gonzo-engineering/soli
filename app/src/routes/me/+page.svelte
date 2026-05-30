@@ -32,7 +32,7 @@
 	<h2>Me</h2>
 	<div class="form-widget">
 		<h3>Details and settings</h3>
-		<form {...updateUserSettings.enhance(({ submit }) => submit())}>
+		<form {...updateUserSettings.enhance(({ submit }) => void submit())}>
 			<label>
 				First name
 				<input {...updateUserSettings.fields.firstName.as('text')} value={firstName} />

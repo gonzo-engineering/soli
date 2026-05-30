@@ -1,15 +1,16 @@
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../../shared/config';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	return handlePostgrestQuery(
 		async () => supabase.from(TABLES.mixtapesRich).select('*').eq('id', params.slug).single(),
 		{ errorMessage: 'Failed to fetch mixtape' }
 	);
-}
+};
 
-export async function PATCH({ request, params }) {
+export const PATCH: RequestHandler = async ({ request, params }) => {
 	const mixtapeId = params.slug;
 	const { trackId } = await request.json();
 
@@ -26,9 +27,9 @@ export async function PATCH({ request, params }) {
 	}
 
 	return json({ success: true });
-}
+};
 
-export const DELETE = async ({ request, params }) => {
+export const DELETE: RequestHandler = async ({ request, params }) => {
 	const mixtapeId = params.slug;
 	const { userId } = await request.json();
 

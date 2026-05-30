@@ -1,7 +1,8 @@
 import { TABLES } from '../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
 	const { streamId, userId, artistId, trackId, tokensUsed } = await request.json();
 
 	if (!streamId || !userId || !artistId || !trackId || tokensUsed == null) {
@@ -36,4 +37,4 @@ export async function POST({ request }) {
 	}
 
 	return new Response('Stream logged successfully', { status: 200 });
-}
+};

@@ -5,8 +5,9 @@ import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
 import { pinata } from '$lib/server/pinata';
 import { json } from '@sveltejs/kit';
 import type { Release } from '../../../../shared/types/core';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function GET() {
+export const GET: RequestHandler = async () => {
 	return handlePostgrestQuery<ReleaseHydrated[]>(
 		async () => await supabase.from(TABLES.releasesRich).select(),
 		{
@@ -14,9 +15,9 @@ export async function GET() {
 			transform: sortReleasesByDate
 		}
 	);
-}
+};
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const formData = await request.formData();
 
@@ -52,4 +53,4 @@ export async function POST({ request }) {
 		console.log(error);
 		return json({ error: 'Internal Server Error' }, { status: 500 });
 	}
-}
+};

@@ -2,19 +2,20 @@ import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../../shared/config';
 import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-	if (!uuidRegex.test(params.slug)) {
+	if (!params.slug || !uuidRegex.test(params.slug)) {
 		return json({ error: 'Invalid release ID' }, { status: 400 });
 	}
 	return handlePostgrestQuery<ReleaseHydrated>(
 		async () => await supabase.from(TABLES.releasesRich).select().eq('id', params.slug).single(),
 		{ errorMessage: 'Failed to fetch release' }
 	);
-}
+};
 
-export async function DELETE({ params }) {
+export const DELETE: RequestHandler = async ({ params }) => {
 	const { error } = await supabase.from(TABLES.releases).delete().eq('id', params.slug);
 
 	if (error) {
@@ -23,4 +24,4 @@ export async function DELETE({ params }) {
 	}
 
 	return json({ success: true });
-}
+};

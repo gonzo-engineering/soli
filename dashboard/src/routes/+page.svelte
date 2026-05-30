@@ -33,8 +33,8 @@
 		const fetchArtistData = async () => {
 			if (activeArtist) {
 				activeArtistStreams = await getArtistStreams(activeArtist.id);
-				activeArtistSongs = await getArtistTracks(activeArtist.id).run();
-				activeArtistReleases = await getArtistReleases(activeArtist.id).run();
+				activeArtistSongs = await getArtistTracks(activeArtist.id);
+				activeArtistReleases = await getArtistReleases(activeArtist.id);
 			} else {
 				activeArtistStreams = [];
 				activeArtistSongs = [];

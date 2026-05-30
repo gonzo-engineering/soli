@@ -8,13 +8,14 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+		"check": "svelte-kit sync && tsc --noEmit",
+		"check:watch": "svelte-kit sync && tsc --noEmit --watch"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-netlify": "^6.0.4",
 		"@sveltejs/kit": "^2.61.1",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"@types/node": "^22.0.0",
 		"svelte": "^5.55.0",
 		"svelte-check": "^4.4.8",
 		"typescript": "^6.0.3",

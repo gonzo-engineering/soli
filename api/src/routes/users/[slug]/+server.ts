@@ -2,6 +2,7 @@ import { TABLES } from '../../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import type { Listener } from '../../../../../shared/types/core';
+import type { RequestHandler } from '@sveltejs/kit';
 
 const getUser = async (id: string): Promise<Listener | null> => {
 	const { data } = await supabase
@@ -12,8 +13,12 @@ const getUser = async (id: string): Promise<Listener | null> => {
 	return data;
 };
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	const maybeUserID = params.slug;
+
+	if (!maybeUserID) {
+		return json({ error: 'User ID is required' }, { status: 400 });
+	}
 
 	const profile = await getUser(maybeUserID);
 
@@ -22,10 +27,14 @@ export async function GET({ params }) {
 	}
 
 	return json(profile);
-}
+};
 
-export async function PATCH({ request, params }) {
+export const PATCH: RequestHandler = async ({ request, params }) => {
 	const maybeUserID = params.slug;
+
+	if (!maybeUserID) {
+		return json({ error: 'User ID is required' }, { status: 400 });
+	}
 
 	const profile = await getUser(maybeUserID);
 
@@ -74,4 +83,4 @@ export async function PATCH({ request, params }) {
 	}
 
 	return json({ error: 'Invalid request' }, { status: 400 });
-}
+};

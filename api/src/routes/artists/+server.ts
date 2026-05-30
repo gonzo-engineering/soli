@@ -1,9 +1,10 @@
 import { TABLES } from '../../../../shared/config';
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import type { Artist } from '../../../../shared/types/core';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function GET() {
+export const GET: RequestHandler = async () => {
 	return handlePostgrestQuery<Artist[]>(async () => await supabase.from(TABLES.artists).select(), {
 		transform: (data) => data.sort((a, b) => a.name.localeCompare(b.name))
 	});
-}
+};

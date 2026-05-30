@@ -35,7 +35,7 @@
 			{/each}
 		</ol>
 	</div>
-	<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+	<ButtonWrapper label="Options" onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
 		<ThreeDotsIcon />
 	</ButtonWrapper>
 </div>
@@ -43,7 +43,7 @@
 {#if popupMenuOpen}
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{release.title}</div>
-		<ButtonWrapper onClickFunction={() => deleteRelease(release.id)}>
+		<ButtonWrapper label="Delete Release" onClickFunction={() => deleteRelease(release.id)}>
 			<div class="delete">Delete Release <BinIcon /></div>
 		</ButtonWrapper>
 	</PopupWrapper>

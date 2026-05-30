@@ -86,7 +86,7 @@
 				artistId: release.artist_id,
 				trackId: track.id,
 				tokensUsed: 0
-			}).run();
+			});
 
 			if (!logResult.success) console.error('Error logging stream');
 			return { success: logResult.success };
@@ -97,14 +97,14 @@
 				userId,
 				tokens: userPayPerStream,
 				addOrSubtract: 'subtract'
-			}).run(),
+			}),
 			logStream({
 				streamId: userState.activeStreamSessionId!,
 				userId,
 				artistId: release.artist_id,
 				trackId: track.id,
 				tokensUsed: userPayPerStream
-			}).run()
+			})
 		]);
 
 		if (!balanceUpdateResult.success) console.error('Error updating user balance');
