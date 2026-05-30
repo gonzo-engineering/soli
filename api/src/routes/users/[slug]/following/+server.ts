@@ -1,8 +1,9 @@
 import { TABLES } from '../../../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	const userId = params.slug;
 
 	const { data, error } = await supabase
@@ -16,9 +17,9 @@ export async function GET({ params }) {
 	}
 
 	return json(data.map((item) => item.artist_id));
-}
+};
 
-export async function POST({ params, request }) {
+export const POST: RequestHandler = async ({ params, request }) => {
 	const userId = params.slug;
 
 	const { artistId } = await request.json();
@@ -37,9 +38,9 @@ export async function POST({ params, request }) {
 	}
 
 	return json({ success: true });
-}
+};
 
-export async function DELETE({ params, request }) {
+export const DELETE: RequestHandler = async ({ params, request }) => {
 	const userId = params.slug;
 
 	const { artistId } = await request.json();
@@ -60,4 +61,4 @@ export async function DELETE({ params, request }) {
 	}
 
 	return json({ success: true });
-}
+};

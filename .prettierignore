@@ -7,3 +7,4 @@ bun.lockb
 .svelte-kit
 .netlify
 build
+.yarn

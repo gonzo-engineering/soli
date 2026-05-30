@@ -1,8 +1,8 @@
 import { TABLES } from '../../../../../../shared/config';
 import { supabase } from '$lib/server/supabase';
-import { json } from '@sveltejs/kit';
+import { json, type RequestHandler } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	const maybeUserID = params.slug;
 
 	const { data: likedTrackIDs, error: likedTrackIDsError } = await supabase
@@ -27,9 +27,9 @@ export async function GET({ params }) {
 	}
 
 	return json(likedTracks);
-}
+};
 
-export async function POST({ params, request }) {
+export const POST: RequestHandler = async ({ params, request }) => {
 	const maybeUserID = params.slug;
 
 	const { trackId } = await request.json();
@@ -47,9 +47,9 @@ export async function POST({ params, request }) {
 	}
 
 	return json({ success: true });
-}
+};
 
-export async function DELETE({ params, request }) {
+export const DELETE: RequestHandler = async ({ params, request }) => {
 	const maybeUserID = params.slug;
 
 	const { trackId } = await request.json();
@@ -69,4 +69,4 @@ export async function DELETE({ params, request }) {
 	}
 
 	return json({ success: true });
-}
+};

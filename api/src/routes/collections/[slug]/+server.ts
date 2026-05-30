@@ -1,15 +1,16 @@
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../../shared/config';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	return handlePostgrestQuery(
 		async () => supabase.from(TABLES.collectionsRich).select('*').eq('id', params.slug).single(),
 		{ errorMessage: 'Failed to fetch collection' }
 	);
-}
+};
 
-export async function PATCH({ request, params }) {
+export const PATCH: RequestHandler = async ({ request, params }) => {
 	const collectionId = params.slug;
 	const { releaseId, addOrRemove } = await request.json();
 
@@ -42,9 +43,9 @@ export async function PATCH({ request, params }) {
 	}
 
 	return json({ success: true });
-}
+};
 
-export async function DELETE({ request, params }) {
+export const DELETE: RequestHandler = async ({ request, params }) => {
 	const collectionId = params.slug;
 	const { userId } = await request.json();
 
@@ -60,4 +61,4 @@ export async function DELETE({ request, params }) {
 	}
 
 	return json({ success: true });
-}
+};

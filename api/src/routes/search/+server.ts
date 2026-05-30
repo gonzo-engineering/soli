@@ -1,6 +1,6 @@
 import { supabase } from '$lib/server/supabase';
 import type { SearchResult } from '../../../../shared/types/core';
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ url }) => {

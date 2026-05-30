@@ -19,7 +19,7 @@
 			<small>{prettifyDuration(song.duration_seconds)}</small>
 		</div>
 	</div>
-	<ButtonWrapper onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
+	<ButtonWrapper label="Options" onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
 		<ThreeDotsIcon />
 	</ButtonWrapper>
 </div>
@@ -28,8 +28,9 @@
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{song.title}</div>
 		<ButtonWrapper
+			label="Delete track"
 			onClickFunction={() => {
-				deleteTrack(song.id).run();
+				deleteTrack(song.id);
 				popupMenuOpen = false;
 			}}
 		>

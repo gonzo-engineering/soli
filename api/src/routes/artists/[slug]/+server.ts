@@ -3,15 +3,16 @@ import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import type { ArtistHydrated } from '../../../../../shared/types/hydrated';
 import { json } from '@sveltejs/kit';
 import { pinata } from '$lib/server/pinata';
+import type { RequestHandler } from './$types';
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	return handlePostgrestQuery<ArtistHydrated>(
 		async () => await supabase.from(TABLES.artistsRich).select().eq('id', params.slug).single(),
 		{ errorMessage: 'Failed to fetch artist' }
 	);
-}
+};
 
-export async function PATCH({ request, params }) {
+export const POST: RequestHandler = async ({ request, params }) => {
 	const formData = await request.formData();
 
 	const artistImageNew = formData.get('artistImageNew') as File;
@@ -48,4 +49,4 @@ export async function PATCH({ request, params }) {
 		return json({ error: 'Failed to update artist details' }, { status: 500 });
 	}
 	return json({ success: true });
-}
+};

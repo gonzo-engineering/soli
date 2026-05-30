@@ -17,7 +17,7 @@
 	} = $props();
 </script>
 
-<form {...updateLabelDetails.enhance(({ submit }) => submit())} enctype="multipart/form-data">
+<form {...updateLabelDetails.enhance(({ submit }) => void submit())} enctype="multipart/form-data">
 	<input {...updateLabelDetails.fields.labelId.as('hidden', labelId)} />
 	<input {...updateLabelDetails.fields.labelName.as('hidden', labelName)} />
 	{#if currentLabelImageCID}

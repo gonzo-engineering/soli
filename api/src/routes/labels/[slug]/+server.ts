@@ -3,15 +3,16 @@ import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '../../../../../shared/config';
 import type { Label } from '../../../../../shared/types/core';
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export const GET: RequestHandler = async ({ params }) => {
 	return handlePostgrestQuery<Label>(
 		async () => await supabase.from(TABLES.labelsRich).select().eq('id', params.slug).single(),
 		{ errorMessage: 'Failed to fetch label' }
 	);
-}
+};
 
-export async function PATCH({ request, params }) {
+export const PATCH: RequestHandler = async ({ request, params }) => {
 	const formData = await request.formData();
 
 	const labelImageNew = formData.get('labelImageNew') as File;
@@ -48,4 +49,4 @@ export async function PATCH({ request, params }) {
 		return json({ error: 'Failed to update label details' }, { status: 500 });
 	}
 	return json({ success: true });
-}
+};
