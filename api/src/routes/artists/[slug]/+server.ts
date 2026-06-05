@@ -3,7 +3,7 @@ import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import type { ArtistHydrated } from '../../../../../shared/types/hydrated';
 import { json } from '@sveltejs/kit';
 import { pinata } from '$lib/server/pinata';
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params }) => {
 	return handlePostgrestQuery<ArtistHydrated>(
