@@ -1,5 +1,5 @@
 import { supabase } from '$lib/server/supabase';
-import { TABLES } from '../../../../../shared/config';
+import { TABLES } from '@soli/shared/config';
 import { type RequestHandler } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ request }) => {

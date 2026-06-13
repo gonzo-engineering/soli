@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { addOrRemoveReleaseFromCollection } from '$lib/remote-functions/collections.remote';
-	import type { CollectionHydrated, ReleaseHydrated } from '../../../../../shared/types/hydrated';
+	import type { CollectionHydrated, ReleaseHydrated } from '@soli/shared/types';
 
 	let {
 		release,

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from './Icon.svelte';
+	import { Icon } from '@soli/shared/components';
 
 	let { menuIsOpen = $bindable(), session }: { menuIsOpen: boolean; session: any } = $props();
 

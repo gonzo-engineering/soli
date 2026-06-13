@@ -1,3 +1,4 @@
+import { STRIPE_API_VERSION } from '@soli/shared/config';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 import 'dotenv/config';
@@ -20,7 +21,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY || !STRIPE_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const stripe = new Stripe(STRIPE_KEY, {
-	apiVersion: '2026-05-27.dahlia'
+	apiVersion: STRIPE_API_VERSION
 });
 
 // Always pay midnight UTC → midnight UTC

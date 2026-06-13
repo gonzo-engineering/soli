@@ -3,7 +3,7 @@
 	import ContentBlock from '$lib/components/ContentBlock.svelte';
 	import { tokensCheckout, updateUserSettings } from '$lib/remote-functions/user.remote';
 	import { signOut } from '$lib/remote-functions/login.remote';
-	import { PLATFORM_FEE_PERCENTAGE } from '../../../../shared/config/index.js';
+	import { PLATFORM_FEE_PERCENTAGE } from '@soli/shared/config';
 
 	let { data } = $props();
 
@@ -71,50 +71,52 @@
 		</ul>
 	</div>
 
-	<hr />
+	{#if data.profileData}
+		<hr />
 
-	<div>
-		<h3>Balance</h3>
-		{#key data.profileData.tokens_balance}
-			<div class="balance-amount">
-				{prettifyBalance(data.profileData.tokens_balance)} tokens
-			</div>
-		{/key}
-		<p>
-			At your chosen rate of <span class="bold"
-				>{data.profileData.pay_per_stream} tokens per stream</span
-			>
-			you can stream
-			<span class="bold"
-				>{Math.floor(data.profileData.tokens_balance / data.profileData.pay_per_stream)}</span
-			> more songs before needing to top up again.
-		</p>
-		<h4>Top up</h4>
-		<form>
-			<label>
-				Add
-				<input
-					type="number"
-					name="amount"
-					min="30"
-					max="1000"
-					step="1"
-					placeholder="Top up amount"
-					bind:value={tokensTopUpAmount}
-				/> tokens
-			</label>
-			<p>{makeTopUpMessage(tokensTopUpAmount)}</p>
-			<button
-				onclick={() =>
-					tokensCheckout({
-						balance: tokensBalance,
-						topUpAmount: Math.round(tokensTopUpAmount * 1.1)
-					}).then(({ url }) => {
-						window.location.href = url;
-					})}>Top up</button
-			>
-		</form>
-	</div>
+		<div>
+			<h3>Balance</h3>
+			{#key data.profileData.tokens_balance}
+				<div class="balance-amount">
+					{prettifyBalance(data.profileData.tokens_balance)} tokens
+				</div>
+			{/key}
+			<p>
+				At your chosen rate of <span class="bold"
+					>{data.profileData.pay_per_stream} tokens per stream</span
+				>
+				you can stream
+				<span class="bold"
+					>{Math.floor(data.profileData.tokens_balance / data.profileData.pay_per_stream)}</span
+				> more songs before needing to top up again.
+			</p>
+			<h4>Top up</h4>
+			<form>
+				<label>
+					Add
+					<input
+						type="number"
+						name="amount"
+						min="30"
+						max="1000"
+						step="1"
+						placeholder="Top up amount"
+						bind:value={tokensTopUpAmount}
+					/> tokens
+				</label>
+				<p>{makeTopUpMessage(tokensTopUpAmount)}</p>
+				<button
+					onclick={() =>
+						tokensCheckout({
+							balance: tokensBalance,
+							topUpAmount: Math.round(tokensTopUpAmount * 1.1)
+						}).then(({ url }) => {
+							window.location.href = url;
+						})}>Top up</button
+				>
+			</form>
+		</div>
+	{/if}
 
 	<hr />
 

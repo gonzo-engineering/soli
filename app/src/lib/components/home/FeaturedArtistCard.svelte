@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { makeImageLink } from '$lib/utils';
-	import type { Artist } from '../../../../../shared/types/core';
+	import type { Artist } from '@soli/shared/types';
 
 	const { artist }: { artist: Artist } = $props();
 </script>

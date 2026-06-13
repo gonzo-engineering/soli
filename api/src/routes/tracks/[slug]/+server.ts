@@ -1,6 +1,6 @@
 import { supabase } from '$lib/server/supabase';
 import { json, type RequestHandler } from '@sveltejs/kit';
-import { TABLES } from '../../../../../shared/config';
+import { TABLES } from '@soli/shared/config';
 
 export const DELETE: RequestHandler = async ({ params }) => {
 	const { error } = await supabase.from(TABLES.tracks).delete().eq('id', params.slug);

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import ButtonWrapper from './ButtonWrapper.svelte';
+	import { ButtonWrapper } from '@soli/shared/components';
 
 	let { children, popupMenuOpen = $bindable() }: { children: Snippet; popupMenuOpen: boolean } =
 		$props();

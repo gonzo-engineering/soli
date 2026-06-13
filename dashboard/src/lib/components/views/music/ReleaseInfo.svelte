@@ -1,12 +1,10 @@
 <script lang="ts">
-	import ThreeDotsIcon from '$lib/components/icons/ThreeDotsIcon.svelte';
-	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
+	import { ButtonWrapper, Icon, PopupWrapper } from '@soli/shared/components';
+	import type { ReleaseHydrated } from '@soli/shared/types';
+	import { formatReleaseType } from '@soli/shared/utils';
+
 	import { deleteRelease } from '$lib/remote-functions/music.remote';
 	import { makeImageLink } from '$lib/utils';
-	import type { ReleaseHydrated } from '../../../../../../shared/types/hydrated';
-	import { formatReleaseType } from '../../../../../../shared/utils';
-	import BinIcon from '../../icons/BinIcon.svelte';
-	import ButtonWrapper from '../../layout/ButtonWrapper.svelte';
 
 	const {
 		release
@@ -36,7 +34,7 @@
 		</ol>
 	</div>
 	<ButtonWrapper label="Options" onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
-		<ThreeDotsIcon />
+		<Icon key="threeDots" size={24} />
 	</ButtonWrapper>
 </div>
 
@@ -44,7 +42,7 @@
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{release.title}</div>
 		<ButtonWrapper label="Delete Release" onClickFunction={() => deleteRelease(release.id)}>
-			<div class="delete">Delete Release <BinIcon /></div>
+			<div class="delete">Delete Release <Icon key="bin" size={24} /></div>
 		</ButtonWrapper>
 	</PopupWrapper>
 {/if}

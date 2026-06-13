@@ -12,6 +12,7 @@
 		"check:watch": "svelte-kit sync && tsc --noEmit --watch"
 	},
 	"devDependencies": {
+		"@soli/shared": "workspace:^",
 		"@sveltejs/adapter-netlify": "^6.0.4",
 		"@sveltejs/kit": "^2.61.1",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",

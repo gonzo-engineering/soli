@@ -7,8 +7,7 @@
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
 	import type { UserData } from '$lib/global/state.svelte';
 	import { makeImageLink } from '$lib/utils';
-	import type { Artist, Label } from '../../../shared/types/core';
-	import type { ReleaseHydrated } from '../../../shared/types/hydrated';
+	import type { Artist, LabelHydrated, ReleaseHydrated } from '@soli/shared/types';
 
 	let {
 		data
@@ -23,7 +22,7 @@
 				followed: Artist[];
 				other: Artist[];
 			};
-			labels: Label[];
+			labels: LabelHydrated[];
 			genres: string[];
 		};
 	} = $props();

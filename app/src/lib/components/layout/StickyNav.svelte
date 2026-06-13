@@ -1,11 +1,10 @@
 <script lang="ts">
+	import { ButtonWrapper, Icon } from '@soli/shared/components';
+	import type { ArtistHydrated, IconKey, Listener, TrackHydrated } from '@soli/shared/types';
+
 	import { userState } from '$lib/global/state.svelte';
 	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
-	import type { Listener } from '../../../../../shared/types/core';
-	import type { ArtistHydrated, TrackHydrated } from '../../../../../shared/types/hydrated';
 	import AudioPlayer from '../audio-player/AudioPlayer.svelte';
-	import ButtonWrapper from './ButtonWrapper.svelte';
-	import Icon, { type IconKey } from './Icon.svelte';
 	import { page } from '$app/state';
 
 	let {

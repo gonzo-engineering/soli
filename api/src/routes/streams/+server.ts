@@ -1,4 +1,4 @@
-import { TABLES } from '../../../../shared/config';
+import { TABLES } from '@soli/shared/config';
 import { supabase } from '$lib/server/supabase';
 import type { RequestHandler } from '@sveltejs/kit';
 

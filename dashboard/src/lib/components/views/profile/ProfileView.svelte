@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Artist } from '../../../../../../shared/types/core';
+	import type { Artist } from '@soli/shared/types';
 	import ArtistProfileForm from '../../forms/ArtistProfileForm.svelte';
 
 	let { activeArtist }: { activeArtist: Artist } = $props();

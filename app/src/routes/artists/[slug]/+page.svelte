@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { ArtistHydrated } from '../../../../../shared/types/hydrated';
+	import type { ArtistHydrated, Release } from '@soli/shared/types';
 	import { makeImageLink } from '$lib/utils';
 	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { Release } from '../../../../../shared/types/core';
 	import type { UserData } from '$lib/global/state.svelte';
 	import GridWrapper from '$lib/components/GridWrapper.svelte';
 	import ReleaseCard from '$lib/components/ReleaseCard.svelte';

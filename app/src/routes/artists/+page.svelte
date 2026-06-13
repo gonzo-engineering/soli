@@ -2,7 +2,7 @@
 	import CircleCard from '$lib/components/CircleCard.svelte';
 	import GridWrapper from '$lib/components/GridWrapper.svelte';
 	import { makeImageLink } from '$lib/utils/index.js';
-	import type { Artist } from '../../../../shared/types/core';
+	import type { Artist } from '@soli/shared/types';
 
 	let { data } = $props();
 

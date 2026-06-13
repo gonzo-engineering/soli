@@ -1,6 +1,6 @@
 <script>
-	import '../../../shared/styles/reset.css';
-	import '../../../shared/styles/global.css';
+	import '@soli/shared/styles/reset.css';
+	import '@soli/shared/styles/global.css';
 
 	import { page } from '$app/state';
 	import { invalidate } from '$app/navigation';

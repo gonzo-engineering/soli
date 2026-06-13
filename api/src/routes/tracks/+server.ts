@@ -1,7 +1,7 @@
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { supabase } from '$lib/server/supabase';
 import { pinata } from '$lib/server/pinata';
-import { TABLES } from '../../../../shared/config';
+import { TABLES } from '@soli/shared/config';
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {

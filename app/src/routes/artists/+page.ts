@@ -1,6 +1,5 @@
 import { API_BASE } from '$lib/global/config';
-import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
-import type { Artist } from '../../../../shared/types/core';
+import type { Artist, ReleaseHydrated } from '@soli/shared/types';
 
 export const load = async ({ fetch }) => {
 	const artists: Artist[] = await fetch(`${API_BASE}/artists`).then((res) => res.json());

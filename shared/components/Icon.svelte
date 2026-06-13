@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { icons } from '$lib/utils/icon-paths';
+	import { icons } from './icon-paths';
+
+	export type IconKey = keyof typeof icons;
 
 	let {
 		key,
@@ -14,8 +16,6 @@
 		strokeMode?: boolean;
 		rotation?: number;
 	} = $props();
-
-	export type IconKey = keyof typeof icons;
 
 	const iconData = icons[key];
 </script>

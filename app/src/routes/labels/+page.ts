@@ -1,8 +1,8 @@
 import { API_BASE } from '$lib/global/config';
-import type { Label } from '../../../../shared/types/core';
+import type { LabelHydrated } from '@soli/shared/types';
 
 export const load = async ({ fetch }) => {
-	const labels: Label[] = await fetch(`${API_BASE}/labels`).then((res) => res.json());
+	const labels: LabelHydrated[] = await fetch(`${API_BASE}/labels`).then((res) => res.json());
 
 	return {
 		labels

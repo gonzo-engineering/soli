@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { makeImageLink } from '$lib/utils';
-	import type { SearchResult } from '../../../../../shared/types/core';
+	import type { SearchResult } from '@soli/shared/types';
 	import CircleCard from '../CircleCard.svelte';
 	import GridWrapper from '../GridWrapper.svelte';
 	import ReleaseCard from '../ReleaseCard.svelte';

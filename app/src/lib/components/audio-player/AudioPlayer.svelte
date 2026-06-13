@@ -1,18 +1,13 @@
 <script lang="ts">
+	import { STREAM_THRESHOLD_SECONDS } from '@soli/shared/config';
+	import type { ArtistHydrated, ReleaseHydrated, Track, TrackHydrated } from '@soli/shared/types';
+	import { ButtonWrapper, Icon } from '@soli/shared/components';
+
 	import { userState } from '$lib/global/state.svelte.js';
 	import { logStream } from '$lib/remote-functions/listening.remote';
 	import { updateUserTokensBalance } from '$lib/remote-functions/user.remote';
 	import { makeImageLink } from '$lib/utils';
 	import { setActiveSong } from '$lib/utils/audio-playback';
-	import { STREAM_THRESHOLD_SECONDS } from '../../../../../shared/config';
-	import type { Track } from '../../../../../shared/types/core';
-	import type {
-		ArtistHydrated,
-		ReleaseHydrated,
-		TrackHydrated
-	} from '../../../../../shared/types/hydrated';
-	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
-	import Icon from '../layout/Icon.svelte';
 	import Logo from '../layout/Logo.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 	import { fade, slide } from 'svelte/transition';

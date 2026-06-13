@@ -1,6 +1,6 @@
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
-import { TABLES } from '../../../../../../shared/config/index';
-import type { CollectionHydrated } from '../../../../../../shared/types/hydrated';
+import { TABLES } from '@soli/shared/config';
+import type { CollectionHydrated } from '@soli/shared/types';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params }) => {
