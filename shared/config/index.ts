@@ -7,7 +7,6 @@ export const DASHBOARD_LOCAL_PORT = 3001;
 export const API_DOMAIN = 'https://api.soli.network';
 export const API_LOCAL_PORT = 3002;
 
-// TODO: Refactor monorepo to share this constant
 export const STRIPE_API_VERSION = '2026-05-27.dahlia';
 
 export const PLATFORM_FEE_PERCENTAGE = 0.1;
@@ -38,4 +37,12 @@ export const TABLES = {
 	labels: 'labels',
 	labelsRich: 'labels_rich',
 	labelMembers: 'label_members'
+};
+
+export const cookieOptions = {
+	name: `sb-soli.network-auth-token`,
+	domain: 'soli.network',
+	path: '/',
+	maxAge: 60 * 60 * 24 * 365, // 1 year
+	sameSite: 'lax' as const
 };
