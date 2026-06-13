@@ -1,17 +1,16 @@
 <script lang="ts">
+	import { ButtonWrapper, Icon, PopupWrapper } from '@soli/shared/components';
+	import { formatReleaseType } from '@soli/shared/utils';
+	import type { ReleaseHydrated } from '@soli/shared/types';
+
 	import { makeImageLink } from '$lib/utils';
 	import TracksTable from '$lib/components/releases/TracksTable.svelte';
 	import { userState, type UserData } from '$lib/global/state.svelte';
-	import ButtonWrapper from '$lib/components/layout/ButtonWrapper.svelte';
-	import { formatReleaseType } from '@soli/shared/utils';
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
 	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
-	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { ReleaseHydrated } from '@soli/shared/types';
 	import { setActiveSong } from '$lib/utils/audio-playback';
 	import ReleaseArtwork from '$lib/components/ReleaseArtwork.svelte';
-	import Icon from '$lib/components/layout/Icon.svelte';
 
 	let {
 		data

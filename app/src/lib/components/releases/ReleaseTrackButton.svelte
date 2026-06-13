@@ -1,9 +1,9 @@
 <script lang="ts">
+	import type { Release, Track, Listener } from '@soli/shared/types';
+	import { ButtonWrapper, Icon } from '@soli/shared/components';
+
 	import { setActiveSong } from '$lib/utils/audio-playback';
 	import { userState } from '$lib/global/state.svelte';
-	import type { Release, Track, Listener } from '@soli/shared/types';
-	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
-	import Icon from '../layout/Icon.svelte';
 
 	let {
 		track,

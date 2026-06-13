@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { Listener, MixtapeHydrated, TrackHydrated } from '@soli/shared/types';
+	import { ButtonWrapper, Icon, PopupWrapper } from '@soli/shared/components';
 	import { prettifyDuration } from '@soli/shared/utils';
+
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
-	import PopupWrapper from '../layout/PopupWrapper.svelte';
 	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
-	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
-	import Icon from '../layout/Icon.svelte';
 
 	const {
 		i = undefined,

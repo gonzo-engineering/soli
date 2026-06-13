@@ -1,11 +1,9 @@
 <script lang="ts">
-	import ThreeDotsIcon from '$lib/components/icons/ThreeDotsIcon.svelte';
-	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
-	import { deleteTrack } from '$lib/remote-functions/music.remote';
+	import { ButtonWrapper, Icon, PopupWrapper } from '@soli/shared/components';
 	import type { Track } from '@soli/shared/types';
 	import { prettifyDuration } from '@soli/shared/utils';
-	import BinIcon from '../../icons/BinIcon.svelte';
-	import ButtonWrapper from '../../layout/ButtonWrapper.svelte';
+
+	import { deleteTrack } from '$lib/remote-functions/music.remote';
 
 	const { song }: { song: Track } = $props();
 
@@ -20,7 +18,7 @@
 		</div>
 	</div>
 	<ButtonWrapper label="Options" onClickFunction={() => (popupMenuOpen = !popupMenuOpen)}>
-		<ThreeDotsIcon />
+		<Icon key="threeDots" size={24} />
 	</ButtonWrapper>
 </div>
 
@@ -34,7 +32,7 @@
 				popupMenuOpen = false;
 			}}
 		>
-			<div class="delete">Delete track <BinIcon /></div>
+			<div class="delete">Delete track <Icon key="bin" size={24} /></div>
 		</ButtonWrapper>
 	</PopupWrapper>
 {/if}

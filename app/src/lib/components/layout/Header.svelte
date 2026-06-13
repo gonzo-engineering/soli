@@ -1,6 +1,5 @@
 <script lang="ts">
-	import ButtonWrapper from './ButtonWrapper.svelte';
-	import Icon from './Icon.svelte';
+	import { ButtonWrapper, Icon } from '@soli/shared/components';
 	import Logo from './Logo.svelte';
 	import { onMount } from 'svelte';
 
