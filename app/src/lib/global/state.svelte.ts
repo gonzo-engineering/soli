@@ -1,11 +1,13 @@
 import type { Session } from '@supabase/supabase-js';
-import type { Mixtape, Release, Track, Listener } from '@soli/shared/types/core';
 import type {
 	ArtistHydrated,
 	CollectionHydrated,
+	Listener,
 	MixtapeHydrated,
+	Release,
+	Track,
 	TrackHydrated
-} from '@soli/shared/types/hydrated';
+} from '@soli/shared/types';
 
 interface UserState {
 	activeSong: Track | null;

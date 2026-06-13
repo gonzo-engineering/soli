@@ -1,5 +1,4 @@
-import type { Artist, Label } from '@soli/shared/types/core';
-import type { LabelHydrated } from '@soli/shared/types/hydrated';
+import type { Artist, LabelHydrated } from '@soli/shared/types';
 
 export const dashboardState: {
 	activeArtist: Artist | null;

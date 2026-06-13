@@ -1,7 +1,8 @@
 import { TABLES } from '@soli/shared/config';
+import type { ArtistHydrated } from '@soli/shared/types';
+
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
-import type { ArtistHydrated } from '@soli/shared/types/hydrated';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params }) => {

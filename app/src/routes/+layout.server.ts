@@ -1,11 +1,11 @@
 import type { LayoutServerLoad } from './$types';
-import type { Listener } from '@soli/shared/types/core';
 import type {
 	ArtistHydrated,
 	CollectionHydrated,
+	Listener,
 	MixtapeHydrated,
 	TrackHydrated
-} from '@soli/shared/types/hydrated';
+} from '@soli/shared/types';
 import { API_BASE } from '$lib/global/config';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies, fetch }) => {

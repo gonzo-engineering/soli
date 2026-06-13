@@ -5,7 +5,7 @@
 	import type { UserData } from '$lib/global/state.svelte';
 	import { deleteCollection } from '$lib/remote-functions/collections.remote';
 	import { makeImageLink } from '$lib/utils';
-	import type { CollectionHydrated } from '@soli/shared/types/hydrated';
+	import type { CollectionHydrated } from '@soli/shared/types';
 
 	let {
 		data

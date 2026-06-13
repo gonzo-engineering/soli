@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { StreamLog } from '@soli/shared/types/core';
+	import type { StreamLog } from '@soli/shared/types';
 
 	const { streams }: { streams: StreamLog[] } = $props();
 

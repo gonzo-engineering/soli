@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { makeImageLink } from '$lib/utils';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { Artist, Label, Release } from '@soli/shared/types/core';
+	import type { Artist, Label, Release } from '@soli/shared/types';
 	import type { UserData } from '$lib/global/state.svelte';
 	import GridWrapper from '$lib/components/GridWrapper.svelte';
 	import CircleCard from '$lib/components/CircleCard.svelte';

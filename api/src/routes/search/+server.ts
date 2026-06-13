@@ -1,5 +1,5 @@
 import { supabase } from '$lib/server/supabase';
-import type { SearchResult } from '@soli/shared/types/core';
+import type { SearchResult } from '@soli/shared/types';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 

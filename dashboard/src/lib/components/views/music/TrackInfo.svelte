@@ -2,7 +2,7 @@
 	import ThreeDotsIcon from '$lib/components/icons/ThreeDotsIcon.svelte';
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
 	import { deleteTrack } from '$lib/remote-functions/music.remote';
-	import type { Track } from '@soli/shared/types/core';
+	import type { Track } from '@soli/shared/types';
 	import { prettifyDuration } from '@soli/shared/utils';
 	import BinIcon from '../../icons/BinIcon.svelte';
 	import ButtonWrapper from '../../layout/ButtonWrapper.svelte';

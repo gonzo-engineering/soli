@@ -1,6 +1,5 @@
 <script lang="ts">
-	import type { Listener } from '@soli/shared/types/core';
-	import type { TrackHydrated, MixtapeHydrated } from '@soli/shared/types/hydrated';
+	import type { Listener, MixtapeHydrated, TrackHydrated } from '@soli/shared/types';
 	import TrackTableRow from './TracksTableRow.svelte';
 
 	const {

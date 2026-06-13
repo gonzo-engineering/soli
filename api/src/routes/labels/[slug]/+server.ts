@@ -2,7 +2,7 @@ import { pinata } from '$lib/server/pinata';
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '@soli/shared/config';
-import type { Label } from '@soli/shared/types/core';
+import type { Label } from '@soli/shared/types';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params }) => {

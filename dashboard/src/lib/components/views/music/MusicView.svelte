@@ -4,8 +4,7 @@
 	import AddTrackToReleaseForm from '../../forms/AddTrackToReleaseForm.svelte';
 	import UploadTrackForm from '../../forms/UploadTrackForm.svelte';
 	import ReleaseInfo from './ReleaseInfo.svelte';
-	import type { Artist, Track } from '@soli/shared/types/core';
-	import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
+	import type { Artist, ReleaseHydrated, Track } from '@soli/shared/types';
 	import TrackInfo from './TrackInfo.svelte';
 
 	const {

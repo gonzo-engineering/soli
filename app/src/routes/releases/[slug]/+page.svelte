@@ -8,7 +8,7 @@
 	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
+	import type { ReleaseHydrated } from '@soli/shared/types';
 	import { setActiveSong } from '$lib/utils/audio-playback';
 	import ReleaseArtwork from '$lib/components/ReleaseArtwork.svelte';
 	import Icon from '$lib/components/layout/Icon.svelte';

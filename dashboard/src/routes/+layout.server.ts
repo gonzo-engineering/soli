@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from './$types';
-import type { ArtistHydrated, LabelHydrated } from '@soli/shared/types/hydrated';
+import type { ArtistHydrated, LabelHydrated } from '@soli/shared/types';
 import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies }) => {

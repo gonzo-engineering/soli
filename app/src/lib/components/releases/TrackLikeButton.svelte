@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { toggleLikedTrack } from '$lib/remote-functions/user.remote';
-	import type { TrackHydrated } from '@soli/shared/types/hydrated';
+	import type { TrackHydrated } from '@soli/shared/types';
 	import Icon from '../layout/Icon.svelte';
 
 	let {

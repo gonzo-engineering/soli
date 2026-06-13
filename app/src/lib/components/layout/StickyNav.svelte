@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { userState } from '$lib/global/state.svelte';
 	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
-	import type { Listener } from '@soli/shared/types/core';
-	import type { ArtistHydrated, TrackHydrated } from '@soli/shared/types/hydrated';
+	import type { ArtistHydrated, Listener, TrackHydrated } from '@soli/shared/types';
 	import AudioPlayer from '../audio-player/AudioPlayer.svelte';
 	import ButtonWrapper from './ButtonWrapper.svelte';
 	import Icon, { type IconKey } from './Icon.svelte';

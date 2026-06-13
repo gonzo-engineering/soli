@@ -7,8 +7,7 @@
 	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
 	import type { UserData } from '$lib/global/state.svelte';
 	import { makeImageLink } from '$lib/utils';
-	import type { Artist } from '@soli/shared/types/core';
-	import type { LabelHydrated, ReleaseHydrated } from '@soli/shared/types/hydrated';
+	import type { Artist, LabelHydrated, ReleaseHydrated } from '@soli/shared/types';
 
 	let {
 		data

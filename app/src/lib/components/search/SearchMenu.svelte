@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { API_BASE } from '$lib/global/config';
-	import type { SearchResult } from '@soli/shared/types/core';
+	import type { SearchResult } from '@soli/shared/types';
 	import SearchResults from './SearchResults.svelte';
 
 	let { searchIsOpen = $bindable() }: { searchIsOpen: boolean } = $props();
