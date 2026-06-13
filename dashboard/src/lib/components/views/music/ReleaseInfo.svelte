@@ -3,8 +3,8 @@
 	import PopupWrapper from '$lib/components/layout/PopupWrapper.svelte';
 	import { deleteRelease } from '$lib/remote-functions/music.remote';
 	import { makeImageLink } from '$lib/utils';
-	import type { ReleaseHydrated } from '../../../../../../shared/types/hydrated';
-	import { formatReleaseType } from '../../../../../../shared/utils';
+	import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
+	import { formatReleaseType } from '@soli/shared/utils';
 	import BinIcon from '../../icons/BinIcon.svelte';
 	import ButtonWrapper from '../../layout/ButtonWrapper.svelte';
 

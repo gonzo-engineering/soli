@@ -4,13 +4,9 @@
 	import { updateUserTokensBalance } from '$lib/remote-functions/user.remote';
 	import { makeImageLink } from '$lib/utils';
 	import { setActiveSong } from '$lib/utils/audio-playback';
-	import { STREAM_THRESHOLD_SECONDS } from '../../../../../shared/config';
-	import type { Track } from '../../../../../shared/types/core';
-	import type {
-		ArtistHydrated,
-		ReleaseHydrated,
-		TrackHydrated
-	} from '../../../../../shared/types/hydrated';
+	import { STREAM_THRESHOLD_SECONDS } from '@soli/shared/config';
+	import type { Track } from '@soli/shared/types/core';
+	import type { ArtistHydrated, ReleaseHydrated, TrackHydrated } from '@soli/shared/types/hydrated';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 	import Icon from '../layout/Icon.svelte';
 	import Logo from '../layout/Logo.svelte';

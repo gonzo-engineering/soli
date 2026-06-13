@@ -1,7 +1,7 @@
-import { TABLES } from '../../../../../shared/config';
+import { TABLES } from '@soli/shared/config';
 import { supabase } from '$lib/server/supabase';
 import { json } from '@sveltejs/kit';
-import type { Listener } from '../../../../../shared/types/core';
+import type { Listener } from '@soli/shared/types/core';
 import type { RequestHandler } from '@sveltejs/kit';
 
 const getUser = async (id: string): Promise<Listener | null> => {

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { StreamLog } from '../../../shared/types/core';
+	import type { StreamLog } from '@soli/shared/types/core';
 	import { dashboardState } from '$lib/state.svelte';
 	import ProfileView from '$lib/components/views/profile/ProfileView.svelte';
-	import type { Artist, Track } from '../../../shared/types/core';
-	import type { ReleaseHydrated } from '../../../shared/types/hydrated';
+	import type { Artist, Track } from '@soli/shared/types/core';
+	import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
 	import StatsView from '$lib/components/views/stats/StatsView.svelte';
 	import MusicView from '$lib/components/views/music/MusicView.svelte';
 	import { getArtistReleases, getArtistTracks } from '$lib/remote-functions/artist.remote';

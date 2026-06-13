@@ -1,4 +1,4 @@
-import { APP_DOMAIN } from '../../../../shared/config';
+import { APP_DOMAIN } from '@soli/shared/config';
 import { stripe } from '$lib/server/stripe';
 import type { RequestHandler } from '@sveltejs/kit';
 

@@ -1,10 +1,10 @@
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
-import { TABLES } from '../../../../shared/config';
-import { sortReleasesByDate } from '../../../../shared/utils';
-import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
+import { TABLES } from '@soli/shared/config';
+import { sortReleasesByDate } from '@soli/shared/utils';
+import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
 import { pinata } from '$lib/server/pinata';
 import { json } from '@sveltejs/kit';
-import type { Release } from '../../../../shared/types/core';
+import type { Release } from '@soli/shared/types/core';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async () => {

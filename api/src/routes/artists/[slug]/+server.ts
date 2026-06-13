@@ -1,6 +1,6 @@
-import { TABLES } from '../../../../../shared/config';
+import { TABLES } from '@soli/shared/config';
 import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
-import type { ArtistHydrated } from '../../../../../shared/types/hydrated';
+import type { ArtistHydrated } from '@soli/shared/types/hydrated';
 import { json } from '@sveltejs/kit';
 import { pinata } from '$lib/server/pinata';
 import type { RequestHandler } from '@sveltejs/kit';

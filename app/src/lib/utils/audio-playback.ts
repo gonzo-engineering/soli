@@ -1,7 +1,7 @@
 import { userState } from '$lib/global/state.svelte';
 import { getTrackUrl } from '$lib/remote-functions/listening.remote';
-import type { Release, Track } from '../../../../shared/types/core';
-import type { MixtapeHydrated } from '../../../../shared/types/hydrated';
+import type { Release, Track } from '@soli/shared/types/core';
+import type { MixtapeHydrated } from '@soli/shared/types/hydrated';
 
 export const setActiveSong = async (
 	song: Track,

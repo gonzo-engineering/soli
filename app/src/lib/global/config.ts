@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { API_DOMAIN, API_LOCAL_PORT, APP_DOMAIN, APP_LOCAL_PORT } from '../../../../shared/config';
+import { API_DOMAIN, API_LOCAL_PORT, APP_DOMAIN, APP_LOCAL_PORT } from '@soli/shared/config';
 
 export const PUBLIC_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 export const PUBLIC_SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;

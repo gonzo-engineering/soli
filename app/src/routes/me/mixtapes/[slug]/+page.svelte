@@ -5,7 +5,7 @@
 	import { userState, type UserData } from '$lib/global/state.svelte';
 	import { deleteMixtape } from '$lib/remote-functions/mixtapes.remote';
 	import { setActiveSong } from '$lib/utils/audio-playback';
-	import type { MixtapeHydrated } from '../../../../../../shared/types/hydrated';
+	import type { MixtapeHydrated } from '@soli/shared/types/hydrated';
 
 	let {
 		data

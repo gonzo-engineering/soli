@@ -1,6 +1,6 @@
 import { supabase } from '$lib/server/supabase';
 import { json, type RequestHandler } from '@sveltejs/kit';
-import { TABLES } from '../../../../../shared/config';
+import { TABLES } from '@soli/shared/config';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const { artistId, title, durationSeconds } = await request.json();

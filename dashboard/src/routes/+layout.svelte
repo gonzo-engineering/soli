@@ -1,6 +1,6 @@
 <script lang="ts">
-	import '../../../shared/styles/reset.css';
-	import '../../../shared/styles/global.css';
+	import '@soli/shared/styles/reset.css';
+	import '@soli/shared/styles/global.css';
 	import { dashboardState, type DashboardSectionId } from '$lib/state.svelte';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';

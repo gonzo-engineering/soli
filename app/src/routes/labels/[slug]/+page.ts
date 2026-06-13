@@ -1,8 +1,8 @@
 import { API_BASE } from '$lib/global/config';
 import { error } from '@sveltejs/kit';
 import type { PostgrestResponse } from '@supabase/supabase-js';
-import type { Artist, Label } from '../../../../../shared/types/core';
-import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
+import type { Artist, Label } from '@soli/shared/types/core';
+import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
 
 export const load = async ({ fetch, params }) => {
 	const label: PostgrestResponse<Label> = await fetch(`${API_BASE}/labels/${params.slug}`).then(

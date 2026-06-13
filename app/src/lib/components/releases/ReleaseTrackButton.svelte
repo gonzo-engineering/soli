@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setActiveSong } from '$lib/utils/audio-playback';
 	import { userState } from '$lib/global/state.svelte';
-	import type { Release, Track, Listener } from '../../../../../shared/types/core';
+	import type { Release, Track, Listener } from '@soli/shared/types/core';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
 	import Icon from '../layout/Icon.svelte';
 

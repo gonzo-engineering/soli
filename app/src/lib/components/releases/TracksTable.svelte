@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Mixtape, Listener } from '../../../../../shared/types/core';
-	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
+	import type { Listener } from '@soli/shared/types/core';
+	import type { TrackHydrated, MixtapeHydrated } from '@soli/shared/types/hydrated';
 	import TrackTableRow from './TracksTableRow.svelte';
 
 	const {
@@ -13,7 +13,7 @@
 		tracks: TrackHydrated[];
 		userProfile: Listener;
 		userLikedTracks: TrackHydrated[];
-		userMixtapes: Mixtape[];
+		userMixtapes: MixtapeHydrated[];
 		showReleaseAndArtist?: boolean;
 	} = $props();
 </script>

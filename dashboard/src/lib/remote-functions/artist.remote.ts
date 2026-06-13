@@ -1,9 +1,9 @@
 import { form, query } from '$app/server';
 import { API_BASE, DASHBOARD_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
 import * as z from 'zod';
-import type { Track } from '../../../../shared/types/core';
-import { sortReleasesByDate } from '../../../../shared/utils';
-import type { ReleaseHydrated } from '../../../../shared/types/hydrated';
+import type { Track } from '@soli/shared/types/core';
+import { sortReleasesByDate } from '@soli/shared/utils';
+import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
 
 const ArtistDetailsForm = z.object({
 	artistId: z.string(),

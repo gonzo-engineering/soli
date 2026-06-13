@@ -1,6 +1,6 @@
 import { API_BASE } from '$lib/global/config';
 import { error } from '@sveltejs/kit';
-import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
+import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
 
 export const load = async ({ params, fetch }) => {
 	const releases: ReleaseHydrated[] = await fetch(`${API_BASE}/releases`).then((res) => res.json());

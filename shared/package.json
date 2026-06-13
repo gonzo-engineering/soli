@@ -1,0 +1,7 @@
+{
+	"name": "@soli/shared",
+	"version": "1.0.0",
+	"devDependencies": {
+		"svelte": "^5.55.0"
+	}
+}

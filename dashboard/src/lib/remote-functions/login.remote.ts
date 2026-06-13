@@ -1,6 +1,6 @@
 import { form, getRequestEvent, query } from '$app/server';
 import * as z from 'zod';
-import { TABLES } from '../../../../shared/config';
+import { TABLES } from '@soli/shared/config';
 import { redirect } from '@sveltejs/kit';
 
 export const sendCode = form(

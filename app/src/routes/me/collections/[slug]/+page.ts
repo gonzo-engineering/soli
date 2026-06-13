@@ -1,6 +1,6 @@
 import { API_BASE } from '$lib/global/config';
 import type { PostgrestResponse } from '@supabase/supabase-js';
-import type { CollectionHydrated } from '../../../../../../shared/types/hydrated';
+import type { CollectionHydrated } from '@soli/shared/types/hydrated';
 import { error } from '@sveltejs/kit';
 
 export const load = async ({ fetch, params }) => {

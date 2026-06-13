@@ -1,12 +1,13 @@
 <script lang="ts">
-	import type { TrackHydrated } from '../../../../../shared/types/hydrated';
-	import { prettifyDuration } from '../../../../../shared/utils';
+	import type { TrackHydrated } from '@soli/shared/types/hydrated';
+	import { prettifyDuration } from '@soli/shared/utils';
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
 	import PopupWrapper from '../layout/PopupWrapper.svelte';
 	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
 	import ButtonWrapper from '../layout/ButtonWrapper.svelte';
-	import type { Mixtape, Listener } from '../../../../../shared/types/core';
+	import type { Listener } from '@soli/shared/types/core';
+	import type { MixtapeHydrated } from '@soli/shared/types/hydrated';
 	import Icon from '../layout/Icon.svelte';
 
 	const {
@@ -21,7 +22,7 @@
 		track: TrackHydrated;
 		showReleaseAndArtist: boolean;
 		userProfile: Listener;
-		mixtapes: Mixtape[];
+		mixtapes: MixtapeHydrated[];
 		likedTracks: TrackHydrated[];
 	} = $props();
 

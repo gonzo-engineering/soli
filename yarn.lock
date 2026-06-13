@@ -865,6 +865,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@soli/shared@workspace:^, @soli/shared@workspace:shared":
+  version: 0.0.0-use.local
+  resolution: "@soli/shared@workspace:shared"
+  dependencies:
+    svelte: "npm:^5.55.0"
+  languageName: unknown
+  linkType: soft
+
 "@standard-schema/spec@npm:^1.0.0":
   version: 1.0.0
   resolution: "@standard-schema/spec@npm:1.0.0"
@@ -1514,6 +1522,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api@workspace:api"
   dependencies:
+    "@soli/shared": "workspace:^"
     "@sveltejs/adapter-netlify": "npm:^6.0.4"
     "@sveltejs/kit": "npm:^2.61.1"
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
@@ -1529,6 +1538,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "app@workspace:app"
   dependencies:
+    "@soli/shared": "workspace:^"
     "@sveltejs/adapter-netlify": "npm:^6.0.4"
     "@sveltejs/kit": "npm:^2.61.1"
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
@@ -1725,6 +1735,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dashboard@workspace:dashboard"
   dependencies:
+    "@soli/shared": "workspace:^"
     "@sveltejs/adapter-netlify": "npm:^6.0.4"
     "@sveltejs/kit": "npm:^2.61.1"
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
@@ -2986,6 +2997,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "payroll@workspace:payroll"
   dependencies:
+    "@soli/shared": "workspace:^"
     dotenv: "npm:^17.4.2"
   languageName: unknown
   linkType: soft

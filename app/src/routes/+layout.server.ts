@@ -1,17 +1,21 @@
 import type { LayoutServerLoad } from './$types';
-import type { Collection, Mixtape } from '../../../shared/types/core';
+import type { Listener } from '@soli/shared/types/core';
+import type {
+	ArtistHydrated,
+	CollectionHydrated,
+	MixtapeHydrated,
+	TrackHydrated
+} from '@soli/shared/types/hydrated';
 import { API_BASE } from '$lib/global/config';
-import type { Listener } from '../../../shared/types/core';
-import type { ArtistHydrated, TrackHydrated } from '../../../shared/types/hydrated';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies, fetch }) => {
 	const { session, user } = await safeGetSession();
 
 	let profileData: Listener | null = null;
-	let collections: Collection[] = [];
+	let collections: CollectionHydrated[] = [];
 	let likedTracks: TrackHydrated[] = [];
 	let followedIDs: string[] = [];
-	let mixtapes: Mixtape[] = [];
+	let mixtapes: MixtapeHydrated[] = [];
 	let linkedArtists: ArtistHydrated[] = [];
 
 	const userId = session?.user.id;

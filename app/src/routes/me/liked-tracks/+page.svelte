@@ -26,10 +26,12 @@
 
 <h2>My liked tracks</h2>
 
-<TracksTable
-	tracks={data.likedTracks}
-	showReleaseAndArtist={true}
-	userProfile={data.profileData}
-	userLikedTracks={data.likedTracks}
-	userMixtapes={data.mixtapes}
-/>
+{#if data.profileData}
+	<TracksTable
+		tracks={data.likedTracks}
+		showReleaseAndArtist={true}
+		userProfile={data.profileData}
+		userLikedTracks={data.likedTracks}
+		userMixtapes={data.mixtapes}
+	/>
+{/if}

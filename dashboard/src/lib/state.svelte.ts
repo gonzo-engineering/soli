@@ -1,5 +1,5 @@
-import type { Artist, Label } from '../../../shared/types/core';
-import type { LabelHydrated } from '../../../shared/types/hydrated';
+import type { Artist, Label } from '@soli/shared/types/core';
+import type { LabelHydrated } from '@soli/shared/types/hydrated';
 
 export const dashboardState: {
 	activeArtist: Artist | null;

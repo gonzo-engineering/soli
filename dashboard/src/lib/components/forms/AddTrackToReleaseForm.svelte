@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { addTrackToRelease } from '$lib/remote-functions/music.remote';
-	import type { Track } from '../../../../../shared/types/core';
-	import type { ReleaseHydrated } from '../../../../../shared/types/hydrated';
+	import type { Track } from '@soli/shared/types/core';
+	import type { ReleaseHydrated } from '@soli/shared/types/hydrated';
 
 	const {
 		releases,
