@@ -41,8 +41,11 @@
 {#if popupMenuOpen}
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{release.title}</div>
-		<ButtonWrapper label="Delete Release" onClickFunction={() => deleteRelease(release.id)}>
-			<div class="delete">Delete Release <Icon key="bin" size={24} /></div>
+		<ButtonWrapper label="Delete release" onClickFunction={() => {
+			deleteRelease(release.id);
+			popupMenuOpen = false;
+		}}>
+			<div class="delete">Delete release <Icon key="bin" size={24} /></div>
 		</ButtonWrapper>
 	</PopupWrapper>
 {/if}

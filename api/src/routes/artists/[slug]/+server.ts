@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	);
 };
 
-export const POST: RequestHandler = async ({ request, params }) => {
+export const PATCH: RequestHandler = async ({ request, params }) => {
 	const formData = await request.formData();
 
 	const artistImageNew = formData.get('artistImageNew') as File;

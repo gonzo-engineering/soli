@@ -1,6 +1,7 @@
 {
 	"name": "@soli/shared",
 	"version": "1.0.0",
+	"type": "module",
 	"exports": {
 		"./config": "./config/index.ts",
 		"./types": "./types/index.ts",
