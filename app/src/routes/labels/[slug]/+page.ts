@@ -8,18 +8,11 @@ export const load = async ({ fetch, params }) => {
 		(res) => res.json()
 	);
 	const artists: Artist[] = await fetch(`${API_BASE}/artists`).then((res) => res.json());
-	const releases: ReleaseHydrated[] = await fetch(`${API_BASE}/releases`).then((res) => res.json());
-
-	// Filter artists to only those who have releases
-	const filteredArtists = artists.filter(
-		(artist) =>
-			releases.some((release) => release.artist_id === artist.id) && artist.label_id === params.slug
-	);
 
 	if (label.error) error(404, 'Label not found');
 
 	return {
 		label,
-		artists: filteredArtists
+		artists: artists.filter((artist) => artist.label_id === params.slug)
 	};
 };
