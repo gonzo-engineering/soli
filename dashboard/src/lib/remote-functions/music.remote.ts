@@ -1,4 +1,4 @@
-import { form, query } from '$app/server';
+import { command, form } from '$app/server';
 import { API_BASE, DASHBOARD_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
 import * as z from 'zod';
 
@@ -67,14 +67,14 @@ export const addTrackToRelease = form(AddTrackToReleaseForm, async (data) => {
 	});
 });
 
-export const deleteTrack = query(z.string(), async (trackId) => {
+export const deleteTrack = command(z.string(), async (trackId) => {
 	await fetch(`${API_BASE}/tracks/${trackId}`, {
 		method: 'DELETE',
 		headers: REQUEST_HEADER_BOILERPLATE
 	});
 });
 
-export const deleteRelease = query(z.string(), async (releaseId) => {
+export const deleteRelease = command(z.string(), async (releaseId) => {
 	await fetch(`${API_BASE}/releases/${releaseId}`, {
 		method: 'DELETE',
 		headers: REQUEST_HEADER_BOILERPLATE
