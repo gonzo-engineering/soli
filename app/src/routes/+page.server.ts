@@ -20,12 +20,8 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cooki
 	const labels = await fetch(`${API_BASE}/labels`).then((res) => res.json());
 
 	// Artists
-	// Filter artists to only those who have releases
-	const filteredArtists = artists.filter((artist) =>
-		releases.some((release) => release.artist_id === artist.id)
-	);
-	const followedArtists = filteredArtists.filter((artist) => followedArtistIDs.includes(artist.id));
-	const otherArtists = filteredArtists.filter((artist) => !followedArtistIDs.includes(artist.id));
+	const followedArtists = artists.filter((artist) => followedArtistIDs.includes(artist.id));
+	const otherArtists = artists.filter((artist) => !followedArtistIDs.includes(artist.id));
 	const featuredArtist = otherArtists[Math.floor(Math.random() * otherArtists.length)];
 
 	const artistsOrganised = {
