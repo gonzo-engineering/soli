@@ -5,7 +5,7 @@
 
 	import { deleteTrack } from '$lib/remote-functions/music.remote';
 
-	const { song }: { song: Track } = $props();
+	const { song, onTrackDeleted }: { song: Track; onTrackDeleted: () => void } = $props();
 
 	let popupMenuOpen = $state(false);
 </script>
@@ -27,9 +27,10 @@
 		<div>{song.title}</div>
 		<ButtonWrapper
 			label="Delete track"
-			onClickFunction={() => {
-				deleteTrack(song.id);
+			onClickFunction={async () => {
 				popupMenuOpen = false;
+				await deleteTrack(song.id);
+				onTrackDeleted();
 			}}
 		>
 			<div class="delete">Delete track <Icon key="bin" size={24} /></div>

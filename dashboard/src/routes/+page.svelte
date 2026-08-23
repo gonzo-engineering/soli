@@ -23,9 +23,9 @@
 	let activeArtist: Artist | null = $derived(
 		data.artists.find((artist) => artist.id === dashboardState.activeArtist?.id) || null
 	);
-	let activeArtistStreams: StreamLog[] = $state([]);
-	let activeArtistSongs: Track[] = $state([]);
-	let activeArtistReleases: ReleaseHydrated[] = $state([]);
+	let activeArtistSongs = $derived(activeArtist ? await getArtistTracks(activeArtist.id) : []);
+	let activeArtistReleases = $derived(activeArtist ? await getArtistReleases(activeArtist.id) : []);
+	let activeArtistStreams = $derived(activeArtist ? await getArtistStreams(activeArtist.id) : []);
 
 	$effect(() => {
 		const fetchArtistData = async () => {
@@ -51,7 +51,13 @@
 <div>
 	{#if activeArtist}
 		{#if dashboardState.activeSection === 'music'}
-			<MusicView {activeArtist} {activeArtistSongs} {activeArtistReleases} />
+			<MusicView
+				{activeArtist}
+				{activeArtistSongs}
+				{activeArtistReleases}
+				onReleaseDeleted={() => getArtistReleases(activeArtist!.id).refresh()}
+				onTrackDeleted={() => getArtistTracks(activeArtist!.id).refresh()}
+			/>
 		{:else if dashboardState.activeSection === 'profile'}
 			<ProfileView {activeArtist} />
 		{:else if dashboardState.activeSection === 'stats'}

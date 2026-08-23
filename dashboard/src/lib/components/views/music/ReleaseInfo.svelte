@@ -7,9 +7,11 @@
 	import { makeImageLink } from '$lib/utils';
 
 	const {
-		release
+		release,
+		onReleaseDeleted
 	}: {
 		release: ReleaseHydrated;
+		onReleaseDeleted: () => void;
 	} = $props();
 
 	let popupMenuOpen = $state(false);
@@ -41,9 +43,10 @@
 {#if popupMenuOpen}
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{release.title}</div>
-		<ButtonWrapper label="Delete release" onClickFunction={() => {
-			deleteRelease(release.id);
+		<ButtonWrapper label="Delete release" onClickFunction={async () => {
 			popupMenuOpen = false;
+			await deleteRelease(release.id);
+			onReleaseDeleted();
 		}}>
 			<div class="delete">Delete release <Icon key="bin" size={24} /></div>
 		</ButtonWrapper>

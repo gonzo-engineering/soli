@@ -10,11 +10,15 @@
 	const {
 		activeArtist,
 		activeArtistSongs,
-		activeArtistReleases
+		activeArtistReleases,
+		onTrackDeleted,
+		onReleaseDeleted
 	}: {
 		activeArtist: Artist;
 		activeArtistSongs: Track[];
 		activeArtistReleases: ReleaseHydrated[];
+		onTrackDeleted: () => void;
+		onReleaseDeleted: () => void;
 	} = $props();
 </script>
 
@@ -25,7 +29,7 @@
 		</h2>
 		{#each activeArtistReleases as release}
 			<Card>
-				<ReleaseInfo {release} />
+				<ReleaseInfo {release} {onReleaseDeleted} />
 			</Card>
 		{/each}
 	</div>
@@ -35,7 +39,7 @@
 		</h2>
 		{#each activeArtistSongs as song}
 			<Card>
-				<TrackInfo {song} />
+				<TrackInfo {song} {onTrackDeleted} />
 			</Card>
 		{/each}
 	</div>
