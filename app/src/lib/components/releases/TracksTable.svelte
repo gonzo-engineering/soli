@@ -7,13 +7,15 @@
 		userProfile,
 		userLikedTracks,
 		userMixtapes,
-		showReleaseAndArtist = false
+		showReleaseAndArtist = false,
+		releaseIsNotOutYet = false
 	}: {
 		tracks: TrackHydrated[];
 		userProfile: Listener;
 		userLikedTracks: TrackHydrated[];
 		userMixtapes: MixtapeHydrated[];
 		showReleaseAndArtist?: boolean;
+		releaseIsNotOutYet?: boolean;
 	} = $props();
 </script>
 
@@ -43,6 +45,7 @@
 				{userProfile}
 				likedTracks={userLikedTracks}
 				mixtapes={userMixtapes}
+				releaseIsNotOutYet={releaseIsNotOutYet}
 			/>
 		{/each}
 	</tbody>

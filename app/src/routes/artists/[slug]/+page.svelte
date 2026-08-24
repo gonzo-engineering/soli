@@ -93,6 +93,7 @@
 							link={`/releases/${lp.id}`}
 							name={lp.title}
 							coverArt={makeImageLink(lp.artwork_ipfs_cid, 200)}
+							releaseDate={lp.release_date}
 						/>
 					{/each}
 				</GridWrapper>

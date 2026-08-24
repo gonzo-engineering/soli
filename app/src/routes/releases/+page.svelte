@@ -21,6 +21,7 @@
 			name={release.title}
 			artist={release.artist.name}
 			coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
+			releaseDate={release.release_date}
 		/>
 	{/each}
 </GridWrapper>

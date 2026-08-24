@@ -26,6 +26,21 @@
 			genres: string[];
 		};
 	} = $props();
+
+	const isUpcoming = (release: ReleaseHydrated) => new Date(release.release_date) > new Date();
+
+	const upcomingReleases = $derived(
+		data.latestReleases.map((group) => ({
+			label: group.label,
+			releases: group.releases.filter(isUpcoming)
+		}))
+	);
+	const pastReleases = $derived(
+		data.latestReleases.map((group) => ({
+			label: group.label,
+			releases: group.releases.filter((release) => !isUpcoming(release))
+		}))
+	);
 </script>
 
 <svelte:head>
@@ -81,11 +96,12 @@
 
 	<section>
 		<div class="section-header">
-			<h2>Recent releases</h2>
+			<h2>Upcoming releases</h2>
 			<a href="/releases">See all</a>
 		</div>
 
-		{#each data.latestReleases as { label, releases }}
+		{#each upcomingReleases as { label, releases }}
+		{#if releases.length > 0}
 			<div class="subsection">
 				<h3>{label}</h3>
 				<GridWrapper gridItemSize="150px" gridGap="20px">
@@ -95,10 +111,38 @@
 							name={release.title}
 							artist={release.artist.name}
 							coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
+							releaseDate={release.release_date}
 						/>
 					{/each}
 				</GridWrapper>
 			</div>
+		{/if}
+		{/each}
+	</section>
+
+	<section>
+		<div class="section-header">
+			<h2>Recent releases</h2>
+			<a href="/releases">See all</a>
+		</div>
+
+		{#each pastReleases as { label, releases }}
+		{#if releases.length > 0}
+			<div class="subsection">
+				<h3>{label}</h3>
+				<GridWrapper gridItemSize="150px" gridGap="20px">
+					{#each releases as release}
+						<ReleaseCard
+							link={`/releases/${release.id}`}
+							name={release.title}
+							artist={release.artist.name}
+							coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
+							releaseDate={release.release_date}
+						/>
+					{/each}
+				</GridWrapper>
+			</div>
+		{/if}
 		{/each}
 	</section>
 

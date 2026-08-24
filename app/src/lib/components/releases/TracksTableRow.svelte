@@ -13,7 +13,8 @@
 		showReleaseAndArtist = false,
 		userProfile,
 		mixtapes,
-		likedTracks
+		likedTracks,
+		releaseIsNotOutYet = false
 	}: {
 		i?: number;
 		track: TrackHydrated;
@@ -21,6 +22,7 @@
 		userProfile: Listener;
 		mixtapes: MixtapeHydrated[];
 		likedTracks: TrackHydrated[];
+		releaseIsNotOutYet?: boolean;
 	} = $props();
 
 	let popupMenuOpen = $state(false);
@@ -37,9 +39,9 @@
 	{/if}
 	<td>{prettifyDuration(track.duration_seconds)}</td>
 	<td class="play-button-container">
-		<ReleaseTrackButton {track} release={track.release} {userProfile} />
+		<ReleaseTrackButton {track} release={track.release} {userProfile} {releaseIsNotOutYet} />
 	</td>
-	{#if userProfile}
+	{#if userProfile && !releaseIsNotOutYet}
 		<td>
 			<TrackLikeButton trackID={track.id} {likedTracks} />
 		</td>
