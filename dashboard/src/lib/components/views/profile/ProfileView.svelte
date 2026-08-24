@@ -14,6 +14,7 @@
 		currentArtistImageCID={activeArtist.image_ipfs_cid}
 		artistBio={activeArtist.bio}
 		artistWebsite={activeArtist.website_url}
+		artistLinks={activeArtist.links}
 	/>
 </div>
 

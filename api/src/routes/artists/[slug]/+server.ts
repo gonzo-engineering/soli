@@ -19,6 +19,7 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
 	const artistName = formData.get('artistName') as string;
 	const artistBio = formData.get('artistBio') as string;
 	const artistWebsite = formData.get('artistWebsite') as string;
+	const artistLinks = JSON.parse(formData.get('artistLinks') as string || '[]') as string[];
 
 	let imageCid: string | undefined;
 
@@ -42,7 +43,8 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
 			name: artistName,
 			bio: artistBio,
 			website_url: artistWebsite,
-			image_ipfs_cid: imageCid
+			image_ipfs_cid: imageCid,
+			links: artistLinks
 		})
 		.eq('id', params.slug);
 	if (error) {

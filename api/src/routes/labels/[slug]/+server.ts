@@ -19,6 +19,7 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
 	const labelName = formData.get('labelName') as string;
 	const labelDescription = formData.get('labelDescription') as string;
 	const labelWebsite = formData.get('labelWebsite') as string;
+	const labelLinks = JSON.parse(formData.get('labelLinks') as string || '[]') as string[];
 
 	let imageCid: string | undefined;
 
@@ -42,7 +43,8 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
 			name: labelName,
 			description: labelDescription,
 			website_url: labelWebsite,
-			image_cid: imageCid
+			image_cid: imageCid,
+			links: labelLinks
 		})
 		.eq('id', params.slug);
 	if (error) {
