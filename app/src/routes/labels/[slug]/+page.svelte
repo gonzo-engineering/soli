@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { makeImageLink } from '$lib/utils';
+	import { makeImageLink, decideIconKeyFromLink } from '$lib/utils';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { Artist, Label, Release } from '@soli/shared/types';
+	import type { Artist, IconKey, Label, Release } from '@soli/shared/types';
 	import type { UserData } from '$lib/global/state.svelte';
 	import GridWrapper from '$lib/components/GridWrapper.svelte';
 	import CircleCard from '$lib/components/CircleCard.svelte';
+	import Icon from '../../../../../shared/components/Icon.svelte';
 
 	let {
 		data
@@ -29,6 +30,14 @@
 
 {#if data.label.website_url}
 	<a href={website_url}>{website_url?.replace('https://', '').replaceAll('/', '')}</a>
+{/if}
+
+{#if data.label.links && data.label.links.length > 0}
+	<div class="label-links">
+		{#each data.label.links as link}
+			<a href={link}><Icon key={decideIconKeyFromLink(link)} size={24} /></a>
+		{/each}
+	</div>
 {/if}
 
 {#if image_cid}
@@ -56,6 +65,14 @@
 <style>
 	h2 {
 		margin-bottom: 0.25rem;
+	}
+	.label-links {
+		display: flex;
+		gap: 1rem;
+		margin: 1rem 0;
+	}
+	.label-links a:hover {
+		opacity: 0.7;
 	}
 	.label-image {
 		width: 100%;

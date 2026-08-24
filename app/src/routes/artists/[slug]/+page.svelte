@@ -1,12 +1,13 @@
 <script lang="ts">
 	import type { ArtistHydrated, Release } from '@soli/shared/types';
-	import { makeImageLink } from '$lib/utils';
+	import { decideIconKeyFromLink, makeImageLink } from '$lib/utils';
 	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
 	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
 	import type { UserData } from '$lib/global/state.svelte';
 	import GridWrapper from '$lib/components/GridWrapper.svelte';
 	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
 	import CircleCard from '$lib/components/CircleCard.svelte';
+	import { Icon } from '@soli/shared/components';
 
 	let {
 		data
@@ -53,6 +54,14 @@
 
 		{#if data.artist.website_url}
 			<a href={website_url}>{website_url?.replace('https://', '').replaceAll('/', '')}</a>
+		{/if}
+
+		{#if data.artist.links && data.artist.links.length > 0}
+			<div class="artist-links">
+				{#each data.artist.links as link}
+					<a href={link}><Icon key={decideIconKeyFromLink(link)} size={24} /></a>
+				{/each}
+			</div>
 		{/if}
 
 		<hr class:hide-on-larger-screens={!data.profileData} />
@@ -192,6 +201,15 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+	}
+
+	.artist-links {
+		display: flex;
+		gap: 0.5rem;
+		margin: 1rem 0 0 0;
+		a:hover {
+			opacity: 0.7;
+		}
 	}
 
 	.artist-summary-card img {
