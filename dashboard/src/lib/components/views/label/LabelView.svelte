@@ -14,6 +14,7 @@
 		currentLabelImageCID={activeLabel.image_cid}
 		labelDescription={activeLabel.description}
 		labelWebsite={activeLabel.website_url}
+		labelLinks={activeLabel.links}
 	/>
 </div>
 

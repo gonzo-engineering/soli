@@ -9,7 +9,8 @@ const ArtistDetailsForm = z.object({
 	artistName: z.string().min(1),
 	artistImageNew: z.instanceof(File).optional(),
 	artistBio: z.string().max(1000).optional(),
-	artistWebsite: z.string().optional()
+	artistWebsite: z.string().optional(),
+	artistLinks: z.string().optional() // JSON stringified array
 });
 
 export const updateArtistDetails = form(ArtistDetailsForm, async (data) => {
@@ -21,11 +22,10 @@ export const updateArtistDetails = form(ArtistDetailsForm, async (data) => {
 	formData.append('artistId', data.artistId);
 	formData.append('artistBio', data.artistBio || '');
 	formData.append('artistWebsite', data.artistWebsite || '');
+	formData.append('artistLinks', data.artistLinks || '[]');
 	await fetch(`${API_BASE}/artists/${data.artistId}`, {
 		method: 'PATCH',
-		headers: {
-			origin: DASHBOARD_BASE
-		},
+		headers: { origin: DASHBOARD_BASE },
 		body: formData
 	});
 });

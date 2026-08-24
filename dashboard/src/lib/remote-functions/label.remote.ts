@@ -7,7 +7,8 @@ const LabelDetailsForm = z.object({
 	labelName: z.string().min(1),
 	labelImageNew: z.instanceof(File).optional(),
 	labelDescription: z.string().max(1000).optional(),
-	labelWebsite: z.string().optional()
+	labelWebsite: z.string().optional(),
+	labelLinks: z.string().optional()
 });
 
 export const updateLabelDetails = form(LabelDetailsForm, async (data) => {
@@ -19,11 +20,10 @@ export const updateLabelDetails = form(LabelDetailsForm, async (data) => {
 	formData.append('labelId', data.labelId);
 	formData.append('labelDescription', data.labelDescription || '');
 	formData.append('labelWebsite', data.labelWebsite || '');
+	formData.append('labelLinks', data.labelLinks || '[]');
 	await fetch(`${API_BASE}/labels/${data.labelId}`, {
 		method: 'PATCH',
-		headers: {
-			origin: DASHBOARD_BASE
-		},
+		headers: { origin: DASHBOARD_BASE },
 		body: formData
 	});
 });

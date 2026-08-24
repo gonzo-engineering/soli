@@ -10,6 +10,7 @@ export interface Artist {
 	name: string;
 	bio?: string;
 	website_url?: string;
+	links?: string[];
 	stripe_account_id: string;
 	pinata_group_id: string;
 	image_ipfs_cid?: string;
@@ -72,4 +73,5 @@ export interface Label {
 	description?: string;
 	image_cid?: string;
 	website_url?: string;
+	links?: string[];
 }
