@@ -22,6 +22,8 @@
 
 	let release = $derived(data.release);
 	let popupMenuOpen = $state(false);
+
+	let isUpcoming = $derived(new Date(release.release_date) > new Date());
 </script>
 
 <svelte:head>
@@ -35,6 +37,11 @@
 <BreadcrumbLinks breadcrumbs={[{ link: '/releases', label: 'Releases' }]} />
 
 <div class="release-summary-card">
+	{#if isUpcoming}
+		<div class="upcoming-release-indicator">
+			Out {new Date(release.release_date).toLocaleDateString()}
+		</div>
+	{/if}
 	<div class="release-header">
 		<div>
 			<h2>{release.title}</h2>
@@ -58,7 +65,7 @@
 		imageSrc={makeImageLink(release.artwork_ipfs_cid, 500)}
 	/>
 
-	{#if data.profileData}
+	{#if data.profileData && !isUpcoming}
 		<ButtonWrapper
 			label="Play full release"
 			onClickFunction={() => {
@@ -93,16 +100,19 @@
 		userProfile={data.profileData}
 		userLikedTracks={data.likedTracks}
 		userMixtapes={data.mixtapes}
+		releaseIsNotOutYet={new Date(release.release_date) > new Date()}
 	/>
 
 	<hr />
 
 	<div>
-		<div>
-			{formatReleaseType(release.release_type)} released {new Date(
-				release.release_date
-			).toLocaleDateString()}
-		</div>
+		{#if !isUpcoming}
+			<div>
+				{formatReleaseType(release.release_type)} released {new Date(
+					release.release_date
+				).toLocaleDateString()}
+			</div>
+		{/if}
 		<TagsGrid slugs={release.genres ?? []} type="genres" />
 	</div>
 </div>
@@ -126,6 +136,14 @@
 		justify-content: space-between;
 		align-items: center;
 		gap: 1rem;
+	}
+	.upcoming-release-indicator {
+		width: fit-content;
+		color: black;
+		background-color: var(--color-soli-yellow);
+		padding: 0.2rem 0.4rem;
+		border-radius: 4px;
+		font-weight: 500;
 	}
 	h2 {
 		margin: 0;

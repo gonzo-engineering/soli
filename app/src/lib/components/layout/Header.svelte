@@ -78,6 +78,11 @@
 		text-align: center;
 		padding: 0.5rem 1rem;
 		font-size: 0.875rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: row;
+		gap: 0.25rem;
 	}
 	.closed-beta-message a {
 		color: black;

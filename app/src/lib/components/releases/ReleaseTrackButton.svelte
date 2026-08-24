@@ -8,15 +8,17 @@
 	let {
 		track,
 		release,
-		userProfile
+		userProfile,
+		releaseIsNotOutYet = false
 	}: {
 		track: Track;
 		release: Release;
 		userProfile: Listener | null;
+		releaseIsNotOutYet?: boolean;
 	} = $props();
 </script>
 
-{#if userProfile}
+{#if userProfile && !releaseIsNotOutYet}
 	<ButtonWrapper
 		label={track.id === userState.activeSong?.id && !userState.activeSongIsPaused
 			? 'Pause'
@@ -37,7 +39,7 @@
 		{/if}
 	</ButtonWrapper>
 {:else}
-	<button class="play-button" onclick={() => alert('You must be logged in to listen to music.')}>
+	<button class="play-button" onclick={() => alert(!userProfile ? 'You must be logged in to listen to music.' : 'This release is not out yet. Be patient!')}>
 		<Icon key="play" size={26} />
 	</button>
 {/if}
