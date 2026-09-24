@@ -18,6 +18,16 @@
 				invalidate('supabase:auth');
 			}
 		});
+
+		// Auto-select if only one artist or label
+		if (artists?.length === 1) {
+			dashboardState.activeArtist = artists[0];
+			dashboardState.activeSection = 'profile';
+		} else if (labels?.length === 1) {
+			dashboardState.activeLabel = labels[0];
+			dashboardState.activeSection = 'profile';
+		}
+
 		return () => data.subscription.unsubscribe();
 	});
 
@@ -43,44 +53,55 @@
 			<h1>Soli • Dashboard</h1>
 			<hr />
 			<div>User: {session.user.email}</div>
+
 			{#if artists && artists.length > 0}
-				<h3>Your linked artists</h3>
-				<select
-					class="artist-selector"
-					onchange={(e) => {
-						const selectedId = (e.target as HTMLSelectElement).value;
-						dashboardState.activeArtist = artists.find((a) => a.id === selectedId) || null;
-						dashboardState.activeSection = 'profile';
-					}}
-				>
-					<option value="" disabled selected>Select an artist</option>
-					{#each artists as artist}
-						<option value={artist.id} class:active={dashboardState.activeArtist?.id === artist.id}>
-							{artist.name}
-						</option>
-					{/each}
-				</select>
+				<h3>Your linked artist{artists.length > 1 ? 's' : ''}</h3>
+				{#if artists.length === 1}
+					<div class="single-selection">{artists[0].name}</div>
+				{:else}
+					<select
+						class="artist-selector"
+						onchange={(e) => {
+							const selectedId = (e.target as HTMLSelectElement).value;
+							dashboardState.activeArtist = artists.find((a) => a.id === selectedId) || null;
+							dashboardState.activeLabel = null;
+							dashboardState.activeSection = 'profile';
+						}}
+					>
+						<option value="" disabled selected>Select an artist</option>
+						{#each artists as artist}
+							<option value={artist.id} class:active={dashboardState.activeArtist?.id === artist.id}>
+								{artist.name}
+							</option>
+						{/each}
+					</select>
+				{/if}
 			{:else}
-				<li>No artists found.</li>
+				<p>No artists found.</p>
 			{/if}
+
 			{#if labels && labels.length > 0}
-				<h3>Your linked labels</h3>
-				<select
-					class="label-selector"
-					onchange={(e) => {
-						const selectedId = (e.target as HTMLSelectElement).value;
-						dashboardState.activeLabel = labels.find((l) => l.id === selectedId) || null;
-						dashboardState.activeSection = 'profile';
-					}}
-				>
-					<option value="" selected>Select a label</option>
-					{#each labels as label}
-						<option value={label.id}>
-							{label.name}
-						</option>
-					{/each}
-				</select>
+				<h3>Your linked label{labels.length > 1 ? 's' : ''}</h3>
+				{#if labels.length === 1}
+					<div class="single-selection">{labels[0].name}</div>
+				{:else}
+					<select
+						class="label-selector"
+						onchange={(e) => {
+							const selectedId = (e.target as HTMLSelectElement).value;
+							dashboardState.activeLabel = labels.find((l) => l.id === selectedId) || null;
+							dashboardState.activeArtist = null;
+							dashboardState.activeSection = 'profile';
+						}}
+					>
+						<option value="" selected>Select a label</option>
+						{#each labels as label}
+							<option value={label.id}>{label.name}</option>
+						{/each}
+					</select>
+				{/if}
 			{/if}
+
 			{#if dashboardState.activeArtist}
 				<hr />
 				{#each artistDashboardSections as section}
@@ -88,9 +109,7 @@
 						class="section-selector"
 						class:active={dashboardState.activeSection === section.id}
 						role="button"
-						onclick={() => {
-							dashboardState.activeSection = section.id;
-						}}
+						onclick={() => (dashboardState.activeSection = section.id)}
 						onkeydown={(e) => {
 							if (e.key === 'Enter' || e.key === ' ') {
 								dashboardState.activeSection = section.id;
@@ -103,6 +122,7 @@
 					</div>
 				{/each}
 			{/if}
+
 			{#if dashboardState.activeLabel}
 				<hr />
 				{#each labelDashboardSections as section}
@@ -110,9 +130,7 @@
 						class="section-selector"
 						class:active={dashboardState.activeSection === section.id}
 						role="button"
-						onclick={() => {
-							dashboardState.activeSection = section.id;
-						}}
+						onclick={() => (dashboardState.activeSection = section.id)}
 						onkeydown={(e) => {
 							if (e.key === 'Enter' || e.key === ' ') {
 								dashboardState.activeSection = section.id;
@@ -125,14 +143,11 @@
 					</div>
 				{/each}
 			{/if}
+
 			<hr />
 			<ButtonWrapper
 				label="Sign Out"
-				onClickFunction={() => {
-					signOut().then(() => {
-						location.reload();
-					});
-				}}
+				onClickFunction={() => signOut().then(() => location.reload())}
 			>
 				Sign Out
 			</ButtonWrapper>
@@ -182,6 +197,10 @@
 		cursor: pointer;
 		border-radius: 4px;
 		transition: background-color 0.2s ease;
+	}
+	.single-selection {
+		padding: 0.5rem 0;
+		font-weight: 500;
 	}
 	select {
 		padding: 0.5rem;
