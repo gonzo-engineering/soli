@@ -22,25 +22,25 @@
 		"*.{js,ts,svelte,json,md}": "prettier --write --ignore-unknown"
 	},
 	"dependencies": {
-		"@supabase/ssr": "^0.10.3",
-		"@supabase/supabase-js": "^2.106.2",
+		"@supabase/ssr": "^0.12.4",
+		"@supabase/supabase-js": "^2.112.3",
 		"@yarnpkg/types": "^4.0.1",
 		"pinata": "^2.5.6",
-		"stripe": "^22.2.0",
+		"stripe": "^22.5.0",
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.1.0",
 		"@eslint/js": "^10.0.1",
-		"eslint": "^10.4.0",
+		"eslint": "^10.8.1",
 		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-svelte": "^3.18.0",
-		"globals": "^17.6.0",
+		"eslint-plugin-svelte": "^3.23.0",
+		"globals": "^17.11.0",
 		"husky": "^9.1.7",
-		"lint-staged": "^17.0.5",
-		"prettier": "^3.8.3",
-		"prettier-plugin-svelte": "^4.0.1",
-		"typescript-eslint": "^8.60.0"
+		"lint-staged": "^17.3.0",
+		"prettier": "^3.9.6",
+		"prettier-plugin-svelte": "^4.1.1",
+		"typescript-eslint": "^8.67.0"
 	},
 	"packageManager": "yarn@4.15.0"
 }

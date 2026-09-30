@@ -7,7 +7,7 @@ export const DASHBOARD_LOCAL_PORT = 3001;
 export const API_DOMAIN = 'https://api.soli.network';
 export const API_LOCAL_PORT = 3002;
 
-export const STRIPE_API_VERSION = '2026-05-27.dahlia';
+export const STRIPE_API_VERSION = '2026-07-29.dahlia';
 
 export const PLATFORM_FEE_PERCENTAGE = 0.1;
 export const STREAM_THRESHOLD_SECONDS = 30;
