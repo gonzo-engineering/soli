@@ -26,21 +26,6 @@
 	let activeArtistSongs = $derived(activeArtist ? await getArtistTracks(activeArtist.id) : []);
 	let activeArtistReleases = $derived(activeArtist ? await getArtistReleases(activeArtist.id) : []);
 	let activeArtistStreams = $derived(activeArtist ? await getArtistStreams(activeArtist.id) : []);
-
-	$effect(() => {
-		const fetchArtistData = async () => {
-			if (activeArtist) {
-				activeArtistStreams = await getArtistStreams(activeArtist.id);
-				activeArtistSongs = await getArtistTracks(activeArtist.id);
-				activeArtistReleases = await getArtistReleases(activeArtist.id);
-			} else {
-				activeArtistStreams = [];
-				activeArtistSongs = [];
-				activeArtistReleases = [];
-			}
-		};
-		fetchArtistData();
-	});
 </script>
 
 <svelte:head>
