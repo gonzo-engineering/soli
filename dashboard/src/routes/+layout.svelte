@@ -70,7 +70,10 @@
 					>
 						<option value="" disabled selected>Select an artist</option>
 						{#each artists as artist}
-							<option value={artist.id} class:active={dashboardState.activeArtist?.id === artist.id}>
+							<option
+								value={artist.id}
+								class:active={dashboardState.activeArtist?.id === artist.id}
+							>
 								{artist.name}
 							</option>
 						{/each}
@@ -155,7 +158,9 @@
 	{/if}
 
 	<main>
-		{@render children()}
+		<svelte:boundary>
+			{@render children()}
+		</svelte:boundary>
 	</main>
 </div>
 
