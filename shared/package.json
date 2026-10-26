@@ -11,6 +11,6 @@
 		"./styles/reset.css": "./styles/reset.css"
 	},
 	"devDependencies": {
-		"svelte": "^5.55.0"
+		"svelte": "^5.56.9"
 	}
 }
