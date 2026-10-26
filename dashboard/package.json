@@ -17,7 +17,7 @@
 	"devDependencies": {
 		"@soli/shared": "workspace:^",
 		"@sveltejs/adapter-netlify": "^6.0.4",
-		"@sveltejs/kit": "^2.61.1",
+		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@types/node": "^22.0.0",
 		"svelte": "^5.55.0",
