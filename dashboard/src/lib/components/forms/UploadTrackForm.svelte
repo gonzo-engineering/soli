@@ -1,19 +1,20 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
 	import { API_BASE } from '$lib/config';
 	import { supabase } from '$lib/supabase';
 	import { parseBlob } from 'music-metadata';
 
 	const {
-		artistId
+		artistId,
+		onTrackUploaded
 	}: {
 		artistId: string;
+		onTrackUploaded: (title: string) => void;
 	} = $props();
 
 	let isLoading = $state(false);
 	let error = $state<string | null>(null);
 	let isDragging = $state(false);
-	let droppedFile = $state<File | null>(null);
+	let selectedFile = $state<File | null>(null);
 	let titleInput = $state('');
 
 	const uploadFile = async (audioFile: File, title: string) => {
@@ -45,28 +46,38 @@
 		if (storageError) throw new Error('File upload failed — please try again');
 	};
 
+	const selectFile = (file: File | undefined | null) => {
+		if (!file) return;
+		if (!file.type.startsWith('audio/')) {
+			error = 'Please choose an audio file';
+			return;
+		}
+		error = null;
+		selectedFile = file;
+		// Pre-fill title from filename if empty
+		if (!titleInput) {
+			titleInput = file.name.replace(/\.[^/.]+$/, '');
+		}
+	};
+
 	const handleSubmit = async (e: SubmitEvent) => {
 		e.preventDefault();
 		isLoading = true;
 		error = null;
 
-		const form = e.target as HTMLFormElement;
-		const formData = new FormData(form);
-		const audioFile = (droppedFile ?? formData.get('audioFile')) as File;
-		const title = formData.get('title') as string;
+		const title = titleInput.trim();
 
-		if (!audioFile || !title) {
-			error = 'Please fill in all fields';
+		if (!selectedFile || !title) {
+			error = 'Please choose a file and enter a title';
 			isLoading = false;
 			return;
 		}
 
 		try {
-			await uploadFile(audioFile, title);
-			form.reset();
-			droppedFile = null;
+			await uploadFile(selectedFile, title);
+			selectedFile = null;
 			titleInput = '';
-			invalidateAll();
+			onTrackUploaded(title);
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Upload failed — please try again';
 			console.error(err);
@@ -87,16 +98,7 @@
 	const handleDrop = (e: DragEvent) => {
 		e.preventDefault();
 		isDragging = false;
-		const file = e.dataTransfer?.files[0];
-		if (file?.type.startsWith('audio/')) {
-			droppedFile = file;
-			// Pre-fill title from filename if empty
-			if (!titleInput) {
-				titleInput = file.name.replace(/\.[^/.]+$/, '');
-			}
-		} else {
-			error = 'Please drop an audio file';
-		}
+		selectFile(e.dataTransfer?.files[0]);
 	};
 </script>
 
@@ -110,16 +112,16 @@
 	<div
 		class="drop-zone"
 		class:dragging={isDragging}
-		class:has-file={droppedFile}
+		class:has-file={selectedFile}
 		ondragover={handleDragOver}
 		ondragleave={handleDragLeave}
 		ondrop={handleDrop}
 		role="region"
 		aria-label="Audio file drop zone"
 	>
-		{#if droppedFile}
-			<p>{droppedFile.name}</p>
-			<button type="button" onclick={() => (droppedFile = null)} disabled={isLoading}>
+		{#if selectedFile}
+			<p>{selectedFile.name}</p>
+			<button type="button" onclick={() => (selectedFile = null)} disabled={isLoading}>
 				Remove
 			</button>
 		{:else}
@@ -129,17 +131,20 @@
 				Browse
 				<input
 					type="file"
-					name="audioFile"
 					accept="audio/*"
 					disabled={isLoading}
-					onchange={() => (droppedFile = null)}
+					onchange={(e) => {
+						selectFile(e.currentTarget.files?.[0]);
+						// Allow re-selecting the same file after removing it
+						e.currentTarget.value = '';
+					}}
 				/>
 			</label>
 		{/if}
 	</div>
 	<label>
 		Title
-		<input type="text" name="title" bind:value={titleInput} disabled={isLoading} />
+		<input type="text" bind:value={titleInput} disabled={isLoading} />
 	</label>
 	<button type="submit" disabled={isLoading}>
 		{isLoading ? 'Uploading...' : 'Upload Track'}
