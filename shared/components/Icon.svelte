@@ -28,6 +28,8 @@
 	fill={strokeMode ? 'none' : color}
 	style={`display: inline-block; transform: rotate(${rotation}deg);`}
 	stroke-width={3}
+	aria-label={key}
+	role="img"
 >
 	{#each iconData.ds as d}
 		<path
