@@ -20,7 +20,7 @@
 
 	const pending = $derived(!!updateLabelDetails.pending);
 
-	let links = $state([...labelLinks]);
+	let links = $state([...(labelLinks ?? [])]);
 	let newLink = $state('');
 
 	const addLink = () => {
