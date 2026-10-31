@@ -11,6 +11,15 @@ const AddReleaseForm = z.object({
 	releaseGenres: z.array(z.string()).optional()
 });
 
+const EditReleaseFormSchema = z.object({
+	releaseId: z.string(),
+	releaseName: z.string().min(1),
+	releaseType: z.enum(['album', 'ep', 'single']),
+	releaseDate: z.string(),
+	releaseGenres: z.string().optional(),
+	releaseArtwork: z.instanceof(File).optional()
+});
+
 const UploadTrackForm = z.object({
 	audioFile: z.instanceof(File),
 	artistId: z.string(),
@@ -41,6 +50,22 @@ export const addRelease = form(AddReleaseForm, async (data) => {
 	});
 });
 
+export const editRelease = form(EditReleaseFormSchema, async (data) => {
+	const formData = new FormData();
+	formData.append('releaseName', data.releaseName);
+	formData.append('releaseType', data.releaseType);
+	formData.append('releaseDate', data.releaseDate);
+	formData.append('releaseGenres', data.releaseGenres ?? '');
+	if (data.releaseArtwork && data.releaseArtwork.size > 0) {
+		formData.append('releaseArtwork', data.releaseArtwork);
+	}
+	await fetch(`${API_BASE}/releases/${data.releaseId}`, {
+		method: 'PATCH',
+		headers: { origin: DASHBOARD_BASE },
+		body: formData
+	});
+});
+
 export const uploadTrack = form(UploadTrackForm, async (data) => {
 	const formData = new FormData();
 	formData.append('audioFile', data.audioFile);
@@ -64,6 +89,18 @@ export const addTrackToRelease = form(AddTrackToReleaseForm, async (data) => {
 		method: 'PATCH',
 		headers: REQUEST_HEADER_BOILERPLATE,
 		body: JSON.stringify(data)
+	});
+});
+
+const RemoveTrackFromReleaseSchema = z.object({
+	releaseId: z.string(),
+	trackId: z.string()
+});
+
+export const removeTrackFromRelease = command(RemoveTrackFromReleaseSchema, async (data) => {
+	await fetch(`${API_BASE}/releases/${data.releaseId}/tracks/${data.trackId}`, {
+		method: 'DELETE',
+		headers: REQUEST_HEADER_BOILERPLATE
 	});
 });
 

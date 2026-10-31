@@ -2,16 +2,17 @@
 	import { ButtonWrapper, Icon, PopupWrapper } from '@soli/shared/components';
 	import type { ReleaseHydrated } from '@soli/shared/types';
 	import { formatReleaseType } from '@soli/shared/utils';
-
 	import { deleteRelease } from '$lib/remote-functions/music.remote';
 	import { makeImageLink } from '$lib/utils';
 
 	const {
 		release,
-		onReleaseDeleted
+		onReleaseDeleted,
+		onEditRelease
 	}: {
 		release: ReleaseHydrated;
 		onReleaseDeleted: () => void;
+		onEditRelease: () => void;
 	} = $props();
 
 	let popupMenuOpen = $state(false);
@@ -21,17 +22,14 @@
 	<div class="artwork">
 		<img class="cover-artwork" src={makeImageLink(release.artwork_ipfs_cid, 150)} alt="" />
 	</div>
-
 	<div class="details">
 		<h3>{release.title}</h3>
 		<div><b>Type</b>: {formatReleaseType(release.release_type)}</div>
 		<div><b>Release date</b>: {release.release_date}</div>
-		<div><b>Track</b>:</div>
+		<div><b>Tracks</b>:</div>
 		<ol>
 			{#each release.tracks as track}
-				<li>
-					{track.title}
-				</li>
+				<li>{track.title}</li>
 			{/each}
 		</ol>
 	</div>
@@ -43,12 +41,24 @@
 {#if popupMenuOpen}
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{release.title}</div>
-		<ButtonWrapper label="Delete release" onClickFunction={async () => {
-			popupMenuOpen = false;
-			await deleteRelease(release.id);
-			onReleaseDeleted();
-		}}>
-			<div class="delete">Delete release <Icon key="bin" size={24} /></div>
+		<ButtonWrapper
+			label="Edit release"
+			onClickFunction={() => {
+				popupMenuOpen = false;
+				onEditRelease();
+			}}
+		>
+			<div class="menu-item">Edit release <Icon key="edit" size={24} /></div>
+		</ButtonWrapper>
+		<ButtonWrapper
+			label="Delete release"
+			onClickFunction={async () => {
+				popupMenuOpen = false;
+				await deleteRelease(release.id);
+				onReleaseDeleted();
+			}}
+		>
+			<div class="menu-item">Delete release <Icon key="bin" size={24} /></div>
 		</ButtonWrapper>
 	</PopupWrapper>
 {/if}
@@ -73,7 +83,7 @@
 		aspect-ratio: 1 / 1;
 		box-shadow: var(--box-shadow);
 	}
-	.delete {
+	.menu-item {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
