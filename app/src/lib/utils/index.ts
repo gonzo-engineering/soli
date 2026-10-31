@@ -19,5 +19,8 @@ export const decideIconKeyFromLink = (link: string): IconKey => {
 	if (link.includes('bandcamp.com')) return 'bandcamp';
 	if (link.includes('instagram.com')) return 'instagram';
 	if (link.includes('tiktok.com')) return 'tikTok';
+	if (link.includes('youtube.com')) return 'youTube';
+	if (link.includes('facebook.com')) return 'facebook';
+	if (link.includes('linktr.ee')) return 'linktree';
 	return 'link';
 };
