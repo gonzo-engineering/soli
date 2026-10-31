@@ -69,10 +69,10 @@
 			{:else if activeForm.type === 'uploadTrack'}
 				<UploadTrackForm
 					artistId={activeArtist.id}
-					onTrackUploaded={(title) => {
+					onTracksUploaded={(count, allDone) => {
 						refreshTracks();
-						closeForm();
-						showNotice(`"${title}" uploaded`);
+						showNotice(count === 1 ? '1 track uploaded' : `${count} tracks uploaded`);
+						if (allDone) closeForm();
 					}}
 				/>
 			{:else if activeForm.type === 'editRelease' && editingRelease}
@@ -116,10 +116,10 @@
 				<div class="section-header">
 					<h2>Songs ({activeArtistSongs.length})</h2>
 					<ButtonWrapper
-						label="Upload track"
+						label="Upload track(s)"
 						onClickFunction={() => (activeForm = { type: 'uploadTrack' })}
 					>
-						<Card>Upload track</Card>
+						<Card>Upload track (s)</Card>
 					</ButtonWrapper>
 				</div>
 				{#each activeArtistSongs as song}
@@ -163,7 +163,6 @@
 	}
 	.form-wrapper {
 		position: relative;
-		max-width: 600px;
 	}
 	.close-form-button {
 		position: absolute;

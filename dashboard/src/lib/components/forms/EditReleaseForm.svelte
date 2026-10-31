@@ -105,23 +105,25 @@
 	</div>
 
 	<div class="release-tracks-form">
-		<h4>Tracks on this release</h4>
-		{#if release.tracks.length === 0}
-			<p>No tracks added yet.</p>
-		{:else}
-			{#each release.tracks as track, i (track.id)}
-				<div class="track-row">
-					<span>{i + 1}. {track.title}</span>
-					<button
-						type="button"
-						disabled={removingTrackId !== null}
-						onclick={() => handleRemove(track.id)}
-					>
-						{removingTrackId === track.id ? 'Removing...' : 'Remove'}
-					</button>
-				</div>
-			{/each}
-		{/if}
+		<div class="track-listing">
+			<h4>Tracks on this release</h4>
+			{#if release.tracks.length === 0}
+				<p>No tracks added yet.</p>
+			{:else}
+				{#each release.tracks as track, i (track.id)}
+					<div class="track-row">
+						<span>{i + 1}. {track.title}</span>
+						<button
+							type="button"
+							disabled={removingTrackId !== null}
+							onclick={() => handleRemove(track.id)}
+						>
+							{removingTrackId === track.id ? 'Removing...' : 'Remove'}
+						</button>
+					</div>
+				{/each}
+			{/if}
+		</div>
 
 		<h4>Add a track</h4>
 		{#if unassignedTracks.length === 0}
@@ -166,6 +168,9 @@
 		pointer-events: none;
 		cursor: wait;
 		transition: opacity 0.2s ease;
+	}
+	.track-listing {
+		margin-bottom: 2rem;
 	}
 	.track-row {
 		display: flex;

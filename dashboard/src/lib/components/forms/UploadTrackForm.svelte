@@ -5,84 +5,133 @@
 
 	const {
 		artistId,
-		onTrackUploaded
+		onTracksUploaded
 	}: {
 		artistId: string;
-		onTrackUploaded: (title: string) => void;
+		onTracksUploaded: (count: number, allDone: boolean) => void;
 	} = $props();
 
-	let isLoading = $state(false);
-	let error = $state<string | null>(null);
-	let isDragging = $state(false);
-	let selectedFile = $state<File | null>(null);
-	let titleInput = $state('');
-
-	const uploadFile = async (audioFile: File, title: string) => {
-		let durationSeconds = 0;
-		try {
-			const metadata = await parseBlob(audioFile);
-			durationSeconds = Math.round(metadata.format.duration ?? 0);
-		} catch {
-			console.warn('Could not parse audio duration');
-		}
-
-		const prepareResponse = await fetch(`${API_BASE}/tracks/upload-url`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ artistId, title, durationSeconds })
-		});
-
-		if (!prepareResponse.ok) {
-			const data = await prepareResponse.json();
-			throw new Error(data.error ?? 'Failed to prepare upload');
-		}
-
-		const { token, fileName } = await prepareResponse.json();
-
-		const { error: storageError } = await supabase.storage
-			.from('tracks')
-			.uploadToSignedUrl(fileName, token, audioFile);
-
-		if (storageError) throw new Error('File upload failed — please try again');
+	type UploadItem = {
+		id: string;
+		file: File;
+		title: string;
+		status: 'pending' | 'uploading' | 'done' | 'error';
+		error?: string;
 	};
 
-	const selectFile = (file: File | undefined | null) => {
-		if (!file) return;
-		if (!file.type.startsWith('audio/')) {
-			error = 'Please choose an audio file';
-			return;
+	const CONCURRENCY = 3;
+
+	let items = $state<UploadItem[]>([]);
+	let error = $state<string | null>(null);
+	let isDragging = $state(false);
+	let isUploading = $state(false);
+
+	const queueable = $derived(items.filter((i) => i.status === 'pending' || i.status === 'error'));
+
+	const addFiles = (files: FileList | File[] | null | undefined) => {
+		if (!files) return;
+		const all = Array.from(files);
+		const audio = all.filter((f) => f.type.startsWith('audio/'));
+		const skipped = all.length - audio.length;
+
+		error = skipped > 0 ? `${skipped} non-audio file${skipped > 1 ? 's' : ''} skipped` : null;
+
+		for (const file of audio) {
+			items.push({
+				id: crypto.randomUUID(),
+				file,
+				title: file.name.replace(/\.[^/.]+$/, ''),
+				status: 'pending'
+			});
 		}
-		error = null;
-		selectedFile = file;
-		// Pre-fill title from filename if empty
-		if (!titleInput) {
-			titleInput = file.name.replace(/\.[^/.]+$/, '');
+	};
+
+	const removeItem = (id: string) => {
+		items = items.filter((i) => i.id !== id);
+	};
+
+	const uploadItem = async (item: UploadItem) => {
+		item.status = 'uploading';
+		item.error = undefined;
+		let trackId: string | undefined;
+
+		try {
+			let durationSeconds = 0;
+			try {
+				const metadata = await parseBlob(item.file);
+				durationSeconds = Math.round(metadata.format.duration ?? 0);
+			} catch {
+				console.warn('Could not parse audio duration for', item.file.name);
+			}
+
+			const prepareResponse = await fetch(`${API_BASE}/tracks/upload-url`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ artistId, title: item.title.trim(), durationSeconds })
+			});
+
+			if (!prepareResponse.ok) {
+				const data = await prepareResponse.json().catch(() => ({}));
+				throw new Error(data.error ?? 'Failed to prepare upload');
+			}
+
+			const prepared = await prepareResponse.json();
+			trackId = prepared.trackId;
+
+			const { error: storageError } = await supabase.storage
+				.from('tracks')
+				.uploadToSignedUrl(prepared.fileName, prepared.token, item.file);
+
+			if (storageError) throw new Error('File upload failed');
+
+			item.status = 'done';
+		} catch (err) {
+			item.status = 'error';
+			item.error = err instanceof Error ? err.message : 'Upload failed';
+			console.error(err);
+
+			// The API creates the track row before the file arrives, so remove it
+			// on failure to avoid orphaned rows (and duplicates when retrying)
+			if (trackId) {
+				await fetch(`${API_BASE}/tracks/${trackId}`, { method: 'DELETE' }).catch(() => {});
+			}
 		}
+	};
+
+	const runQueue = async (queue: UploadItem[]) => {
+		let next = 0;
+		const worker = async () => {
+			while (next < queue.length) {
+				const item = queue[next++];
+				await uploadItem(item);
+			}
+		};
+		await Promise.all(Array.from({ length: Math.min(CONCURRENCY, queue.length) }, worker));
 	};
 
 	const handleSubmit = async (e: SubmitEvent) => {
 		e.preventDefault();
-		isLoading = true;
 		error = null;
 
-		const title = titleInput.trim();
-
-		if (!selectedFile || !title) {
-			error = 'Please choose a file and enter a title';
-			isLoading = false;
+		if (queueable.some((i) => !i.title.trim())) {
+			error = 'Every track needs a title';
 			return;
 		}
 
-		try {
-			await uploadFile(selectedFile, title);
-			selectedFile = null;
-			titleInput = '';
-			onTrackUploaded(title);
-		} catch (err) {
-			error = err instanceof Error ? err.message : 'Upload failed — please try again';
-			console.error(err);
-		} finally {
-			isLoading = false;
+		const queue = [...queueable];
+		if (queue.length === 0) return;
+
+		isUploading = true;
+		await runQueue(queue);
+		isUploading = false;
+
+		const succeeded = queue.filter((i) => i.status === 'done').length;
+
+		// Keep only failures in the list so they can be retried
+		items = items.filter((i) => i.status !== 'done');
+
+		if (succeeded > 0) {
+			onTracksUploaded(succeeded, items.length === 0);
 		}
 	};
 
@@ -98,11 +147,24 @@
 	const handleDrop = (e: DragEvent) => {
 		e.preventDefault();
 		isDragging = false;
-		selectFile(e.dataTransfer?.files[0]);
+		addFiles(e.dataTransfer?.files);
+	};
+
+	const statusLabel = (item: UploadItem) => {
+		switch (item.status) {
+			case 'uploading':
+				return 'Uploading...';
+			case 'done':
+				return 'Done';
+			case 'error':
+				return item.error ?? 'Failed';
+			default:
+				return 'Ready';
+		}
 	};
 </script>
 
-<h3>Upload Track</h3>
+<h3>Upload Tracks</h3>
 
 {#if error}
 	<p class="error">{error}</p>
@@ -112,42 +174,64 @@
 	<div
 		class="drop-zone"
 		class:dragging={isDragging}
-		class:has-file={selectedFile}
 		ondragover={handleDragOver}
 		ondragleave={handleDragLeave}
 		ondrop={handleDrop}
 		role="region"
 		aria-label="Audio file drop zone"
 	>
-		{#if selectedFile}
-			<p>{selectedFile.name}</p>
-			<button type="button" onclick={() => (selectedFile = null)} disabled={isLoading}>
-				Remove
-			</button>
-		{:else}
-			<div>Drag and drop an audio file here</div>
-			<div>or</div>
-			<label class="file-input-label">
-				Browse
-				<input
-					type="file"
-					accept="audio/*"
-					disabled={isLoading}
-					onchange={(e) => {
-						selectFile(e.currentTarget.files?.[0]);
-						// Allow re-selecting the same file after removing it
-						e.currentTarget.value = '';
-					}}
-				/>
-			</label>
-		{/if}
+		<div>Drag and drop audio files here</div>
+		<div>or</div>
+		<label class="file-input-label">
+			Browse
+			<input
+				type="file"
+				accept="audio/*"
+				multiple
+				disabled={isUploading}
+				onchange={(e) => {
+					addFiles(e.currentTarget.files);
+					// Allow re-selecting the same files after removing them
+					e.currentTarget.value = '';
+				}}
+			/>
+		</label>
 	</div>
-	<label>
-		Title
-		<input type="text" bind:value={titleInput} disabled={isLoading} />
-	</label>
-	<button type="submit" disabled={isLoading}>
-		{isLoading ? 'Uploading...' : 'Upload Track'}
+
+	{#if items.length > 0}
+		<ul class="items">
+			{#each items as item (item.id)}
+				<li class="item" class:failed={item.status === 'error'} class:done={item.status === 'done'}>
+					<div class="item-file">{item.file.name}</div>
+					<div class="item-row">
+						<input
+							type="text"
+							aria-label={`Title for ${item.file.name}`}
+							bind:value={item.title}
+							disabled={isUploading || item.status === 'done'}
+						/>
+						<button
+							type="button"
+							onclick={() => removeItem(item.id)}
+							disabled={item.status === 'uploading'}
+						>
+							Remove
+						</button>
+					</div>
+					<small class="status">{statusLabel(item)}</small>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+
+	<button type="submit" disabled={isUploading || queueable.length === 0}>
+		{#if isUploading}
+			Uploading...
+		{:else if queueable.length === 0}
+			Upload
+		{:else}
+			Upload {queueable.length} track{queueable.length > 1 ? 's' : ''}
+		{/if}
 	</button>
 </form>
 
@@ -166,10 +250,6 @@
 		border-color: var(--color-text, white);
 		background-color: rgba(255, 255, 255, 0.05);
 	}
-	.drop-zone.has-file {
-		border-style: solid;
-		border-color: var(--color-accent, #888);
-	}
 	.file-input-label {
 		display: inline-block;
 		cursor: pointer;
@@ -179,5 +259,48 @@
 	}
 	.file-input-label input {
 		display: none;
+	}
+	.items {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+	.item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 0.75rem;
+		border: 1px solid var(--color-border, #444);
+		border-radius: 6px;
+	}
+	.item.failed {
+		border-color: rgb(255, 162, 162);
+	}
+	.item.done {
+		opacity: 0.6;
+	}
+	.item-file {
+		font-size: 0.8rem;
+		opacity: 0.7;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.item-row {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+	}
+	.status {
+		font-size: 0.75rem;
+	}
+	.item.failed .status {
+		color: rgb(255, 162, 162);
+	}
+	.error {
+		color: rgb(255, 162, 162);
 	}
 </style>
