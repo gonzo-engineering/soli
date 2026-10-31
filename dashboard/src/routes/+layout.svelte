@@ -19,16 +19,21 @@
 			}
 		});
 
-		// Auto-select if only one artist or label
-		if (artists?.length === 1) {
+		return () => data.subscription.unsubscribe();
+	});
+
+	$effect(() => {
+		if (artists?.length === 1 && !dashboardState.activeArtist && !dashboardState.activeLabel) {
 			dashboardState.activeArtist = artists[0];
 			dashboardState.activeSection = 'profile';
-		} else if (labels?.length === 1) {
+		} else if (
+			labels?.length === 1 &&
+			!dashboardState.activeArtist &&
+			!dashboardState.activeLabel
+		) {
 			dashboardState.activeLabel = labels[0];
 			dashboardState.activeSection = 'profile';
 		}
-
-		return () => data.subscription.unsubscribe();
 	});
 
 	const artistDashboardSections: { id: DashboardSectionId; name: string }[] = [
