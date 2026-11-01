@@ -739,7 +739,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^3.0.0":
+"@sveltejs/kit@npm:^3.1.1":
   version: 3.1.1
   resolution: "@sveltejs/kit@npm:3.1.1"
   dependencies:
@@ -1280,7 +1280,7 @@ __metadata:
   dependencies:
     "@soli/shared": "workspace:^"
     "@sveltejs/adapter-netlify": "npm:^7.0.0"
-    "@sveltejs/kit": "npm:^3.0.0"
+    "@sveltejs/kit": "npm:^3.1.1"
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
     "@types/node": "npm:^22.0.0"
     cookie: "npm:^2.0.1"
@@ -1297,7 +1297,7 @@ __metadata:
   dependencies:
     "@soli/shared": "workspace:^"
     "@sveltejs/adapter-netlify": "npm:^7.0.0"
-    "@sveltejs/kit": "npm:^3.0.0"
+    "@sveltejs/kit": "npm:^3.1.1"
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
     "@testing-library/jest-dom": "npm:^6.9.1"
     "@testing-library/svelte": "npm:^5.3.1"
@@ -1494,7 +1494,7 @@ __metadata:
   dependencies:
     "@soli/shared": "workspace:^"
     "@sveltejs/adapter-netlify": "npm:^7.0.0"
-    "@sveltejs/kit": "npm:^3.0.0"
+    "@sveltejs/kit": "npm:^3.1.1"
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
     "@types/node": "npm:^22.0.0"
     music-metadata: "npm:^11.16.0"
