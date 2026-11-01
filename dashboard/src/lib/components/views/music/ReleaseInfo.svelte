@@ -3,8 +3,8 @@
 	import type { ReleaseHydrated } from '@soli/shared/types';
 	import { formatReleaseType } from '@soli/shared/utils';
 
-	import { deleteRelease } from '$lib/remote-functions/music.remote';
-	import { makeImageLink } from '$lib/utils';
+	import { deleteRelease } from '#lib/remote-functions/music.remote.js';
+	import { makeImageLink } from '#lib/utils/index.js';
 
 	const {
 		release,
@@ -43,11 +43,14 @@
 {#if popupMenuOpen}
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{release.title}</div>
-		<ButtonWrapper label="Delete release" onClickFunction={async () => {
-			popupMenuOpen = false;
-			await deleteRelease(release.id);
-			onReleaseDeleted();
-		}}>
+		<ButtonWrapper
+			label="Delete release"
+			onClickFunction={async () => {
+				popupMenuOpen = false;
+				await deleteRelease(release.id);
+				onReleaseDeleted();
+			}}
+		>
 			<div class="delete">Delete release <Icon key="bin" size={24} /></div>
 		</ButtonWrapper>
 	</PopupWrapper>

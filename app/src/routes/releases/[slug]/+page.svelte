@@ -3,14 +3,14 @@
 	import { formatReleaseType } from '@soli/shared/utils';
 	import type { ReleaseHydrated } from '@soli/shared/types';
 
-	import { makeImageLink } from '$lib/utils';
-	import TracksTable from '$lib/components/releases/TracksTable.svelte';
-	import { userState, type UserData } from '$lib/global/state.svelte';
-	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
-	import ReleaseCollectionsMenu from '$lib/components/releases/ReleaseCollectionsMenu.svelte';
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import { setActiveSong } from '$lib/utils/audio-playback';
-	import ReleaseArtwork from '$lib/components/ReleaseArtwork.svelte';
+	import { makeImageLink } from '#lib/utils/index.js';
+	import TracksTable from '#lib/components/releases/TracksTable.svelte';
+	import { userState, type UserData } from '#lib/global/state.svelte.js';
+	import TagsGrid from '#lib/components/tags/TagsGrid.svelte';
+	import ReleaseCollectionsMenu from '#lib/components/releases/ReleaseCollectionsMenu.svelte';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
+	import { setActiveSong } from '#lib/utils/audio-playback.js';
+	import ReleaseArtwork from '#lib/components/ReleaseArtwork.svelte';
 
 	let {
 		data

@@ -3,7 +3,7 @@
 	import type { Track } from '@soli/shared/types';
 	import { prettifyDuration } from '@soli/shared/utils';
 
-	import { deleteTrack } from '$lib/remote-functions/music.remote';
+	import { deleteTrack } from '#lib/remote-functions/music.remote.js';
 
 	const { song, onTrackDeleted }: { song: Track; onTrackDeleted: () => void } = $props();
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import { makeCollection } from '$lib/remote-functions/collections.remote';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
+	import { makeCollection } from '#lib/remote-functions/collections.remote.js';
 	import type { CollectionHydrated } from '@soli/shared/types';
 
 	let { data } = $props();

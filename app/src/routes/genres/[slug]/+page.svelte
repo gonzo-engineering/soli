@@ -1,8 +1,8 @@
 <script lang="ts">
-	import GridWrapper from '$lib/components/GridWrapper.svelte';
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
-	import { makeImageLink } from '$lib/utils/index.js';
+	import GridWrapper from '#lib/components/GridWrapper.svelte';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
+	import ReleaseCard from '#lib/components/ReleaseCard.svelte';
+	import { makeImageLink } from '#lib/utils/index.js';
 
 	let { data } = $props();
 

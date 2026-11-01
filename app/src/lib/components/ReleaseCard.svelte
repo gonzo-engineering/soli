@@ -15,9 +15,7 @@
 		releaseDate?: string;
 	} = $props();
 
-	const releaseUpcoming = $derived(
-		releaseDate ? new Date(releaseDate) > new Date() : false
-	);
+	const releaseUpcoming = $derived(releaseDate ? new Date(releaseDate) > new Date() : false);
 </script>
 
 <a href={link}>

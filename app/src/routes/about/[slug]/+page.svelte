@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ContentBlock from '$lib/components/ContentBlock.svelte';
+	import ContentBlock from '#lib/components/ContentBlock.svelte';
 
 	let { data } = $props();
 </script>

@@ -1,5 +1,5 @@
 import { form, query } from '$app/server';
-import { API_BASE, DASHBOARD_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
+import { API_BASE, DASHBOARD_BASE, REQUEST_HEADER_BOILERPLATE } from '#lib/config.js';
 import * as z from 'zod';
 import type { ReleaseHydrated, Track } from '@soli/shared/types';
 import { sortReleasesByDate } from '@soli/shared/utils';

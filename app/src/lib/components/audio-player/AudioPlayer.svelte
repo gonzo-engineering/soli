@@ -3,11 +3,11 @@
 	import type { ArtistHydrated, ReleaseHydrated, Track, TrackHydrated } from '@soli/shared/types';
 	import { ButtonWrapper, Icon } from '@soli/shared/components';
 
-	import { userState } from '$lib/global/state.svelte.js';
-	import { logStream } from '$lib/remote-functions/listening.remote';
-	import { updateUserTokensBalance } from '$lib/remote-functions/user.remote';
-	import { makeImageLink } from '$lib/utils';
-	import { setActiveSong } from '$lib/utils/audio-playback';
+	import { userState } from '#lib/global/state.svelte.js';
+	import { logStream } from '#lib/remote-functions/listening.remote.js';
+	import { updateUserTokensBalance } from '#lib/remote-functions/user.remote.js';
+	import { makeImageLink } from '#lib/utils/index.js';
+	import { setActiveSong } from '#lib/utils/audio-playback.js';
 	import Logo from '../layout/Logo.svelte';
 	import TrackLikeButton from '../releases/TrackLikeButton.svelte';
 	import { fade, slide } from 'svelte/transition';

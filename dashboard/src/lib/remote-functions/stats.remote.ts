@@ -1,5 +1,5 @@
 import { query } from '$app/server';
-import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/config';
+import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '#lib/config.js';
 import * as z from 'zod';
 
 export const getArtistStreams = query(z.string(), async (artistId) => {

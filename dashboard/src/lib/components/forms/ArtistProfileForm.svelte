@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { updateArtistDetails } from '$lib/remote-functions/artist.remote';
-	import { makeImageLink } from '$lib/utils';
+	import { updateArtistDetails } from '#lib/remote-functions/artist.remote.js';
+	import { makeImageLink } from '#lib/utils/index.js';
 
 	let {
 		artistId,

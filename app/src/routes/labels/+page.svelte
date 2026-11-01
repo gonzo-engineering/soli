@@ -1,7 +1,7 @@
 <script lang="ts">
-	import GridWrapper from '$lib/components/GridWrapper.svelte';
-	import CircleCard from '$lib/components/CircleCard.svelte';
-	import { makeImageLink } from '$lib/utils';
+	import GridWrapper from '#lib/components/GridWrapper.svelte';
+	import CircleCard from '#lib/components/CircleCard.svelte';
+	import { makeImageLink } from '#lib/utils/index.js';
 	import type { Label } from '@soli/shared/types';
 
 	let { data }: { data: { labels: Label[] } } = $props();

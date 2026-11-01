@@ -1,8 +1,8 @@
 import { TABLES } from '@soli/shared/config';
-import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
+import { handlePostgrestQuery, supabase } from '#lib/server/supabase.js';
 import type { ArtistHydrated } from '@soli/shared/types';
 import { json } from '@sveltejs/kit';
-import { pinata } from '$lib/server/pinata';
+import { pinata } from '#lib/server/pinata.js';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params }) => {
@@ -19,7 +19,7 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
 	const artistName = formData.get('artistName') as string;
 	const artistBio = formData.get('artistBio') as string;
 	const artistWebsite = formData.get('artistWebsite') as string;
-	const artistLinks = JSON.parse(formData.get('artistLinks') as string || '[]') as string[];
+	const artistLinks = JSON.parse((formData.get('artistLinks') as string) || '[]') as string[];
 
 	let imageCid: string | undefined;
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { addOrRemoveReleaseFromCollection } from '$lib/remote-functions/collections.remote';
+	import { addOrRemoveReleaseFromCollection } from '#lib/remote-functions/collections.remote.js';
 	import type { CollectionHydrated, ReleaseHydrated } from '@soli/shared/types';
 
 	let {

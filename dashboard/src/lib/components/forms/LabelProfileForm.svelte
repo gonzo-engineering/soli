@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { updateLabelDetails } from '$lib/remote-functions/label.remote';
-	import { makeImageLink } from '$lib/utils';
+	import { updateLabelDetails } from '#lib/remote-functions/label.remote.js';
+	import { makeImageLink } from '#lib/utils/index.js';
 
 	let {
 		labelId,
@@ -59,14 +59,22 @@
 	</label>
 	<label>
 		Description
-		<textarea {...updateLabelDetails.fields.labelDescription.as('text')} value={labelDescription} disabled={pending}></textarea>
+		<textarea
+			{...updateLabelDetails.fields.labelDescription.as('text')}
+			value={labelDescription}
+			disabled={pending}
+		></textarea>
 	</label>
 	{#each updateLabelDetails.fields.labelDescription.issues() as issue}
 		<div class="issue">{issue.message}</div>
 	{/each}
 	<label>
 		Website
-		<input {...updateLabelDetails.fields.labelWebsite.as('text')} value={labelWebsite} disabled={pending} />
+		<input
+			{...updateLabelDetails.fields.labelWebsite.as('text')}
+			value={labelWebsite}
+			disabled={pending}
+		/>
 	</label>
 	{#each updateLabelDetails.fields.labelWebsite.issues() as issue}
 		<div class="issue">{issue.message}</div>

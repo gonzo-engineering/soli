@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
+	import TagsGrid from '#lib/components/tags/TagsGrid.svelte';
 
 	let { data } = $props();
 </script>

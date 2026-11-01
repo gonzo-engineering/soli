@@ -1,5 +1,5 @@
 import { APP_DOMAIN } from '@soli/shared/config';
-import { stripe } from '$lib/server/stripe';
+import { stripe } from '#lib/server/stripe.js';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ request }) => {

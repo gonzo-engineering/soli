@@ -1,5 +1,5 @@
 import { query } from '$app/server';
-import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/global/config';
+import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '#lib/global/config.js';
 import * as z from 'zod';
 
 export const getTrackUrl = query(z.string(), async (trackId: string) => {

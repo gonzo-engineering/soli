@@ -1,5 +1,5 @@
 import { form } from '$app/server';
-import { API_BASE, DASHBOARD_BASE } from '$lib/config';
+import { API_BASE, DASHBOARD_BASE } from '#lib/config.js';
 import * as z from 'zod';
 
 const LabelDetailsForm = z.object({

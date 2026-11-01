@@ -3,10 +3,10 @@
 	import '@soli/shared/styles/global.css';
 	import { ButtonWrapper } from '@soli/shared/components';
 
-	import { dashboardState, type DashboardSectionId } from '$lib/state.svelte';
+	import { dashboardState, type DashboardSectionId } from '#lib/state.svelte.js';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { signOut } from '$lib/remote-functions/login.remote';
+	import { signOut } from '#lib/remote-functions/login.remote.js';
 
 	let { children, data } = $props();
 

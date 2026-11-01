@@ -1,6 +1,6 @@
 import { PinataSDK } from 'pinata';
-import { PINATA_JWT } from '$env/static/private';
-import { PUBLIC_GATEWAY_URL } from '$env/static/public';
+import { PINATA_JWT } from '$app/env/private';
+import { PUBLIC_GATEWAY_URL } from '$app/env/public';
 
 export const pinata = new PinataSDK({
 	pinataJwt: `${PINATA_JWT}`,

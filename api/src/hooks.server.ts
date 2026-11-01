@@ -1,6 +1,6 @@
-import type { Handle } from '@sveltejs/kit';
-import { APP_BASE, DASHBOARD_BASE } from '$lib/server/config';
-import { dev } from '$app/environment';
+import type { Handle } from '@sveltejs/kit/hooks';
+import { APP_BASE, DASHBOARD_BASE } from '#lib/server/config.js';
+import { dev } from '$app/env';
 
 const domainsWithAccessToAPI = [APP_BASE, DASHBOARD_BASE, 'https://checkout.stripe.com'];
 const publicEndpoints = ['/', '/checkout/success'];

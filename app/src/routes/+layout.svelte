@@ -5,12 +5,12 @@
 	import { page } from '$app/state';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import Header from '$lib/components/layout/Header.svelte';
-	import Footer from '$lib/components/layout/Footer.svelte';
-	import BurgerMenu from '$lib/components/layout/BurgerMenu.svelte';
-	import { INDEXABLE_PATH_ROOTS } from '$lib/global/config';
-	import SearchMenu from '$lib/components/search/SearchMenu.svelte';
-	import StickyNav from '$lib/components/layout/StickyNav.svelte';
+	import Header from '#lib/components/layout/Header.svelte';
+	import Footer from '#lib/components/layout/Footer.svelte';
+	import BurgerMenu from '#lib/components/layout/BurgerMenu.svelte';
+	import { INDEXABLE_PATH_ROOTS } from '#lib/global/config.js';
+	import SearchMenu from '#lib/components/search/SearchMenu.svelte';
+	import StickyNav from '#lib/components/layout/StickyNav.svelte';
 
 	let { children, data } = $props();
 

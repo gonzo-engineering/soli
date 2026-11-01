@@ -1,5 +1,5 @@
 import { TABLES } from '@soli/shared/config';
-import { supabase } from '$lib/server/supabase';
+import { supabase } from '#lib/server/supabase.js';
 import { json } from '@sveltejs/kit';
 import type { LabelHydrated } from '@soli/shared/types';
 import type { RequestHandler } from '@sveltejs/kit';

@@ -6,7 +6,7 @@ import type {
 	MixtapeHydrated,
 	TrackHydrated
 } from '@soli/shared/types';
-import { API_BASE } from '$lib/global/config';
+import { API_BASE } from '#lib/global/config.js';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies, fetch }) => {
 	const { session, user } = await safeGetSession();

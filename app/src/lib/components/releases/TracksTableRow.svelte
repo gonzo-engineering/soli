@@ -5,7 +5,7 @@
 
 	import ReleaseTrackButton from './ReleaseTrackButton.svelte';
 	import TrackLikeButton from './TrackLikeButton.svelte';
-	import { addTrackToMixtape } from '$lib/remote-functions/mixtapes.remote';
+	import { addTrackToMixtape } from '#lib/remote-functions/mixtapes.remote.js';
 
 	const {
 		i = undefined,

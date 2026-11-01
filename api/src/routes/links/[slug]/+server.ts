@@ -1,5 +1,5 @@
 import { json, text } from '@sveltejs/kit';
-import { pinata } from '$lib/server/pinata';
+import { pinata } from '#lib/server/pinata.js';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params }) => {

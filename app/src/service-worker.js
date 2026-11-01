@@ -1,12 +1,16 @@
-import { build, files, version } from '$service-worker';
+import { version } from '$app/env';
+import { immutable, assets } from '$app/manifest';
+import { resolve } from '$app/paths';
 
 // Create a unique cache name for this deployment
 const CACHE = `cache-${version}`;
 
-const ASSETS = [
-	...build, // the app itself
-	...files // everything in `static`
-];
+// Manifest paths are relative to the base path (no leading slash),
+// so resolve them to absolute pathnames that match `url.pathname` below
+const BUILD = immutable.map((file) => resolve(file.path)); // the app itself
+const FILES = assets.map((file) => resolve(file.path)); // everything in `static`
+
+const ASSETS = [...BUILD, ...FILES];
 
 self.addEventListener('install', (event) => {
 	// Create a new cache and add all files to it
@@ -17,7 +21,7 @@ self.addEventListener('install', (event) => {
 
 	console.log('installing service worker for version', version);
 	console.log('caching assets', ASSETS);
-	console.log('caching build', build);
+	console.log('caching build', BUILD);
 
 	event.waitUntil(addFilesToCache());
 });
@@ -41,7 +45,7 @@ self.addEventListener('fetch', (event) => {
 		const url = new URL(event.request.url);
 		const cache = await caches.open(CACHE);
 
-		// `build`/`files` can always be served from the cache
+		// build output and static files can always be served from the cache
 		if (ASSETS.includes(url.pathname)) {
 			const response = await cache.match(url.pathname);
 

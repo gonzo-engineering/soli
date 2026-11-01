@@ -1,8 +1,8 @@
-import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
+import { handlePostgrestQuery, supabase } from '#lib/server/supabase.js';
 import { TABLES } from '@soli/shared/config';
 import { sortReleasesByDate } from '@soli/shared/utils';
 import type { ReleaseHydrated } from '@soli/shared/types';
-import { pinata } from '$lib/server/pinata';
+import { pinata } from '#lib/server/pinata.js';
 import { json } from '@sveltejs/kit';
 import type { Release } from '@soli/shared/types';
 import type { RequestHandler } from '@sveltejs/kit';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { sendCode, verifyCode } from '$lib/remote-functions/login.remote';
+	import { sendCode, verifyCode } from '#lib/remote-functions/login.remote.js';
 
 	let stage: 'enterEmail' | 'enterCode' = $derived(
 		sendCode.result?.success ? 'enterCode' : 'enterEmail'

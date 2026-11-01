@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { makeImageLink } from '$lib/utils';
+	import { makeImageLink } from '#lib/utils/index.js';
 	import type { SearchResult } from '@soli/shared/types';
 	import CircleCard from '../CircleCard.svelte';
 	import GridWrapper from '../GridWrapper.svelte';

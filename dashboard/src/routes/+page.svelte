@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { Artist, ReleaseHydrated, StreamLog, Track } from '@soli/shared/types';
-	import { dashboardState } from '$lib/state.svelte';
-	import ProfileView from '$lib/components/views/profile/ProfileView.svelte';
-	import StatsView from '$lib/components/views/stats/StatsView.svelte';
-	import MusicView from '$lib/components/views/music/MusicView.svelte';
-	import { getArtistReleases, getArtistTracks } from '$lib/remote-functions/artist.remote';
-	import { getArtistStreams } from '$lib/remote-functions/stats.remote';
-	import LabelView from '$lib/components/views/label/LabelView.svelte';
-	import { APP_BASE } from '$lib/config';
+	import { dashboardState } from '#lib/state.svelte.js';
+	import ProfileView from '#lib/components/views/profile/ProfileView.svelte';
+	import StatsView from '#lib/components/views/stats/StatsView.svelte';
+	import MusicView from '#lib/components/views/music/MusicView.svelte';
+	import { getArtistReleases, getArtistTracks } from '#lib/remote-functions/artist.remote.js';
+	import { getArtistStreams } from '#lib/remote-functions/stats.remote.js';
+	import LabelView from '#lib/components/views/label/LabelView.svelte';
+	import { APP_BASE } from '#lib/config.js';
 
 	let {
 		data

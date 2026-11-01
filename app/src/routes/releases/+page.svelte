@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { ReleaseHydrated } from '@soli/shared/types';
-	import GridWrapper from '$lib/components/GridWrapper.svelte';
-	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
-	import { makeImageLink } from '$lib/utils';
+	import GridWrapper from '#lib/components/GridWrapper.svelte';
+	import ReleaseCard from '#lib/components/ReleaseCard.svelte';
+	import { makeImageLink } from '#lib/utils/index.js';
 
 	let { data }: { data: { releases: ReleaseHydrated[] } } = $props();
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
-	import { API_BASE } from '$lib/config';
-	import { supabase } from '$lib/supabase';
+	import { refreshAll } from '$app/navigation';
+	import { API_BASE } from '#lib/config.js';
+	import { supabase } from '#lib/supabase.js';
 	import { parseBlob } from 'music-metadata';
 
 	const {
@@ -66,7 +66,7 @@
 			form.reset();
 			droppedFile = null;
 			titleInput = '';
-			invalidateAll();
+			refreshAll();
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Upload failed — please try again';
 			console.error(err);
