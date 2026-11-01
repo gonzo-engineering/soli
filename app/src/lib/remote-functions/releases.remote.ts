@@ -1,5 +1,5 @@
 import { query } from '$app/server';
-import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '$lib/global/config';
+import { API_BASE, REQUEST_HEADER_BOILERPLATE } from '#lib/global/config.js';
 import * as z from 'zod';
 import type { ReleaseHydrated } from '@soli/shared/types';
 

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { makeImageLink, decideIconKeyFromLink } from '$lib/utils';
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
+	import { makeImageLink, decideIconKeyFromLink } from '#lib/utils/index.js';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
 	import type { Artist, IconKey, Label, Release } from '@soli/shared/types';
-	import type { UserData } from '$lib/global/state.svelte';
-	import GridWrapper from '$lib/components/GridWrapper.svelte';
-	import CircleCard from '$lib/components/CircleCard.svelte';
+	import type { UserData } from '#lib/global/state.svelte.js';
+	import GridWrapper from '#lib/components/GridWrapper.svelte';
+	import CircleCard from '#lib/components/CircleCard.svelte';
 	import Icon from '../../../../../shared/components/Icon.svelte';
 
 	let {

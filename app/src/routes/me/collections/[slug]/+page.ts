@@ -1,4 +1,4 @@
-import { API_BASE } from '$lib/global/config';
+import { API_BASE } from '#lib/global/config.js';
 import type { PostgrestResponse } from '@supabase/supabase-js';
 import type { CollectionHydrated } from '@soli/shared/types';
 import { error } from '@sveltejs/kit';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { makeImageLink } from '$lib/utils';
+	import { makeImageLink } from '#lib/utils/index.js';
 	import type { Artist } from '@soli/shared/types';
 
 	const { artist }: { artist: Artist } = $props();

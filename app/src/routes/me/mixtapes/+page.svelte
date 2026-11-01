@@ -1,6 +1,6 @@
 <script lang="ts">
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import { makeMixtape } from '$lib/remote-functions/mixtapes.remote';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
+	import { makeMixtape } from '#lib/remote-functions/mixtapes.remote.js';
 
 	let { data } = $props();
 

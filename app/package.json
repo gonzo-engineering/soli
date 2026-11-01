@@ -15,8 +15,8 @@
 	},
 	"devDependencies": {
 		"@soli/shared": "workspace:^",
-		"@sveltejs/adapter-netlify": "^6.0.4",
-		"@sveltejs/kit": "^2.70.3",
+		"@sveltejs/adapter-netlify": "^7.0.0",
+		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/svelte": "^5.3.1",
@@ -24,9 +24,13 @@
 		"jsdom": "^29.1.1",
 		"mdsvex": "^0.12.7",
 		"svelte": "^5.57.3",
-		"svelte-check": "^4.4.8",
+		"svelte-check": "^4.7.5",
 		"typescript": "^6.0.3",
 		"vite": "^8.1.6",
 		"vitest": "^4.1.11"
+	},
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
 	}
 }

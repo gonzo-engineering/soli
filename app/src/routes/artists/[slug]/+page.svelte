@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { ArtistHydrated, Release } from '@soli/shared/types';
-	import { decideIconKeyFromLink, makeImageLink } from '$lib/utils';
-	import { toggleFollowedArtist } from '$lib/remote-functions/user.remote';
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import type { UserData } from '$lib/global/state.svelte';
-	import GridWrapper from '$lib/components/GridWrapper.svelte';
-	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
-	import CircleCard from '$lib/components/CircleCard.svelte';
+	import { decideIconKeyFromLink, makeImageLink } from '#lib/utils/index.js';
+	import { toggleFollowedArtist } from '#lib/remote-functions/user.remote.js';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
+	import type { UserData } from '#lib/global/state.svelte.js';
+	import GridWrapper from '#lib/components/GridWrapper.svelte';
+	import ReleaseCard from '#lib/components/ReleaseCard.svelte';
+	import CircleCard from '#lib/components/CircleCard.svelte';
 	import { Icon } from '@soli/shared/components';
 
 	let {

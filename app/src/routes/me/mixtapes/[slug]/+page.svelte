@@ -2,11 +2,11 @@
 	import type { MixtapeHydrated } from '@soli/shared/types';
 	import { ButtonWrapper } from '@soli/shared/components';
 
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import TracksTable from '$lib/components/releases/TracksTable.svelte';
-	import { userState, type UserData } from '$lib/global/state.svelte';
-	import { deleteMixtape } from '$lib/remote-functions/mixtapes.remote';
-	import { setActiveSong } from '$lib/utils/audio-playback';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
+	import TracksTable from '#lib/components/releases/TracksTable.svelte';
+	import { userState, type UserData } from '#lib/global/state.svelte.js';
+	import { deleteMixtape } from '#lib/remote-functions/mixtapes.remote.js';
+	import { setActiveSong } from '#lib/utils/audio-playback.js';
 
 	let {
 		data

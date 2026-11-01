@@ -1,4 +1,4 @@
-import { API_BASE } from '$lib/global/config';
+import { API_BASE } from '#lib/global/config.js';
 import type { ReleaseHydrated } from '@soli/shared/types';
 
 export const load = async ({ fetch }) => {

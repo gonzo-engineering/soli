@@ -1,7 +1,7 @@
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$lib/global/config';
+import { redirect } from '@sveltejs/kit';
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '#lib/global/config.js';
 import { createServerClient } from '@supabase/ssr';
-import { redirect, type Handle } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks';
+import { sequence, type Handle } from '@sveltejs/kit/hooks';
 
 export const supabase: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {

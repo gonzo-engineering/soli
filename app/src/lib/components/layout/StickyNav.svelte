@@ -2,8 +2,8 @@
 	import { ButtonWrapper, Icon } from '@soli/shared/components';
 	import type { ArtistHydrated, IconKey, Listener, TrackHydrated } from '@soli/shared/types';
 
-	import { userState } from '$lib/global/state.svelte';
-	import { getHydratedRelease } from '$lib/remote-functions/releases.remote';
+	import { userState } from '#lib/global/state.svelte.js';
+	import { getHydratedRelease } from '#lib/remote-functions/releases.remote.js';
 	import AudioPlayer from '../audio-player/AudioPlayer.svelte';
 	import { page } from '$app/state';
 

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import GridWrapper from '$lib/components/GridWrapper.svelte';
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
-	import type { UserData } from '$lib/global/state.svelte';
-	import { deleteCollection } from '$lib/remote-functions/collections.remote';
-	import { makeImageLink } from '$lib/utils';
+	import GridWrapper from '#lib/components/GridWrapper.svelte';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
+	import ReleaseCard from '#lib/components/ReleaseCard.svelte';
+	import type { UserData } from '#lib/global/state.svelte.js';
+	import { deleteCollection } from '#lib/remote-functions/collections.remote.js';
+	import { makeImageLink } from '#lib/utils/index.js';
 	import type { CollectionHydrated } from '@soli/shared/types';
 
 	let {

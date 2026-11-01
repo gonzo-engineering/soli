@@ -2,8 +2,8 @@
 	import type { Release, Track, Listener } from '@soli/shared/types';
 	import { ButtonWrapper, Icon } from '@soli/shared/components';
 
-	import { setActiveSong } from '$lib/utils/audio-playback';
-	import { userState } from '$lib/global/state.svelte';
+	import { setActiveSong } from '#lib/utils/audio-playback.js';
+	import { userState } from '#lib/global/state.svelte.js';
 
 	let {
 		track,

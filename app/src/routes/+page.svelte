@@ -1,12 +1,12 @@
 <script lang="ts">
-	import CircleCard from '$lib/components/CircleCard.svelte';
-	import GridWrapper from '$lib/components/GridWrapper.svelte';
-	import FeaturedArtistCard from '$lib/components/home/FeaturedArtistCard.svelte';
-	import WelcomeExplainer from '$lib/components/layout/WelcomeExplainer.svelte';
-	import ReleaseCard from '$lib/components/ReleaseCard.svelte';
-	import TagsGrid from '$lib/components/tags/TagsGrid.svelte';
-	import type { UserData } from '$lib/global/state.svelte';
-	import { makeImageLink } from '$lib/utils';
+	import CircleCard from '#lib/components/CircleCard.svelte';
+	import GridWrapper from '#lib/components/GridWrapper.svelte';
+	import FeaturedArtistCard from '#lib/components/home/FeaturedArtistCard.svelte';
+	import WelcomeExplainer from '#lib/components/layout/WelcomeExplainer.svelte';
+	import ReleaseCard from '#lib/components/ReleaseCard.svelte';
+	import TagsGrid from '#lib/components/tags/TagsGrid.svelte';
+	import type { UserData } from '#lib/global/state.svelte.js';
+	import { makeImageLink } from '#lib/utils/index.js';
 	import type { Artist, LabelHydrated, ReleaseHydrated } from '@soli/shared/types';
 
 	let {

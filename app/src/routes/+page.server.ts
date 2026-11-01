@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from './$types';
-import { API_BASE } from '$lib/global/config';
+import { API_BASE } from '#lib/global/config.js';
 import type { Artist, ReleaseHydrated } from '@soli/shared/types';
 
 export const load: LayoutServerLoad = async ({ locals: { safeGetSession }, cookies, fetch }) => {

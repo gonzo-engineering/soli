@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { prettifyBalance, prettifyPennies } from '$lib/utils/index';
-	import ContentBlock from '$lib/components/ContentBlock.svelte';
-	import { tokensCheckout, updateUserSettings } from '$lib/remote-functions/user.remote';
-	import { signOut } from '$lib/remote-functions/login.remote';
+	import { prettifyBalance, prettifyPennies } from '#lib/utils/index.js';
+	import ContentBlock from '#lib/components/ContentBlock.svelte';
+	import { tokensCheckout, updateUserSettings } from '#lib/remote-functions/user.remote.js';
+	import { signOut } from '#lib/remote-functions/login.remote.js';
 	import { PLATFORM_FEE_PERCENTAGE } from '@soli/shared/config';
 
 	let { data } = $props();

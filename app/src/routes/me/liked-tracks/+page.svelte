@@ -1,6 +1,6 @@
 <script lang="ts">
-	import BreadcrumbLinks from '$lib/components/layout/BreadcrumbLinks.svelte';
-	import TracksTable from '$lib/components/releases/TracksTable.svelte';
+	import BreadcrumbLinks from '#lib/components/layout/BreadcrumbLinks.svelte';
+	import TracksTable from '#lib/components/releases/TracksTable.svelte';
 
 	let { data } = $props();
 
