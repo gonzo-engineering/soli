@@ -330,7 +330,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/remapping@npm:^2.3.4, @jridgewell/remapping@npm:^2.3.5":
+"@jridgewell/remapping@npm:^2.3.5":
   version: 2.3.5
   resolution: "@jridgewell/remapping@npm:2.3.5"
   dependencies:
@@ -620,7 +620,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@soli/shared@workspace:shared"
   dependencies:
-    svelte: "npm:^5.55.0"
+    svelte: "npm:^5.57.3"
   languageName: unknown
   linkType: soft
 
@@ -706,15 +706,6 @@ __metadata:
     "@supabase/realtime-js": "npm:2.106.2"
     "@supabase/storage-js": "npm:2.106.2"
   checksum: 10c0/3d9418360b43cdf950c4d7496b368dd1c526cfc717dd3016ac032b904367476f31495c75c6ae905ef49e8b5b375416cb5cc354fb888d1e2fc596611824df2e97
-  languageName: node
-  linkType: hard
-
-"@sveltejs/acorn-typescript@npm:^1.0.10":
-  version: 1.0.10
-  resolution: "@sveltejs/acorn-typescript@npm:1.0.10"
-  peerDependencies:
-    acorn: ^8.9.0
-  checksum: 10c0/eb7e16789f16a6a183ef7c541f99885afbf4daf6f773b2b21fe978619be8b05763ba0705357639b671aa7604783d056ba0d317f806839f5b7ea87a7b9bc1d18e
   languageName: node
   linkType: hard
 
@@ -896,7 +887,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:^1.0.0, @types/estree@npm:^1.0.5, @types/estree@npm:^1.0.6, @types/estree@npm:^1.0.8":
+"@types/estree@npm:^1.0.0, @types/estree@npm:^1.0.6, @types/estree@npm:^1.0.8":
   version: 1.0.8
   resolution: "@types/estree@npm:1.0.8"
   checksum: 10c0/39d34d1afaa338ab9763f37ad6066e3f349444f9052b9676a7cc0252ef9485a41c6d81c9c4e0d26e9077993354edf25efc853f3224dd4b447175ef62bdcc86a5
@@ -926,19 +917,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.0.0":
-  version: 22.19.19
-  resolution: "@types/node@npm:22.19.19"
+"@types/node@npm:^24.19.2":
+  version: 24.19.2
+  resolution: "@types/node@npm:24.19.2"
   dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10c0/402e0f088c94cabda3cd721546bd8e4e75e098e0b342f6e03b90ca1e19c28986f9650112c64fcfd09fc8cebc0f8b20291a513153e90489331cf666e1e5503e16
-  languageName: node
-  linkType: hard
-
-"@types/trusted-types@npm:^2.0.7":
-  version: 2.0.7
-  resolution: "@types/trusted-types@npm:2.0.7"
-  checksum: 10c0/4c4855f10de7c6c135e0d32ce462419d8abbbc33713b31d294596c0cc34ae1fa6112a2f9da729c8f7a20707782b0d69da3b1f8df6645b0366d08825ca1522e0c
+    undici-types: "npm:>=7.24.0 <7.24.7"
+  checksum: 10c0/b51a7f8854007ad579dffdd0633d8addbfeb2c97cceb380f2eba0ed163638ec52e17565385a6cc04d54ac4ff99c70c64aee68a4ca45b6128c035e828794e29c5
   languageName: node
   linkType: hard
 
@@ -1198,7 +1182,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.12.1, acorn@npm:^8.15.0":
+"acorn@npm:^8.15.0":
   version: 8.15.0
   resolution: "acorn@npm:8.15.0"
   bin:
@@ -1282,7 +1266,7 @@ __metadata:
     "@sveltejs/adapter-netlify": "npm:^7.0.0"
     "@sveltejs/kit": "npm:^3.1.1"
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
-    "@types/node": "npm:^22.0.0"
+    "@types/node": "npm:^24.19.2"
     cookie: "npm:^2.0.1"
     svelte: "npm:^5.57.3"
     svelte-check: "npm:^4.7.5"
@@ -1301,7 +1285,7 @@ __metadata:
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
     "@testing-library/jest-dom": "npm:^6.9.1"
     "@testing-library/svelte": "npm:^5.3.1"
-    "@types/node": "npm:^22.0.0"
+    "@types/node": "npm:^24.19.2"
     jsdom: "npm:^29.1.1"
     mdsvex: "npm:^0.12.7"
     svelte: "npm:^5.57.3"
@@ -1496,7 +1480,7 @@ __metadata:
     "@sveltejs/adapter-netlify": "npm:^7.0.0"
     "@sveltejs/kit": "npm:^3.1.1"
     "@sveltejs/vite-plugin-svelte": "npm:^7.1.2"
-    "@types/node": "npm:^22.0.0"
+    "@types/node": "npm:^24.19.2"
     music-metadata: "npm:^11.16.0"
     svelte: "npm:^5.57.3"
     svelte-check: "npm:^4.7.5"
@@ -1562,7 +1546,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devalue@npm:^5.8.1, devalue@npm:^5.9.2, devalue@npm:^5.9.4":
+"devalue@npm:^5.9.2, devalue@npm:^5.9.4":
   version: 5.9.4
   resolution: "devalue@npm:5.9.4"
   checksum: 10c0/d621083acce13d7812418ed07d99f027f83ee00ba591a2d2eab4c9436e1491ebce7bc1a92aa4c1fb7903c31c0e3c0a3cdf8662bf31644742202e003c04c17e33
@@ -1790,20 +1774,6 @@ __metadata:
   dependencies:
     estraverse: "npm:^5.1.0"
   checksum: 10c0/77d5173db450b66f3bc685d11af4c90cffeedb340f34a39af96d43509a335ce39c894fd79233df32d38f5e4e219fa0f7076f6ec90bae8320170ba082c0db4793
-  languageName: node
-  linkType: hard
-
-"esrap@npm:^2.2.9":
-  version: 2.2.9
-  resolution: "esrap@npm:2.2.9"
-  dependencies:
-    "@jridgewell/sourcemap-codec": "npm:^1.4.15"
-  peerDependencies:
-    "@typescript-eslint/types": ^8.2.0
-  peerDependenciesMeta:
-    "@typescript-eslint/types":
-      optional: true
-  checksum: 10c0/d1ea8dc29468cbbb8e8c855f9c1b807a51fcb827b7412350753709736dda43ea27097f83e5b86b31abd7669edb5e36a23209817ddca5434b1718561153b6a1b1
   languageName: node
   linkType: hard
 
@@ -3255,30 +3225,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^5.55.0":
-  version: 5.55.10
-  resolution: "svelte@npm:5.55.10"
-  dependencies:
-    "@jridgewell/remapping": "npm:^2.3.4"
-    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
-    "@sveltejs/acorn-typescript": "npm:^1.0.10"
-    "@types/estree": "npm:^1.0.5"
-    "@types/trusted-types": "npm:^2.0.7"
-    acorn: "npm:^8.12.1"
-    aria-query: "npm:5.3.1"
-    axobject-query: "npm:^4.1.0"
-    clsx: "npm:^2.1.1"
-    devalue: "npm:^5.8.1"
-    esm-env: "npm:^1.2.1"
-    esrap: "npm:^2.2.9"
-    is-reference: "npm:^3.0.3"
-    locate-character: "npm:^3.0.0"
-    magic-string: "npm:^0.30.11"
-    zimmerframe: "npm:^1.1.2"
-  checksum: 10c0/4d4a943413a41d9e5bee184c98673ec947a3a345894ce26a314b757ecc7b5218734605a96376652519bfc64ff532888abd9600ff92f15a6ee5b47fba145bb9f4
-  languageName: node
-  linkType: hard
-
 "svelte@npm:^5.57.3":
   version: 5.57.3
   resolution: "svelte@npm:5.57.3"
@@ -3512,10 +3458,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.21.0":
-  version: 6.21.0
-  resolution: "undici-types@npm:6.21.0"
-  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
+"undici-types@npm:>=7.24.0 <7.24.7":
+  version: 7.24.6
+  resolution: "undici-types@npm:7.24.6"
+  checksum: 10c0/d9cd8befb643ac904615c280a095ba4240531f6bb4a5e75a22a7483630ca8d3f1016d2ab6ace6ceda1f63b3a2db2fe037fafe121d6917a0187573aa548ff78ca
   languageName: node
   linkType: hard
 
