@@ -41,6 +41,9 @@
 			releases: group.releases.filter((release) => !isUpcoming(release))
 		}))
 	);
+
+	const upcomingReleasesEmpty = $derived(upcomingReleases.every(group => group.releases.length === 0))
+
 </script>
 
 <svelte:head>
@@ -94,31 +97,33 @@
 		{/if}
 	</section>
 
-	<section>
-		<div class="section-header">
-			<h2>Upcoming releases</h2>
-			<a href="/releases">See all</a>
-		</div>
-
-		{#each upcomingReleases as { label, releases }}
-		{#if releases.length > 0}
-			<div class="subsection">
-				<h3>{label}</h3>
-				<GridWrapper gridItemSize="150px" gridGap="20px">
-					{#each releases as release}
-						<ReleaseCard
-							link={`/releases/${release.id}`}
-							name={release.title}
-							artist={release.artist.name}
-							coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
-							releaseDate={release.release_date}
-						/>
-					{/each}
-				</GridWrapper>
+	{#if !upcomingReleasesEmpty}
+		<section>
+			<div class="section-header">
+				<h2>Upcoming releases</h2>
+				<a href="/releases">See all</a>
 			</div>
-		{/if}
-		{/each}
-	</section>
+
+			{#each upcomingReleases as { label, releases }}
+				{#if releases.length > 0}
+					<div class="subsection">
+						<h3>{label}</h3>
+						<GridWrapper gridItemSize="150px" gridGap="20px">
+							{#each releases as release}
+								<ReleaseCard
+									link={`/releases/${release.id}`}
+									name={release.title}
+									artist={release.artist.name}
+									coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
+									releaseDate={release.release_date}
+								/>
+							{/each}
+						</GridWrapper>
+					</div>
+				{/if}
+			{/each}
+		</section>
+	{/if}
 
 	<section>
 		<div class="section-header">
@@ -127,22 +132,22 @@
 		</div>
 
 		{#each pastReleases as { label, releases }}
-		{#if releases.length > 0}
-			<div class="subsection">
-				<h3>{label}</h3>
-				<GridWrapper gridItemSize="150px" gridGap="20px">
-					{#each releases as release}
-						<ReleaseCard
-							link={`/releases/${release.id}`}
-							name={release.title}
-							artist={release.artist.name}
-							coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
-							releaseDate={release.release_date}
-						/>
-					{/each}
-				</GridWrapper>
-			</div>
-		{/if}
+			{#if releases.length > 0}
+				<div class="subsection">
+					<h3>{label}</h3>
+					<GridWrapper gridItemSize="150px" gridGap="20px">
+						{#each releases as release}
+							<ReleaseCard
+								link={`/releases/${release.id}`}
+								name={release.title}
+								artist={release.artist.name}
+								coverArt={makeImageLink(release.artwork_ipfs_cid, 200)}
+								releaseDate={release.release_date}
+							/>
+						{/each}
+					</GridWrapper>
+				</div>
+			{/if}
 		{/each}
 	</section>
 

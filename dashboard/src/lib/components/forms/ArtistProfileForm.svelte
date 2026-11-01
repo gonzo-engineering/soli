@@ -20,7 +20,7 @@
 
 	const pending = $derived(!!updateArtistDetails.pending);
 
-	let links = $state([...artistLinks]);
+	let links = $state([...(artistLinks ?? [])]);
 	let newLink = $state('');
 
 	const addLink = () => {
