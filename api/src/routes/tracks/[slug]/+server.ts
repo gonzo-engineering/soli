@@ -1,4 +1,4 @@
-import { supabase } from '$lib/server/supabase';
+import { supabase } from '#lib/server/supabase.js';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { TABLES } from '@soli/shared/config';
 

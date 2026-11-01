@@ -1,7 +1,7 @@
 import { TABLES } from '@soli/shared/config';
 import type { ArtistHydrated } from '@soli/shared/types';
 
-import { supabase } from '$lib/server/supabase';
+import { supabase } from '#lib/server/supabase.js';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
 

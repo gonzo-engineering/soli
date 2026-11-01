@@ -1,5 +1,5 @@
-import { pinata } from '$lib/server/pinata';
-import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
+import { pinata } from '#lib/server/pinata.js';
+import { handlePostgrestQuery, supabase } from '#lib/server/supabase.js';
 import { json } from '@sveltejs/kit';
 import { TABLES } from '@soli/shared/config';
 import type { Label } from '@soli/shared/types';
@@ -19,7 +19,7 @@ export const PATCH: RequestHandler = async ({ request, params }) => {
 	const labelName = formData.get('labelName') as string;
 	const labelDescription = formData.get('labelDescription') as string;
 	const labelWebsite = formData.get('labelWebsite') as string;
-	const labelLinks = JSON.parse(formData.get('labelLinks') as string || '[]') as string[];
+	const labelLinks = JSON.parse((formData.get('labelLinks') as string) || '[]') as string[];
 
 	let imageCid: string | undefined;
 

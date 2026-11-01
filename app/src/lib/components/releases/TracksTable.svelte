@@ -45,7 +45,7 @@
 				{userProfile}
 				likedTracks={userLikedTracks}
 				mixtapes={userMixtapes}
-				releaseIsNotOutYet={releaseIsNotOutYet}
+				{releaseIsNotOutYet}
 			/>
 		{/each}
 	</tbody>

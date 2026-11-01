@@ -1,5 +1,5 @@
 import { TABLES } from '@soli/shared/config';
-import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
+import { handlePostgrestQuery, supabase } from '#lib/server/supabase.js';
 import type { Artist } from '@soli/shared/types';
 import type { RequestHandler } from '@sveltejs/kit';
 

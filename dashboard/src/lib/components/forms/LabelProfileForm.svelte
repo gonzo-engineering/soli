@@ -59,14 +59,22 @@
 	</label>
 	<label>
 		Description
-		<textarea {...updateLabelDetails.fields.labelDescription.as('text')} value={labelDescription} disabled={pending}></textarea>
+		<textarea
+			{...updateLabelDetails.fields.labelDescription.as('text')}
+			value={labelDescription}
+			disabled={pending}
+		></textarea>
 	</label>
 	{#each updateLabelDetails.fields.labelDescription.issues() as issue}
 		<div class="issue">{issue.message}</div>
 	{/each}
 	<label>
 		Website
-		<input {...updateLabelDetails.fields.labelWebsite.as('text')} value={labelWebsite} disabled={pending} />
+		<input
+			{...updateLabelDetails.fields.labelWebsite.as('text')}
+			value={labelWebsite}
+			disabled={pending}
+		/>
 	</label>
 	{#each updateLabelDetails.fields.labelWebsite.issues() as issue}
 		<div class="issue">{issue.message}</div>

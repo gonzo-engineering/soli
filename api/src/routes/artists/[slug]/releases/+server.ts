@@ -1,4 +1,4 @@
-import { handlePostgrestQuery, supabase } from '$lib/server/supabase';
+import { handlePostgrestQuery, supabase } from '#lib/server/supabase.js';
 import { TABLES } from '@soli/shared/config';
 import type { ReleaseHydrated } from '@soli/shared/types';
 import type { RequestHandler } from '@sveltejs/kit';

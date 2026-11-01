@@ -39,7 +39,15 @@
 		{/if}
 	</ButtonWrapper>
 {:else}
-	<button class="play-button" onclick={() => alert(!userProfile ? 'You must be logged in to listen to music.' : 'This release is not out yet. Be patient!')}>
+	<button
+		class="play-button"
+		onclick={() =>
+			alert(
+				!userProfile
+					? 'You must be logged in to listen to music.'
+					: 'This release is not out yet. Be patient!'
+			)}
+	>
 		<Icon key="play" size={26} />
 	</button>
 {/if}

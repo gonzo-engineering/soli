@@ -42,8 +42,9 @@
 		}))
 	);
 
-	const upcomingReleasesEmpty = $derived(upcomingReleases.every(group => group.releases.length === 0))
-
+	const upcomingReleasesEmpty = $derived(
+		upcomingReleases.every((group) => group.releases.length === 0)
+	);
 </script>
 
 <svelte:head>

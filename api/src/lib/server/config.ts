@@ -1,4 +1,4 @@
-import { dev } from '$app/environment';
+import { dev } from '$app/env';
 import {
 	APP_DOMAIN,
 	APP_LOCAL_PORT,

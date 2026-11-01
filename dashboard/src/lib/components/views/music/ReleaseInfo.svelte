@@ -43,11 +43,14 @@
 {#if popupMenuOpen}
 	<PopupWrapper bind:popupMenuOpen>
 		<div>{release.title}</div>
-		<ButtonWrapper label="Delete release" onClickFunction={async () => {
-			popupMenuOpen = false;
-			await deleteRelease(release.id);
-			onReleaseDeleted();
-		}}>
+		<ButtonWrapper
+			label="Delete release"
+			onClickFunction={async () => {
+				popupMenuOpen = false;
+				await deleteRelease(release.id);
+				onReleaseDeleted();
+			}}
+		>
 			<div class="delete">Delete release <Icon key="bin" size={24} /></div>
 		</ButtonWrapper>
 	</PopupWrapper>
