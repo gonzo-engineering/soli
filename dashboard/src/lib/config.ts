@@ -1,4 +1,4 @@
-import { dev } from '$app/environment';
+import { dev } from '$app/env';
 import {
 	API_DOMAIN,
 	API_LOCAL_PORT,
@@ -13,8 +13,8 @@ export const PUBLIC_SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const API_BASE = dev ? `http://localhost:${API_LOCAL_PORT}` : API_DOMAIN;
 export const APP_BASE = dev ? `http://localhost:${APP_LOCAL_PORT}` : APP_DOMAIN;
-export const DASHBOARD_BASE = dev ? `http://localhost:${DASHBOARD_LOCAL_PORT}` : DASHBOARD_DOMAIN;
 
+export const DASHBOARD_BASE = dev ? `http://localhost:${DASHBOARD_LOCAL_PORT}` : DASHBOARD_DOMAIN;
 export const REQUEST_HEADER_BOILERPLATE = {
 	'Content-Type': 'application/json',
 	origin: DASHBOARD_BASE

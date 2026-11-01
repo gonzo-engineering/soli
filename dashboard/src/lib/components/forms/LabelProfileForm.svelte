@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { updateLabelDetails } from '$lib/remote-functions/label.remote';
-	import { makeImageLink } from '$lib/utils';
+	import { updateLabelDetails } from '#lib/remote-functions/label.remote.js';
+	import { makeImageLink } from '#lib/utils/index.js';
 
 	let {
 		labelId,

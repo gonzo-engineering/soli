@@ -3,8 +3,8 @@
 	import type { ReleaseHydrated } from '@soli/shared/types';
 	import { formatReleaseType } from '@soli/shared/utils';
 
-	import { deleteRelease } from '$lib/remote-functions/music.remote';
-	import { makeImageLink } from '$lib/utils';
+	import { deleteRelease } from '#lib/remote-functions/music.remote.js';
+	import { makeImageLink } from '#lib/utils/index.js';
 
 	const {
 		release,

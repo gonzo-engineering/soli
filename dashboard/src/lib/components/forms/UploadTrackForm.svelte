@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	import { API_BASE } from '$lib/config';
-	import { supabase } from '$lib/supabase';
+	import { API_BASE } from '#lib/config.js';
+	import { supabase } from '#lib/supabase.js';
 	import { parseBlob } from 'music-metadata';
 
 	const {

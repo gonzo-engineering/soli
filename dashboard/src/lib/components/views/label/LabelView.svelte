@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LabelProfileForm from '$lib/components/forms/LabelProfileForm.svelte';
+	import LabelProfileForm from '#lib/components/forms/LabelProfileForm.svelte';
 	import type { LabelHydrated } from '@soli/shared/types';
 
 	let { activeLabel }: { activeLabel: LabelHydrated } = $props();

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { addRelease } from '$lib/remote-functions/music.remote';
-	import { genres } from '$lib/utils';
+	import { addRelease } from '#lib/remote-functions/music.remote.js';
+	import { genres } from '#lib/utils/index.js';
 
 	const { artistId }: { artistId: string } = $props();
 </script>

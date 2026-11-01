@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { addTrackToRelease } from '$lib/remote-functions/music.remote';
+	import { addTrackToRelease } from '#lib/remote-functions/music.remote.js';
 	import type { ReleaseHydrated, Track } from '@soli/shared/types';
 
 	const {

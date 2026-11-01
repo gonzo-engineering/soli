@@ -1,6 +1,6 @@
 import { createBrowserClient, createServerClient, isBrowser } from '@supabase/ssr';
 import type { LayoutLoad } from './$types';
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$lib/config';
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '#lib/config.js';
 import { cookieOptions } from '@soli/shared/config';
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
